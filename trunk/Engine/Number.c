@@ -33,3 +33,7 @@ Term * OperatorPlus(Pair * arguments) {
 	}
 	return Number(n);
 }
+
+Term * OperatorMinus(Pair * arguments) {
+	return Nil();
+}
