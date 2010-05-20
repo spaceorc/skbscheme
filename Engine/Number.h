@@ -4,3 +4,4 @@
 
 Term * Number(int n);
 Term * OperatorPlus(Pair * arguments);
+Term * OperatorMinus(Pair * arguments);
