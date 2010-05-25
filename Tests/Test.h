@@ -25,21 +25,27 @@ void AssertCondition(const char * message, bool condition, const char * function
 #define AssertThat(condition) AssertCondition(#condition, (condition), __FUNCTION__, __FILE__, __LINE__)
 
 class TestFixture {
-	typedef void (*TestMethod)();
-
 private:
+	typedef void (*TestMethod)();
+	static int testCount;
+	static int succeededTestCount;
+	static int failedTestCount;
+	static int exceptedTestCount;
+	static TestFixture tests[1024];
 	TestMethod m_testMethod;
 	const char * m_methodName;
 public:
 	static void RunTests();
 	TestFixture(TestMethod testMethod, const char * methodName);
+	TestFixture();
 	void Run();
 };
 
-int testCount = 0, succeededTestCount, failedTestCount, exceptedTestCount;
-TestFixture* tests[1024];
+TestFixture::TestFixture() : m_testMethod(0), m_methodName(0) {
+}
+
 TestFixture::TestFixture(TestMethod testMethod, const char * methodName) : m_testMethod(testMethod), m_methodName(methodName) {
-	tests[testCount++] = this;
+	tests[testCount++] = *this;
 }
 
 void TestFixture::Run() {
@@ -59,13 +65,15 @@ void TestFixture::Run() {
 	}
 }
 
+int TestFixture::succeededTestCount = 0;
+int TestFixture::failedTestCount = 0;
+int TestFixture::exceptedTestCount = 0;
+int TestFixture::testCount = 0;
+TestFixture TestFixture::tests[1024];
+
 void TestFixture::RunTests() {
-	succeededTestCount = 0;
-	failedTestCount = 0;
-	exceptedTestCount = 0;
-	for(int i = 0; i < testCount; ++i) {
-		tests[i]->Run();
-	}
+	for(int i = 0; i < testCount; ++i)
+		tests[i].Run();
 	printf("\ntotal: %d; succeeded: %d; failed: %d; excepted: %d\n", testCount, succeededTestCount, failedTestCount, exceptedTestCount);
 	if (exceptedTestCount > 0)
 		printf("!!! TESTS EXCEPTED !!!\n");
