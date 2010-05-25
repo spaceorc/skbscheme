@@ -24,16 +24,25 @@ Term * IterateList(Pair ** iterator) {
 
 Term * OperatorPlus(Pair * arguments) {
 	Term * current;
-	int n = 0;
+	int n = 0, argLen = 0;
 	while (current = IterateList(&arguments))
 	{
+		argLen++;
 		if (current->tag != tagNumber)
 			return InvalidArgumentType();
 		n += current->number;
 	}
+	if (argLen < 2)
+		return InvalidArgumentCount();
 	return Number(n);
 }
 
 Term * OperatorMinus(Pair * arguments) {
-	return Nil();
+	Term * current;
+	int n = 0;
+	current = IterateList(&arguments);
+	n = current->number;
+	current = IterateList(&arguments);
+	n -= current->number;
+	return Number(n);
 }

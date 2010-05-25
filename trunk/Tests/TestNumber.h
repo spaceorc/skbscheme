@@ -3,41 +3,47 @@
 #include "Test.h"
 #include "Engine.h"
 
-void TestNumberPlus() {
+TEST(NumberPlus) {
 	Term * z = OperatorPlus(Cons(Number(1), Cons(Number(2), Nil()))->pair);
     AssertThat((z->tag == tagNumber) && (z->number == 3));
 }
 
-void TestNumberPlus3Arguments() {
+TEST(NumberPlusNoArguments) {
+	Term * z = OperatorPlus(0);
+    AssertThat(z->tag == tagError);
+}
+
+TEST(NumberPlus3Arguments) {
 	Term * z = OperatorPlus(Cons(Number(1), Cons(Number(2), Cons(Number(3), Nil())))->pair);
     AssertThat((z->tag == tagNumber) && (z->number == 6));
 }
 
-void TestNumberPlus1stIsNotANumber() {
+TEST(NumberPlus1Argument) {
+	Term * z = OperatorPlus(Cons(Number(1), Nil())->pair);
+    AssertThat(z->tag == tagError);
+}
+
+TEST(NumberPlus1stIsNotANumber) {
 	Term * z = OperatorPlus(Cons(Nil(), Nil())->pair);
     AssertThat(z->tag == tagError);
 }
 
-void TestNumberPlusNotAList() {
+TEST(NumberPlusNotAList) {
 	Term * z = OperatorPlus(Cons(Number(1), Number(2))->pair);
     AssertThat(z->tag == tagError);
 }
 
-void TestNumberPlus3Arguments2ndIsNotANumber() {
+TEST(NumberPlus3Arguments2ndIsNotANumber) {
 	Term * z = OperatorPlus(Cons(Number(1), Cons(Nil(), Cons(Number(3), Nil())))->pair);
     AssertThat(z->tag == tagError);
 }
 
-void TestNumberMinus() {
+TEST(NumberMinus) {
 	Term * z = OperatorMinus(Cons(Number(5), Cons(Number(2), Nil()))->pair);
     AssertThat((z->tag == tagNumber) && (z->number == 3));
 }
 
-void TestNumber() {
-	RunTest(TestNumberPlus);
-	RunTest(TestNumberPlus3Arguments);
-	RunTest(TestNumberPlus1stIsNotANumber);
-	RunTest(TestNumberPlusNotAList);
-	RunTest(TestNumberPlus3Arguments2ndIsNotANumber);
-	RunTest(TestNumberMinus);
+TEST(NumberMinusNoArguments) {
+	Term * z = OperatorMinus(0);
+    AssertThat(z->tag == tagError);
 }
