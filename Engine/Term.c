@@ -42,22 +42,6 @@ Term * InvalidArgumentType() {
 	return result;
 }
 
-Term * Cons(Term * first, Term * second) {
-	Term * result = AllocateTerm(tagPair);
-	result->pair = AllocatePair();
-	result->pair->first = first;
-	result->pair->second = second;
-	return result;
-}
-
-Term * CarPair(Pair * pair) {
-	return pair->first;
-}
-
-Term * CdrPair(Pair * pair) {
-	return pair->second;
-}
-
 Term * Nil() {
 	return AllocateTerm(tagNil);
 }

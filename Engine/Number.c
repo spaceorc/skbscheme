@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "Number.h"
 
 Term * Number(int number) {
@@ -11,14 +13,14 @@ Term * IterateList(Pair ** iterator) {
 	Term * next;
 	if (*iterator == 0)
 		return 0;
-	first = CarPair(*iterator);
-	next = CdrPair(*iterator);
+	first = (*iterator)->first;
+	next = (*iterator)->second;
 	if(next->tag == tagNil)
 		*iterator = 0;
-	else if (next->tag != tagPair)
-		return InvalidArgumentType();
-	else
+	else {
+		assert(next->tag == tagPair);
 		*iterator = next->pair;
+	}
 	return first;
 }
 
