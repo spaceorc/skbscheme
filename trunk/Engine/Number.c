@@ -39,10 +39,16 @@ Term * OperatorPlus(Pair * arguments) {
 
 Term * OperatorMinus(Pair * arguments) {
 	Term * current;
-	int n = 0;
-	current = IterateList(&arguments);
-	n = current->number;
-	current = IterateList(&arguments);
-	n -= current->number;
+	int n = 0, argLen = 0;
+	while (current = IterateList(&arguments)) {
+		argLen++;
+		if (argLen == 2)
+			n = -n;
+		if (current->tag != tagNumber)
+			return InvalidArgumentType();
+		n -= current->number;
+	}
+	if (argLen < 1)
+		return InvalidArgumentCount();
 	return Number(n);
 }
