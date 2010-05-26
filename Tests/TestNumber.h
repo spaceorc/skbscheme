@@ -47,3 +47,18 @@ TEST(NumberMinusNoArguments) {
 	Term * z = OperatorMinus(0);
     AssertThat(z->tag == tagError);
 }
+
+TEST(NumberMinus1Argument) {
+	Term * z = OperatorMinus(Cons(Number(1), Nil())->pair);
+    AssertThat((z->tag == tagNumber) && (z->number == -1));
+}
+
+TEST(NumberMinus3Arguments) {
+	Term * z = OperatorMinus(Cons(Number(1), Cons(Number(2), Cons(Number(3), Nil())))->pair);
+    AssertThat((z->tag == tagNumber) && (z->number == -4));
+}
+
+TEST(NumberMinus1stIsNotANumber) {
+	Term * z = OperatorMinus(Cons(Nil(), Nil())->pair);
+    AssertThat(z->tag == tagError);
+}
