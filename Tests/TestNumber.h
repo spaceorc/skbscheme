@@ -1,28 +1,6 @@
 #pragma once
 
-#include <stdarg.h>
-
 #include "Test.h"
-#include "Engine.h"
-
-Pair * List(int argc, ...) {
-	va_list listPointer;
-	va_start(listPointer, argc);
-	Pair * result = 0, * current = 0;
-	for(int i = 0; i < argc; i++) {
-		Pair * next = AllocatePair();
-		next->first = va_arg(listPointer, Term *);
-		next->second = Nil();
-		if (current != 0) {
-			current->second = AllocateTerm(tagPair);
-			current->second->pair = next;
-		}
-		current = next;
-		if (result == 0)
-			result = current;
-	}
-	return result;
-}
 
 TEST(NumberPlus) {
 	Term * z = OperatorPlus(List(2, Number(1), Number(2)));

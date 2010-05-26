@@ -1,6 +1,9 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdarg.h>
+
+#include "Engine.h"
 
 class AssertException {
 private:
@@ -83,4 +86,48 @@ void TestFixture::RunTests() {
 
 #define CONCAT2(x,y) x##y
 #define CONCAT(x,y) CONCAT2(x,y)
-#define TEST(x) void CONCAT(Test,x)(); TestFixture CONCAT(testFixture,__LINE__)(CONCAT(Test,x), #x); void CONCAT(Test,x)()
+#define TEST(x) void CONCAT(Test,x)(); TestFixture CONCAT(testFixture,__COUNTER__)(CONCAT(Test,x), #x); void CONCAT(Test,x)()
+
+Pair * List(int argc, ...) {
+	va_list listPointer;
+	va_start(listPointer, argc);
+	Pair * result = 0, * current = 0;
+	for(int i = 0; i < argc; i++) {
+		Pair * next = AllocatePair();
+		next->first = va_arg(listPointer, Term *);
+		next->second = Nil();
+		if (current != 0) {
+			current->second = AllocateTerm(tagPair);
+			current->second->pair = next;
+		}
+		current = next;
+		if (result == 0)
+			result = current;
+	}
+	return result;
+}
+
+#define AssertTag(expected, term) AssertTagCondition(expected, term, __FUNCTION__, __FILE__, __LINE__)
+
+void AssertTagCondition(int expected, Term * term, const char * function, const char * file, int line) {
+	char message[1024];
+	if (term == 0) {
+		sprintf_s(message, "expected term with tag %s, but was null pointer", DumpTag(expected));
+		AssertCondition(message, false, function, file, line);
+	}
+	if (expected != term->tag) {
+		sprintf_s(message, "expected term with tag %s, but was term with tag %s", DumpTag(expected), DumpTag(term->tag));
+		AssertCondition(message, false, function, file, line);
+	}
+}
+
+#define AssertEq(expected, was) AssertEqCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
+
+void AssertEqCondition(Term * expected, Term * was, const char * function, const char * file, int line) {
+	char message[1024];
+	AssertTagCondition(expected->tag, was, function, file, line);
+	if (expected->number != was->number) {
+		sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
+		AssertCondition(message, false, function, file, line);
+	}
+}

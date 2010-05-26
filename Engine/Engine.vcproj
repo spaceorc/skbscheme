@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Pair.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Term.c"
 				>
 			</File>
@@ -199,6 +203,10 @@
 			</File>
 			<File
 				RelativePath=".\Number.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Pair.h"
 				>
 			</File>
 			<File
