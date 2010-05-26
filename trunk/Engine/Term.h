@@ -33,7 +33,4 @@ void ReleaseTerm(Term * term);
 void ReleasePair(Pair * pair);
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
-Term * Cons(Term * first, Term * second);
-Term * CarPair(Pair * pair);
-Term * CdrPair(Pair * pair);
 Term * Nil();
