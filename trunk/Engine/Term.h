@@ -1,27 +1,29 @@
 #pragma once
 
-extern const int tagNumber;
-extern const int tagFunction;
-extern const int tagPair;
-extern const int tagError;
-extern const int tagNil;
+#define tagNumber 0
+#define tagFunction 1
+#define tagPair 2
+#define tagError 3
+#define tagNil 4
 
-struct tagPair;
-struct tagTerm;
-typedef struct tagTerm (*Function)(struct tagPair * arguments);
+const char * DumpTag(int tag);
 
-typedef struct tagTerm
+struct structPair;
+struct structTerm;
+typedef struct structTerm (*Function)(struct structPair * arguments);
+
+typedef struct structTerm
 {
 	int tag;
 	union {
 		Function * function;
 		int number;
-		struct tagPair * pair;
+		struct structPair * pair;
 		const char * message;
 	};
 } Term;
 
-typedef struct tagPair
+typedef struct structPair
 {
 	Term * first;
 	Term * second;

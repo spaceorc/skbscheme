@@ -1,12 +1,24 @@
 #include <malloc.h>
+#include <assert.h>
 
 #include "Term.h"
 
-const int tagNumber = 0;
-const int tagFunction = 1;
-const int tagPair = 2;
-const int tagError = 3;
-const int tagNil = 4;
+const char * DumpTag(int tag) {
+	switch(tag) {
+		case tagNumber:
+			return "Number";
+		case tagFunction:
+			return "Function";
+		case tagPair:
+			return "Pair";
+		case tagError:
+			return "Error";
+		case tagNil:
+			return "Nil";
+		default:
+			assert(0);
+	}
+}
 
 Term * AllocateTerm(int tag) {
 	Term * result = malloc(sizeof(Term));
