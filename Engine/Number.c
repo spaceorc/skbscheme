@@ -8,22 +8,6 @@ Term * Number(int number) {
 	return result;
 }
 
-Term * IterateList(Pair ** iterator) {
-	Term * first;
-	Term * next;
-	if (*iterator == 0)
-		return 0;
-	first = (*iterator)->first;
-	next = (*iterator)->second;
-	if(next->tag == tagNil)
-		*iterator = 0;
-	else {
-		assert(next->tag == tagPair);
-		*iterator = next->pair;
-	}
-	return first;
-}
-
 Term * OperatorPlus(Pair * arguments) {
 	Term * current;
 	int n = 0, argLen = 0;
