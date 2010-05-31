@@ -10,13 +10,13 @@ const char * DumpTag(int tag);
 
 struct structPair;
 struct structTerm;
-typedef struct structTerm (*Function)(struct structPair * arguments);
+typedef struct structTerm * (*FunctionPtr)(struct structPair * arguments);
 
 typedef struct structTerm
 {
 	int tag;
 	union {
-		Function * function;
+		FunctionPtr * function;
 		int number;
 		struct structPair * pair;
 		const char * message;
@@ -38,6 +38,7 @@ Term * InvalidArgumentType();
 Term * Nil();
 Term * IterateList(Pair ** iterator);
 int TakeArguments(Pair * from, Term * to[], int atLeast, int atMost, Term ** error);
+Term * Function(FunctionPtr function);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)

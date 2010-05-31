@@ -21,5 +21,14 @@ Term * FunctionCar(Pair * arguments) {
 }
 
 Term * FunctionCdr(Pair * arguments) {
+	Term * arg = 0, * result = 0, * error = 0;
+	if (TakeSingleArgument(arguments, &arg, &error) < 0)
+		return error;
+	if (arg->tag != tagPair)
+		return InvalidArgumentType();
+	return arg->pair->second;
+}
+
+Term * FunctionApply(Pair * arguments) {
 	return Nil();
 }

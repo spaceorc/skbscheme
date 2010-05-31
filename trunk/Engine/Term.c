@@ -94,3 +94,9 @@ int TakeArguments(Pair * from, Term * to[], int atLeast, int atMost, Term ** err
 	}
 	return argLen;
 }
+
+Term * Function(FunctionPtr function) {
+	Term * result = AllocateTerm(tagFunction);
+	result->function = function;
+	return result;
+}
