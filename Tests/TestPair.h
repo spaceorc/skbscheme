@@ -38,3 +38,14 @@ TEST(PairCdr) {
 	Term * z = FunctionCdr(List(1, FunctionCons(List(2, Number(1), Number(2)))));
 	AssertEq(Number(2), z);
 }
+
+TEST(PairCdrEmptyList) {
+	Term * z = FunctionCdr(List(1, Nil()));
+	AssertTag(tagError, z);
+}
+
+
+TEST(PairApply) {
+	Term * z = FunctionApply(List(3, Function(OperatorPlus), Number(1), Number(2)));
+	AssertEq(Number(3), z);
+}
