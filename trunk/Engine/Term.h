@@ -16,7 +16,7 @@ typedef struct structTerm
 {
 	int tag;
 	union {
-		FunctionPtr * function;
+		FunctionPtr function;
 		int number;
 		struct structPair * pair;
 		const char * message;
