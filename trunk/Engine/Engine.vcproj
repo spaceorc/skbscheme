@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Redex.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Term.c"
 				>
 			</File>
@@ -207,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\Pair.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Redex.h"
 				>
 			</File>
 			<File

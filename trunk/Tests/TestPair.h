@@ -43,9 +43,3 @@ TEST(PairCdrEmptyList) {
 	Term * z = FunctionCdr(MakeList(1, Nil()));
 	AssertTag(tagError, z);
 }
-
-
-TEST(PairApply) {
-	Term * z = FunctionApply(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
-	AssertEq(Number(3), z);
-}
