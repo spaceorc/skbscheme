@@ -2,7 +2,7 @@
 
 #include "Term.h"
 
-Term * FunctionCons(Pair * arguments);
-Term * FunctionCar(Pair * arguments);
-Term * FunctionCdr(Pair * arguments);
-Term * FunctionApply(Pair * arguments);
+Term * FunctionCons(List arguments);
+Term * FunctionCar(List arguments);
+Term * FunctionCdr(List arguments);
+Term * FunctionApply(List arguments);

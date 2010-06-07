@@ -88,10 +88,11 @@ void TestFixture::RunTests() {
 #define CONCAT(x,y) CONCAT2(x,y)
 #define TEST(x) void CONCAT(Test,x)(); TestFixture CONCAT(testFixture,__COUNTER__)(CONCAT(Test,x), #x); void CONCAT(Test,x)()
 
-Pair * List(int argc, ...) {
+List MakeList(int argc, ...) {
 	va_list listPointer;
 	va_start(listPointer, argc);
-	Pair * result = 0, * current = 0;
+	List result = 0;
+	Pair * current = 0;
 	for(int i = 0; i < argc; i++) {
 		Pair * next = AllocatePair();
 		next->first = va_arg(listPointer, Term *);
