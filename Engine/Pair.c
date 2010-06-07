@@ -28,7 +28,3 @@ Term * FunctionCdr(List arguments) {
 		return InvalidArgumentType();
 	return arg->pair->second;
 }
-
-Term * FunctionApply(List arguments) {
-	return Nil();
-}

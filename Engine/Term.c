@@ -34,14 +34,6 @@ Pair * AllocatePair() {
 	return result;
 }
 
-void ReleaseTerm(Term * term) {
-	free(term);
-}
-
-void ReleasePair(Pair * pair) {
-	free(pair);
-}
-
 Term * InvalidArgumentCount() {
 	Term * result = AllocateTerm(tagError);
 	result->message = "Invalid argument count";

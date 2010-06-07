@@ -200,6 +200,10 @@
 				RelativePath=".\TestPair.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TestRedex.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

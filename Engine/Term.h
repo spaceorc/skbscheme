@@ -5,6 +5,7 @@
 #define tagPair 2
 #define tagError 3
 #define tagNil 4
+#define tagRedex 5
 
 const char * DumpTag(int tag);
 
@@ -21,7 +22,7 @@ struct structTerm
 		FunctionPtr function;
 		int number;
 		Pair * pair;
-		List list;
+		List redex;
 		const char * message;
 	};
 };
@@ -34,8 +35,6 @@ struct structPair
 
 Term * AllocateTerm(int tag);
 Pair * AllocatePair();
-void ReleaseTerm(Term * term);
-void ReleasePair(Pair * pair);
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 Term * Nil();
