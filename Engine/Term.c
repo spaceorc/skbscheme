@@ -58,7 +58,7 @@ Term * Nil() {
 	return AllocateTerm(tagNil);
 }
 
-Term * IterateList(Pair ** iterator) {
+Term * IterateList(List * iterator) {
 	Term * first;
 	Term * next;
 	if (*iterator == 0)
@@ -74,7 +74,7 @@ Term * IterateList(Pair ** iterator) {
 	return first;
 }
 
-int TakeArguments(Pair * from, Term * to[], int atLeast, int atMost, Term ** error) {
+int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
 	Term * current;
 	int argLen = 0;
 	while (current = IterateList(&from)) {

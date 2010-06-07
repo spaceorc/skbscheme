@@ -10,24 +10,27 @@ const char * DumpTag(int tag);
 
 struct structPair;
 struct structTerm;
-typedef struct structTerm * (*FunctionPtr)(struct structPair * arguments);
+typedef struct structPair Pair, *List;
+typedef struct structTerm Term;
+typedef Term * (*FunctionPtr)(List arguments);
 
-typedef struct structTerm
+struct structTerm
 {
 	int tag;
 	union {
 		FunctionPtr function;
 		int number;
-		struct structPair * pair;
+		Pair * pair;
+		List list;
 		const char * message;
 	};
-} Term;
+};
 
-typedef struct structPair
+struct structPair
 {
 	Term * first;
 	Term * second;
-} Pair;
+};
 
 Term * AllocateTerm(int tag);
 Pair * AllocatePair();
@@ -36,8 +39,8 @@ void ReleasePair(Pair * pair);
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 Term * Nil();
-Term * IterateList(Pair ** iterator);
-int TakeArguments(Pair * from, Term * to[], int atLeast, int atMost, Term ** error);
+Term * IterateList(List * iterator);
+int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 Term * Function(FunctionPtr function);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)

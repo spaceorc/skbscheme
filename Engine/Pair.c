@@ -1,6 +1,6 @@
 #include "Pair.h"
 
-Term * FunctionCons(Pair * arguments) {
+Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * result = 0, * error = 0;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
@@ -11,7 +11,7 @@ Term * FunctionCons(Pair * arguments) {
 	return result;
 }
 
-Term * FunctionCar(Pair * arguments) {
+Term * FunctionCar(List arguments) {
 	Term * arg = 0, * result = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
@@ -20,7 +20,7 @@ Term * FunctionCar(Pair * arguments) {
 	return arg->pair->first;
 }
 
-Term * FunctionCdr(Pair * arguments) {
+Term * FunctionCdr(List arguments) {
 	Term * arg = 0, * result = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
@@ -29,6 +29,6 @@ Term * FunctionCdr(Pair * arguments) {
 	return arg->pair->second;
 }
 
-Term * FunctionApply(Pair * arguments) {
+Term * FunctionApply(List arguments) {
 	return Nil();
 }

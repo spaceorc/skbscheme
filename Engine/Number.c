@@ -8,7 +8,7 @@ Term * Number(int number) {
 	return result;
 }
 
-Term * OperatorPlus(Pair * arguments) {
+Term * OperatorPlus(List arguments) {
 	Term * current;
 	int n = 0, argLen = 0;
 	while (current = IterateList(&arguments))
@@ -23,7 +23,7 @@ Term * OperatorPlus(Pair * arguments) {
 	return Number(n);
 }
 
-Term * OperatorMinus(Pair * arguments) {
+Term * OperatorMinus(List arguments) {
 	Term * current;
 	int n = 0, argLen = 0;
 	while (current = IterateList(&arguments)) {
