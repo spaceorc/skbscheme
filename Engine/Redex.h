@@ -2,4 +2,5 @@
 
 #include "Term.h"
 
-Term * FunctionApply(List arguments);
+Term * FunctionInternalApply(List arguments);
+Term * Eval(Term * term);

@@ -15,6 +15,8 @@ const char * DumpTag(int tag) {
 			return "Error";
 		case tagNil:
 			return "Nil";
+		case tagRedex:
+			return "Redex";
 		default:
 			assert(0);
 	}
