@@ -109,6 +109,7 @@ List MakeList(int argc, ...) {
 }
 
 #define AssertTag(expected, term) AssertTagCondition(expected, term, __FUNCTION__, __FILE__, __LINE__)
+#define AssertTok(expected, token) AssertTokCondition(expected, token, __FUNCTION__, __FILE__, __LINE__)
 
 void AssertTagCondition(int expected, Term * term, const char * function, const char * file, int line) {
 	char message[1024];
@@ -118,6 +119,14 @@ void AssertTagCondition(int expected, Term * term, const char * function, const 
 	}
 	if (expected != term->tag) {
 		sprintf_s(message, "expected term with tag %s, but was term with tag %s", DumpTag(expected), DumpTag(term->tag));
+		AssertCondition(message, false, function, file, line);
+	}
+}
+
+void AssertTokCondition(int expected, Token token, const char * function, const char * file, int line) {
+	char message[1024];
+	if (expected != token.tag) {
+		sprintf_s(message, "expected token with tag %s, but was token with tag %s", DumpTok(expected), DumpTok(token.tag));
 		AssertCondition(message, false, function, file, line);
 	}
 }
