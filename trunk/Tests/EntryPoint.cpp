@@ -2,6 +2,7 @@
 #include "TestPair.h"
 #include "TestNumber.h"
 #include "TestRedex.h"
+#include "TestTokenizer.h"
 #include <stdio.h>
 
 void main() {

@@ -1,6 +1,5 @@
 #include "Redex.h"
 
-
 Term * FunctionInternalApply(List arguments) {
 	Term * function = 0;
 	function = IterateList(&arguments);
