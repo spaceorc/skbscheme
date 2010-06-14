@@ -2,9 +2,63 @@
 
 #include "Tokenizer.h"
 
+int IsEnd(ConstStr * input) {
+	if (*input == 0 || **input == 0)
+		return 1;
+	return 0;
+}
+
+int IsOpeningBracket(ConstStr * input) {
+	if (**input == '(')
+		return 1;
+	return 0;
+}
+
+int IsClosingBracket(ConstStr * input) {
+	if (**input == ')')
+		return 1;
+	return 0;
+}
+
+int IsWhitespace(ConstStr * input) {
+	if (**input <= 32)
+		return 1;
+	return 0;
+}
+
+void SkipWhitespaces(ConstStr * input) {
+	while (!IsEnd(input) && IsWhitespace(input)) {
+		*input = *input + 1;
+	}
+}
+
+void SkipSymbol(ConstStr * input) {
+	while (!IsEnd(input) && !IsOpeningBracket(input) && !IsClosingBracket(input) && !IsWhitespace(input)) {
+		*input = *input + 1;
+	}
+}
+
 Token GetToken(ConstStr * input) {
 	Token result;
-	result.tag = tokEnd;
+	SkipWhitespaces(input);
+	if (IsEnd(input)) {
+		result.tag = tokEnd;
+		*input = 0;
+	}
+	else if (IsOpeningBracket(input)) {
+		result.tag = tokOpeningBracket;
+		*input = *input + 1;
+	}
+	else if (IsClosingBracket(input))	{
+		result.tag = tokClosingBracket;
+		*input = *input + 1;
+	}
+	else {
+		result.tag = tokSymbol;
+		result.symbol.str = *input;
+		SkipSymbol(input);
+		result.symbol.size = *input - result.symbol.str;
+	}
 	return result;
 }
 
