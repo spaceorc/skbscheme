@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "Engine.h"
 
@@ -138,6 +139,19 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 	AssertTagCondition(expected->tag, was, function, file, line);
 	if (expected->number != was->number) {
 		sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
+		AssertCondition(message, false, function, file, line);
+	}
+}
+
+#define AssertSymbol(expected, was) AssertSymbolCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
+
+void AssertSymbolCondition(const char * expected, Token was, const char * function, const char * file, int line) {
+	char message[1024];
+	AssertTokCondition(tokSymbol, was, function, file, line);
+	if ((was.symbol.size != strlen(expected)) || (strncmp(expected, was.symbol.str, was.symbol.size) != 0)) {
+		char wasSymbol[1024];
+		strncpy_s(wasSymbol, was.symbol.str, was.symbol.size);
+		sprintf_s(message, "expected symbol '%s', but was symbol '%s' with size %d", expected, wasSymbol, was.symbol.size);
 		AssertCondition(message, false, function, file, line);
 	}
 }
