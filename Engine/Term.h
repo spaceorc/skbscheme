@@ -37,6 +37,7 @@ Term * AllocateTerm(int tag);
 Pair * AllocatePair();
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
+Term * InvalidSymbol();
 Term * Nil();
 Term * IterateList(List * iterator);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
