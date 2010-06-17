@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestParser.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestRedex.h"
 				>
 			</File>
