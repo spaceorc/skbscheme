@@ -218,6 +218,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Parser.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Redex.h"
 				>
 			</File>

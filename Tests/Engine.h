@@ -6,4 +6,5 @@ extern "C" {
 #include "Number.h"
 #include "Pair.h"
 #include "Redex.h"
+#include "Parser.h"
 }
