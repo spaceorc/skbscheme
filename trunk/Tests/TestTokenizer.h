@@ -11,12 +11,12 @@ TEST(GetTokenFromEmptyString) {
 
 TEST(GetTokenOpeningBracket) {
 	const char * str = "(";
-	AssertTok(tokOpeningBracket, GetToken(&str));
+	AssertBracket(tokOpeningBracket, "(", GetToken(&str));
 }
 
 TEST(GetTokenClosingBracket) {
 	const char * str = ")";
-	AssertTok(tokClosingBracket, GetToken(&str));
+	AssertBracket(tokClosingBracket, ")", GetToken(&str));
 }
 
 TEST(GetTokenSymbol) {

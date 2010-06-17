@@ -45,19 +45,21 @@ Token GetToken(ConstStr * input) {
 		result.tag = tokEnd;
 		*input = 0;
 	}
-	else if (IsOpeningBracket(input)) {
-		result.tag = tokOpeningBracket;
-		*input = *input + 1;
-	}
-	else if (IsClosingBracket(input))	{
-		result.tag = tokClosingBracket;
-		*input = *input + 1;
-	}
 	else {
-		result.tag = tokSymbol;
-		result.symbol.str = *input;
-		SkipSymbol(input);
-		result.symbol.size = *input - result.symbol.str;
+		result.range.str = *input;
+		if (IsOpeningBracket(input)) {
+			result.tag = tokOpeningBracket;
+			*input = *input + 1;
+		}
+		else if (IsClosingBracket(input))	{
+			result.tag = tokClosingBracket;
+			*input = *input + 1;
+		}
+		else {
+			result.tag = tokSymbol;
+			SkipSymbol(input);
+		}
+		result.range.size = *input - result.range.str;
 	}
 	return result;
 }
@@ -70,11 +72,10 @@ const char * DumpTok(int tag) {
 			return "ClosingBracket";
 		case tokSymbol:
 			return "Symbol";
-		case tokError:
-			return "Error";
 		case tokEnd:
 			return "End";
 		default:
 			assert(0);
+			return 0;
 	}
 }

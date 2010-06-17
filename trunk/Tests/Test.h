@@ -144,14 +144,27 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 }
 
 #define AssertSymbol(expected, was) AssertSymbolCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
+#define AssertBracket(expectedTag, expectedRange, was) AssertBracketCondition(expectedTag, expectedRange, was, __FUNCTION__, __FILE__, __LINE__)
 
 void AssertSymbolCondition(const char * expected, Token was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTokCondition(tokSymbol, was, function, file, line);
-	if ((was.symbol.size != strlen(expected)) || (strncmp(expected, was.symbol.str, was.symbol.size) != 0)) {
+	if ((was.range.size != strlen(expected)) || (strncmp(expected, was.range.str, was.range.size) != 0)) {
 		char wasSymbol[1024];
-		strncpy_s(wasSymbol, was.symbol.str, was.symbol.size);
-		sprintf_s(message, "expected symbol '%s', but was symbol '%s' with size %d", expected, wasSymbol, was.symbol.size);
+		strncpy_s(wasSymbol, was.range.str, was.range.size);
+		sprintf_s(message, "expected symbol '%s', but was symbol '%s' with size %d", expected, wasSymbol, was.range.size);
+		AssertCondition(message, false, function, file, line);
+	}
+}
+
+
+void AssertBracketCondition(int expectedTag, const char * expectedRange, Token was, const char * function, const char * file, int line) {
+	char message[1024];
+	AssertTokCondition(expectedTag, was, function, file, line);
+	if ((was.range.size != strlen(expectedRange)) || (strncmp(expectedRange, was.range.str, was.range.size) != 0)) {
+		char wasSymbol[1024];
+		strncpy_s(wasSymbol, was.range.str, was.range.size);
+		sprintf_s(message, "expected bracket '%s', but was bracket '%s' with size %d", expectedRange, wasSymbol, was.range.size);
 		AssertCondition(message, false, function, file, line);
 	}
 }

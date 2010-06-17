@@ -13,18 +13,14 @@ struct structConstLimitedStr {
 #define tokOpeningBracket 0
 #define tokClosingBracket 1
 #define tokSymbol 2
-#define tokError 3
-#define tokEnd 4
+#define tokEnd 3
 
 struct structToken;
 typedef struct structToken Token;
 
 struct structToken {
 	int tag;
-	union {
-		ConstLimitedStr symbol;
-		ConstStr error;
-	};
+	ConstLimitedStr range;
 };
 
 Token GetToken(ConstStr * input);
