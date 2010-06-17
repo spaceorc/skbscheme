@@ -19,6 +19,7 @@ const char * DumpTag(int tag) {
 			return "Redex";
 		default:
 			assert(0);
+			return 0;
 	}
 }
 
@@ -45,6 +46,12 @@ Term * InvalidArgumentCount() {
 Term * InvalidArgumentType() {
 	Term * result = AllocateTerm(tagError);
 	result->message = "Invalid argument type";
+	return result;
+}
+
+Term * InvalidSymbol() {
+	Term * result = AllocateTerm(tagError);
+	result->message = "Invalid symbol";
 	return result;
 }
 
