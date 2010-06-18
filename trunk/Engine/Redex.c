@@ -1,11 +1,52 @@
-#include "Redex.h"
+#include <assert.h>
+#include <malloc.h>
+#include <memory.h>
 
-Term * FunctionInternalApply(List arguments, ContextBindings * contextBindings) {
+#include "Redex.h"
+#include "Dictionary.h"
+#include "Number.h"
+#include "Pair.h"
+
+const char * globalNames [] = {"+", "-", "cons", "car", "cdr"};
+FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
+
+ContextBindings * AllocateContextBindings() {
+	ContextBindings * result = malloc(sizeof(ContextBindings));
+	result->dictionary = 0;
+	result->previous = 0;
+	return result;
+}
+
+ContextBindings * AcquireContextBindings() {
+	ContextBindings * result = AllocateContextBindings();
+	int len = sizeof(globalNames)/sizeof(globalNames[0]);
+	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
+	while (len-- > 0)
+		result->dictionary = InternalSet(result->dictionary, globalNames[len], Function(globalPointers[len]));
+	return result;
+}
+
+Term * InvalidSymbol() {
+	Term * result = AllocateTerm(terError);
+	result->message = "Invalid symbol";
+	return result;
+}
+
+Term * Resolve(ContextBindings * contextBindings, ConstLimitedStr symbol) {
+	Term * result = InternalFind(contextBindings->dictionary, symbol);
+	if (result == 0)
+		return InvalidSymbol();
+	return result;
+}
+
+Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	Term * function = 0;
 	function = IterateList(&arguments);
-	if (function == 0)
+	if (0 == function)
 		return InvalidArgumentCount();
-	if (function->tag != terFunction)
+	if (terSymbol == function->tag)
+		function = Resolve(contextBindings, function->symbol);
+	if (terFunction != function->tag)
 		return InvalidArgumentType();
 	return function->function(arguments);
 }
@@ -32,5 +73,5 @@ List ReduceList(List list, ContextBindings * contextBindings) {
 Term * Eval(Term * term, ContextBindings * contextBindings) {
 	if (term->tag != terRedex)
 		return term;
-	return FunctionInternalApply(ReduceList(term->redex, contextBindings), contextBindings);
+	return InternalApply(ReduceList(term->redex, contextBindings), contextBindings);
 }

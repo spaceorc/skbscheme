@@ -30,20 +30,8 @@ TEST(EvalRecursiveRedex) {
 	AssertEq(Number(-2), Eval(b, 0));
 }
 
-Term * z_a;
-
-Term * MockContextBoundFunction(ContextBindings * contextBindings) {
-	z_a = InternalFind(contextBindings->dictionary, LimitConstStr("z_a"));
-	return Number(2);
-}
-
-TEST(EvalContextBoundFunction) {
-	z_a = 0;
+TEST(EvalRedexUnresolvedSymbols) {
 	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(2, ContextFunction(MockContextBoundFunction, MakeList(1, ConstantString("z_a"))), Number(1));
-	ContextBindings contextBindings;
-	contextBindings.dictionary = 0;
-	contextBindings.previous = 0;
-	AssertEq(Number(2), Eval(a, &contextBindings));
-	AssertEq(Number(1), z_a);
+	a->redex = MakeList(3, Symbol("+"), Number(1), Number(2));
+	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }

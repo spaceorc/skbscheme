@@ -153,6 +153,7 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 			AssertEqCondition(expected->pair->first, was->pair->first, function, file, line);
 			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
 			break;
+		case terSymbol:
 		case terConstantString:
 			if (StrCompare(expected->constStr, was->constStr)) {
 				sprintf_s(message, "expected const string %*s, but was const string %*s", expected->constStr.size, expected->constStr.str, was->constStr.size, was->constStr.str);
