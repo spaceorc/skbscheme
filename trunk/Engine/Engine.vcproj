@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Parser.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Redex.c"
 				>
 			</File>
