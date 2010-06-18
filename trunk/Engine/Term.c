@@ -19,6 +19,8 @@ const char * DumpTag(int tag) {
 			return "Redex";
 		case terConstantString:
 			return "Constant string";
+		case terContextFunction:
+			return "Context bound function";
 		default:
 			assert(0);
 			return 0;
@@ -97,6 +99,14 @@ Term * Function(FunctionPtr function) {
 	Term * result = AllocateTerm(terFunction);
 	result->function = function;
 	return result;
+}
+
+Term * ContextFunction(ContextBoundFunctionPtr function, List argumentNames) {
+	Term * result = AllocateTerm(terContextFunction);
+	result->cbFunction.function = function;
+	result->cbFunction.argumentNames = argumentNames;
+	return result;
+
 }
 
 Term * ConstantString(ConstStr str) {

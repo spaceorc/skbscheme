@@ -16,7 +16,7 @@ Term * InvalidSymbol() {
 Term * FindBoundTerm(ConstLimitedStr symbol, Context * context) {
 	Term * result = InvalidSymbol();
 	while (0 != context) {
-		result = InternalFind(context->bindings, symbol);
+		result = InternalFind(context->bindings.dictionary, symbol);
 		if (result != 0)
 			return result;
 		context = context->previous;
@@ -30,11 +30,12 @@ Term * ParseTerm(ConstLimitedStr symbol, Context * context) {
 	return FindBoundTerm(symbol, context);
 }
 
-Context * AllocateContext(Context * previous) { // todo one more place to handle with memory
+Context * AllocateContext(Context * previous) {
 	Context * result = malloc(sizeof(Context));
 	result->previous = previous;
 	result->redex = 0;
-	result->bindings = 0;
+	result->bindings.previous = &(previous->bindings);
+	result->bindings.dictionary = 0;
 	return result;
 }
 
@@ -78,7 +79,7 @@ const char * globalNames [] = {"+", "-", "cons", "car", "cdr"};
 FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
 
 void AddBindingToContext(Context * context, ConstLimitedStr name, Term * value) {
-	context->bindings = InternalSetFromLimited(context->bindings, name, value);
+	context->bindings.dictionary = InternalSetFromLimited(context->bindings.dictionary, name, value);
 }
 
 Context * AcquireContext() {
@@ -86,7 +87,7 @@ Context * AcquireContext() {
 	int len = sizeof(globalNames)/sizeof(globalNames[0]);
 	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
 	while (len-- > 0)
-		result->bindings = InternalSet(result->bindings, globalNames[len], Function(globalPointers[len]));
+		result->bindings.dictionary = InternalSet(result->bindings.dictionary, globalNames[len], Function(globalPointers[len]));
 	return result;
 }
 
