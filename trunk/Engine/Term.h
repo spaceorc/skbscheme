@@ -40,6 +40,7 @@ Term * InvalidArgumentType();
 Term * InvalidSymbol();
 Term * Nil();
 Term * IterateList(List * iterator);
+List AppendListElement(List list, Term * term);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 Term * Function(FunctionPtr function);
 

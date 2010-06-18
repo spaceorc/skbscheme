@@ -47,11 +47,33 @@ TEST(ParseWithBrokenBracketBalance) {
 TEST(ParseRedex) {
 	Context * context = AcquireContext();
 	Parse(BuildToken(tokOpeningBracket, "("), &context);
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "1"), &context));
+	Term * was = Parse(BuildToken(tokClosingBracket, ")"), &context);
+	Term * expected = AllocateTerm(tagRedex);
+	expected->redex = MakeList(1, Number(1));
+	AssertEq(expected, was);
+}
+
+TEST(ParseRedexContainingOperatorPlus) {
+	Context * context = AcquireContext();
+	Parse(BuildToken(tokOpeningBracket, "("), &context);
 	AssertThat(0 == Parse(BuildToken(tokSymbol, "+"), &context));
 	AssertThat(0 == Parse(BuildToken(tokSymbol, "1"), &context));
 	AssertThat(0 == Parse(BuildToken(tokSymbol, "2"), &context));
 	Term * was = Parse(BuildToken(tokClosingBracket, ")"), &context);
 	Term * expected = AllocateTerm(tagRedex);
 	expected->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
-	AssertEq(was, expected);
+	AssertEq(expected, was);
+}
+
+TEST(ParseRedexContainingOperatorMinus) {
+	Context * context = AcquireContext();
+	Parse(BuildToken(tokOpeningBracket, "("), &context);
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "-"), &context));
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "1"), &context));
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "2"), &context));
+	Term * was = Parse(BuildToken(tokClosingBracket, ")"), &context);
+	Term * expected = AllocateTerm(tagRedex);
+	expected->redex = MakeList(3, Function(OperatorMinus), Number(1), Number(2));
+	AssertEq(expected, was);
 }
