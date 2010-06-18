@@ -3,16 +3,14 @@
 #include "Tokenizer.h"
 #include "Redex.h"
 
-struct structContext;
-typedef struct structContext Context;
+struct structParserContext;
+typedef struct structParserContext ParserContext;
 
-struct structContext {
+struct structParserContext {
 	List redex;
-	ContextBindings bindings;
-	Context * previous;
+	ParserContext * previous;
 };
 
-Term * Parse(Token token, Context ** context);
-Context * AcquireContext();
-int CanFinishParsing(Context * context);
-void AddBindingToContext(Context * context, ConstLimitedStr name, Term * value);
+Term * Parse(Token token, ParserContext ** context);
+ParserContext * AcquireParserContext();
+int CanFinishParsing(ParserContext * context);

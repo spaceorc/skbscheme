@@ -2,40 +2,20 @@
 #include <malloc.h>
 #include <string.h>
 
-#include "Dictionary.h"
 #include "Parser.h"
 #include "Number.h"
-#include "Pair.h"
+#include "Dictionary.h"
 
-Term * InvalidSymbol() {
-	Term * result = AllocateTerm(terError);
-	result->message = "Invalid symbol";
-	return result;
-}
-
-Term * FindBoundTerm(ConstLimitedStr symbol, Context * context) {
-	Term * result = InvalidSymbol();
-	while (0 != context) {
-		result = InternalFind(context->bindings.dictionary, symbol);
-		if (result != 0)
-			return result;
-		context = context->previous;
-	}
-	return InvalidSymbol();
-}
-
-Term * ParseTerm(ConstLimitedStr symbol, Context * context) {
+Term * ParseTerm(ConstLimitedStr symbol) {
 	if (isNumber(symbol))
 		return parseNumber(symbol);
-	return FindBoundTerm(symbol, context);
+	return SymbolFromLimited(symbol);
 }
 
-Context * AllocateContext(Context * previous) {
-	Context * result = malloc(sizeof(Context));
+ParserContext * AllocateParserContext(ParserContext * previous) {
+	ParserContext * result = malloc(sizeof(ParserContext));
 	result->previous = previous;
 	result->redex = 0;
-	result->bindings.previous = &(previous->bindings);
-	result->bindings.dictionary = 0;
 	return result;
 }
 
@@ -45,29 +25,33 @@ Term * InvalidClosingBracket() {
 	return result;
 }
 
-Term * Parse(Token token, Context ** context) {
+Term * Parse(Token token, ParserContext ** context) {
 	Term * term = 0;
 	switch(token.tag) {
 		case tokSymbol:
 			assert(token.range.size > 0);
-			term = ParseTerm(token.range, *context);
+			term = ParseTerm(token.range);
 			if (term->tag == terError)
 				break;
 			assert(term->tag != terRedex);
-			if (0 == (*context)->previous)
+			if (0 == *context)
 				break;
 			(*context)->redex = InternalAppend((*context)->redex, term);
 			term = 0;
 			break;
 		case tokOpeningBracket:
-			*context = AllocateContext(*context);
+			*context = AllocateParserContext(*context);
 			break;
 		case tokClosingBracket:
-			if (0 == (*context)->previous)
+			if (0 == *context)
 				return InvalidClosingBracket();
 			term = AllocateTerm(terRedex);
 			term->redex = (*context)->redex;
 			*context = (*context)->previous;
+			if (0 == *context)
+				break;
+			(*context)->redex = InternalAppend((*context)->redex, term);
+			term = 0;
 			break;
 		default:
 			assert(0);
@@ -75,22 +59,10 @@ Term * Parse(Token token, Context ** context) {
 	return term;
 }
 
-const char * globalNames [] = {"+", "-", "cons", "car", "cdr"};
-FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
-
-void AddBindingToContext(Context * context, ConstLimitedStr name, Term * value) {
-	context->bindings.dictionary = InternalSetFromLimited(context->bindings.dictionary, name, value);
+ParserContext * AcquireParserContext() {
+	return 0;
 }
 
-Context * AcquireContext() {
-	Context * result = AllocateContext(0);
-	int len = sizeof(globalNames)/sizeof(globalNames[0]);
-	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
-	while (len-- > 0)
-		result->bindings.dictionary = InternalSet(result->bindings.dictionary, globalNames[len], Function(globalPointers[len]));
-	return result;
-}
-
-int CanFinishParsing(Context * context) {
-	return 0 == context->previous;
+int CanFinishParsing(ParserContext * context) {
+	return 0 == context;
 }
