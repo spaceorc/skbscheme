@@ -66,13 +66,33 @@ Term * IterateList(List * iterator) {
 		return 0;
 	first = (*iterator)->first;
 	next = (*iterator)->second;
-	if(next->tag == tagNil)
+	if(tagNil == next->tag)
 		*iterator = 0;
 	else {
 		assert(next->tag == tagPair);
 		*iterator = next->pair;
 	}
 	return first;
+}
+
+List AppendListElement(List list, Term * term) {
+	List result = list;
+	Pair * current, * last;
+	if (0 == result)
+		current = result = AllocatePair();
+	else {
+		last = list;
+		while (tagNil != last->second->tag) {
+			assert(tagPair == last->second->tag);
+			last = last->second->pair;
+		}
+		current = AllocatePair();
+		last->second->tag = tagPair;
+		last->second->pair = current;
+	}
+	current->first = term;
+	current->second = Nil();
+	return result;
 }
 
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
@@ -83,7 +103,7 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 			*error = InvalidArgumentCount();
 			return -1;
 		}
-		if (current->tag == tagError) {
+		if (tagError == current->tag) {
 			*error = current;
 			return -1;
 		}

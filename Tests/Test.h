@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <assert.h>
 
 #include "Engine.h"
 
@@ -134,12 +135,35 @@ void AssertTokCondition(int expected, Token token, const char * function, const 
 
 #define AssertEq(expected, was) AssertEqCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
 
+void AssertEqLists(Pair * expected, Pair * was, const char * function, const char * file, int line) {
+}
+
 void AssertEqCondition(Term * expected, Term * was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTagCondition(expected->tag, was, function, file, line);
-	if (expected->number != was->number) {
-		sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
-		AssertCondition(message, false, function, file, line);
+	switch(expected->tag) {
+		case tagNumber:
+			if (expected->number != was->number) {
+				sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
+		case tagRedex:
+		case tagPair:
+			AssertEqCondition(expected->pair->first, was->pair->first, function, file, line);
+			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
+			break;
+		case tagNil:
+		case tagError:
+			break;
+		case tagFunction:
+			if (expected->function != was->function) {
+				sprintf_s(message, "expected function pointer %d, but was function pointer %d", expected->function, was->function);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
+		default:
+			assert(0);
 	}
 }
 
@@ -156,7 +180,6 @@ void AssertSymbolCondition(const char * expected, Token was, const char * functi
 		AssertCondition(message, false, function, file, line);
 	}
 }
-
 
 void AssertBracketCondition(int expectedTag, const char * expectedRange, Token was, const char * function, const char * file, int line) {
 	char message[1024];
