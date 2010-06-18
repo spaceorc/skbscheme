@@ -7,12 +7,12 @@ TEST(GeneralInternalApply) {
 
 TEST(GeneralInternalApplyNotAFunction) {
 	Term * z = FunctionInternalApply(MakeList(3, Number(0), Number(1), Number(2)));
-	AssertTag(tagError, z);
+	AssertTag(terError, z);
 }
 
 TEST(GeneralInternalApplyWith0Arguments) {
 	Term * z = FunctionInternalApply(MakeList(0));
-	AssertTag(tagError, z);
+	AssertTag(terError, z);
 }
 
 TEST(EvalScalar) {
@@ -21,16 +21,16 @@ TEST(EvalScalar) {
 }
 
 TEST(EvalRedex) {
-	Term * a = AllocateTerm(tagRedex);
+	Term * a = AllocateTerm(terRedex);
 	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
 	Term * z = Eval(a);
 	AssertEq(Number(3), z);
 }
 
 TEST(EvalRecursiveRedex) {
-	Term * a = AllocateTerm(tagRedex);
+	Term * a = AllocateTerm(terRedex);
 	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
-	Term * b = AllocateTerm(tagRedex);
+	Term * b = AllocateTerm(terRedex);
 	b->redex = MakeList(3, Function(OperatorMinus), Number(1), a);
 	Term * z = Eval(b);
 	AssertEq(Number(-2), z);

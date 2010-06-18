@@ -5,19 +5,19 @@
 
 const char * DumpTag(int tag) {
 	switch(tag) {
-		case tagNumber:
+		case terNumber:
 			return "Number";
-		case tagFunction:
+		case terFunction:
 			return "Function";
-		case tagPair:
+		case terPair:
 			return "Pair";
-		case tagError:
+		case terError:
 			return "Error";
-		case tagNil:
+		case terNil:
 			return "Nil";
-		case tagRedex:
+		case terRedex:
 			return "Redex";
-		case tagConstantString:
+		case terConstantString:
 			return "Constant string";
 		default:
 			assert(0);
@@ -40,25 +40,19 @@ Pair * AllocatePair() {
 }
 
 Term * InvalidArgumentCount() {
-	Term * result = AllocateTerm(tagError);
+	Term * result = AllocateTerm(terError);
 	result->message = "Invalid argument count";
 	return result;
 }
 
 Term * InvalidArgumentType() {
-	Term * result = AllocateTerm(tagError);
+	Term * result = AllocateTerm(terError);
 	result->message = "Invalid argument type";
 	return result;
 }
 
-Term * InvalidSymbol() {
-	Term * result = AllocateTerm(tagError);
-	result->message = "Invalid symbol";
-	return result;
-}
-
 Term * Nil() {
-	return AllocateTerm(tagNil);
+	return AllocateTerm(terNil);
 }
 
 Term * IterateList(List * iterator) {
@@ -68,34 +62,15 @@ Term * IterateList(List * iterator) {
 		return 0;
 	first = (*iterator)->first;
 	next = (*iterator)->second;
-	if(tagNil == next->tag)
+	if(terNil == next->tag)
 		*iterator = 0;
 	else {
-		assert(next->tag == tagPair);
+		assert(next->tag == terPair);
 		*iterator = next->pair;
 	}
 	return first;
 }
 
-List AppendListElement(List list, Term * term) {
-	List result = list;
-	Pair * current, * last;
-	if (0 == result)
-		current = result = AllocatePair();
-	else {
-		last = list;
-		while (tagNil != last->second->tag) {
-			assert(tagPair == last->second->tag);
-			last = last->second->pair;
-		}
-		current = AllocatePair();
-		last->second->tag = tagPair;
-		last->second->pair = current;
-	}
-	current->first = term;
-	current->second = Nil();
-	return result;
-}
 
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
 	Term * current;
@@ -105,7 +80,7 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 			*error = InvalidArgumentCount();
 			return -1;
 		}
-		if (tagError == current->tag) {
+		if (terError == current->tag) {
 			*error = current;
 			return -1;
 		}
@@ -119,7 +94,7 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 }
 
 Term * Function(FunctionPtr function) {
-	Term * result = AllocateTerm(tagFunction);
+	Term * result = AllocateTerm(terFunction);
 	result->function = function;
 	return result;
 }
@@ -129,7 +104,7 @@ Term * ConstantString(ConstStr str) {
 }
 
 Term * ConstantStringFromLimited(ConstLimitedStr str) {
-	Term * result = AllocateTerm(tagConstantString);
+	Term * result = AllocateTerm(terConstantString);
 	result->constStr = str;
 	return result;
 }

@@ -5,7 +5,7 @@ Term * FunctionInternalApply(List arguments) {
 	function = IterateList(&arguments);
 	if (function == 0)
 		return InvalidArgumentCount();
-	if (function->tag != tagFunction)
+	if (function->tag != terFunction)
 		return InvalidArgumentType();
 	return function->function(arguments);
 }
@@ -19,7 +19,7 @@ List ReduceList(List list) {
 		next->first = Eval(i);
 		next->second = Nil();
 		if (current != 0) {
-			current->second = AllocateTerm(tagPair);
+			current->second = AllocateTerm(terPair);
 			current->second->pair = next;
 		}
 		current = next;
@@ -30,7 +30,7 @@ List ReduceList(List list) {
 }
 
 Term * Eval(Term * term) {
-	if (term->tag != tagRedex)
+	if (term->tag != terRedex)
 		return term;
 	return FunctionInternalApply(ReduceList(term->redex));
 }

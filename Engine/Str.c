@@ -14,3 +14,13 @@ ConstLimitedStr LimitConstStr(ConstStr str) {
 	result.size = strlen(str);
 	return result;
 }
+
+char IterateSymbol(ConstLimitedStr * symbol) {
+	char result = 0;
+	if (symbol->size > 0) {
+		result = *(symbol->str);
+		symbol->str++;
+		symbol->size--;
+	}
+	return result;
+}
