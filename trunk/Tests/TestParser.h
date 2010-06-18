@@ -77,3 +77,15 @@ TEST(ParseRedexContainingOperatorMinus) {
 	expected->redex = MakeList(3, Function(OperatorMinus), Number(1), Number(2));
 	AssertEq(expected, was);
 }
+TEST(ParseRedexContainingBoundVariable) {
+	Context * context = AcquireContext();
+	AddBindingToContext(context, LimitConstStr("a"), Number(5));
+	Parse(BuildToken(tokOpeningBracket, "("), &context);
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "-"), &context));
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "a"), &context));
+	AssertThat(0 == Parse(BuildToken(tokSymbol, "2"), &context));
+	Term * was = Parse(BuildToken(tokClosingBracket, ")"), &context);
+	Term * expected = AllocateTerm(tagRedex);
+	expected->redex = MakeList(3, Function(OperatorMinus), Number(5), Number(2));
+	AssertEq(expected, was);
+}
