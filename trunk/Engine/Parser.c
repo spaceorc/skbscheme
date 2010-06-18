@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <malloc.h>
 
 #include "Parser.h"
 #include "Number.h"
@@ -32,6 +33,19 @@ int isNumber(ConstLimitedStr symbol) {
 	return 1;
 }
 
+Context * AllocateContext(Context * previous) {
+	Context * result = malloc(sizeof(Context));
+	result->previous = previous;
+	result->redex = 0;
+	return result;
+}
+
+Term * InvalidClosingBracket() {
+	Term * result = AllocateTerm(tagError);
+	result->message = "Invalid closing bracket";
+	return result;
+}
+
 Term * Parse(Token token, Context ** context) {
 	switch(token.tag) {
 		case tokSymbol:
@@ -39,13 +53,24 @@ Term * Parse(Token token, Context ** context) {
 			if (isNumber(token.range))
 				return parseNumber(token.range);
 			return InvalidSymbol();
+		case tokOpeningBracket:
+			*context = AllocateContext(*context);
+			return 0;
+		case tokClosingBracket:
+			if (0 == *context)
+				return InvalidClosingBracket();
+			*context = (*context)->previous;
+			return 0;
 		default:
 			assert(0);
-		case tokEnd:
 			return 0;
 	}
 }
 
 Context * AcquireContext() {
 	return 0;
+}
+
+int CanFinishParsing(Context * context) {
+	return 0 == context;
 }

@@ -13,3 +13,4 @@ struct structContext {
 
 Term * Parse(Token token, Context ** context);
 Context * AcquireContext();
+int CanFinishParsing(Context * context);
