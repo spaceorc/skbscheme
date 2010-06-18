@@ -4,6 +4,7 @@
 
 #include "Parser.h"
 #include "Number.h"
+#include "Pair.h"
 
 char IterateSymbol(ConstLimitedStr * symbol) {
 	char result = 0;
@@ -34,22 +35,38 @@ int isNumber(ConstLimitedStr symbol) {
 	return 1;
 }
 
-Term * parseBoundTerm(ConstLimitedStr symbol) {
-	if (strncmp("+", symbol.str, 1))
-		return InvalidSymbol();
-	return Function(OperatorPlus);
+FunctionPtr FindBoundFunction(ConstLimitedStr symbol, Context * context) {
+	List contextBindings;
+	Term * keyValuePair;
+	while (0 != context) {
+		contextBindings = context->bindings;
+		context = context->previous;
+		while (keyValuePair = IterateList(&contextBindings)) {
+			assert(tagPair == keyValuePair->tag);
+			assert(tagConstantString == keyValuePair->pair->first->tag);
+			assert(tagFunction == keyValuePair->pair->second->tag);
+			if (0 == StrCompare(keyValuePair->pair->first->constStr, symbol))
+				return keyValuePair->pair->second->function;
+		}
+	}
+	return 0;
 }
 
-Term * ParseTerm(ConstLimitedStr symbol) {
+Term * ParseTerm(ConstLimitedStr symbol, Context * context) {
+	FunctionPtr functionPtr;
 	if (isNumber(symbol))
 		return parseNumber(symbol);
-	return parseBoundTerm(symbol);
+	functionPtr = FindBoundFunction(symbol, context);
+	if (0 == functionPtr)
+		return InvalidSymbol();
+	return Function(functionPtr);
 }
 
 Context * AllocateContext(Context * previous) {
 	Context * result = malloc(sizeof(Context));
 	result->previous = previous;
 	result->redex = 0;
+	result->bindings = 0;
 	return result;
 }
 
@@ -64,11 +81,11 @@ Term * Parse(Token token, Context ** context) {
 	switch(token.tag) {
 		case tokSymbol:
 			assert(token.range.size > 0);
-			term = ParseTerm(token.range);
+			term = ParseTerm(token.range, *context);
 			if (term->tag == tagError)
 				break;
 			assert(term->tag != tagRedex);
-			if (0 == *context)
+			if (0 == (*context)->previous)
 				break;
 			(*context)->redex = AppendListElement((*context)->redex, term);
 			term = 0;
@@ -77,7 +94,7 @@ Term * Parse(Token token, Context ** context) {
 			*context = AllocateContext(*context);
 			break;
 		case tokClosingBracket:
-			if (0 == *context)
+			if (0 == (*context)->previous)
 				return InvalidClosingBracket();
 			term = AllocateTerm(tagRedex);
 			term->redex = (*context)->redex;
@@ -89,10 +106,22 @@ Term * Parse(Token token, Context ** context) {
 	return term;
 }
 
+const char * globalNames [] = {"+", "-"};
+FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus};
+
+void AddBindingToContext(Context * context, ConstLimitedStr name, Term * value) {
+	context->bindings = AppendListElement(context->bindings, InternalCons(ConstantStringFromLimited(name), value));
+}
+
 Context * AcquireContext() {
-	return 0;
+	Context * result = AllocateContext(0);
+	int len = sizeof(globalNames)/sizeof(globalNames[0]);
+	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
+	while (len-- > 0)
+		result->bindings = AppendListElement(result->bindings, InternalCons(ConstantString(globalNames[len]), Function(globalPointers[len])));
+	return result;
 }
 
 int CanFinishParsing(Context * context) {
-	return 0 == context;
+	return 0 == context->previous;
 }

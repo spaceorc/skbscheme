@@ -1,14 +1,6 @@
 #pragma once
 
-typedef const char * ConstStr;
-
-struct structConstLimitedStr;
-typedef struct structConstLimitedStr ConstLimitedStr;
-
-struct structConstLimitedStr {
-	ConstStr str;
-	unsigned int size;
-};
+#include "Str.h"
 
 #define tokOpeningBracket 0
 #define tokClosingBracket 1

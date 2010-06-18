@@ -17,6 +17,8 @@ const char * DumpTag(int tag) {
 			return "Nil";
 		case tagRedex:
 			return "Redex";
+		case tagConstantString:
+			return "Constant string";
 		default:
 			assert(0);
 			return 0;
@@ -119,5 +121,15 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 Term * Function(FunctionPtr function) {
 	Term * result = AllocateTerm(tagFunction);
 	result->function = function;
+	return result;
+}
+
+Term * ConstantString(ConstStr str) {
+	return ConstantStringFromLimited(LimitConstStr(str));
+}
+
+Term * ConstantStringFromLimited(ConstLimitedStr str) {
+	Term * result = AllocateTerm(tagConstantString);
+	result->constStr = str;
 	return result;
 }

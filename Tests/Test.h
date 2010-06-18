@@ -153,12 +153,17 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 			AssertEqCondition(expected->pair->first, was->pair->first, function, file, line);
 			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
 			break;
+		case tagConstantString:
+			if (StrCompare(expected->constStr, was->constStr)) {
+				sprintf_s(message, "expected const string %*s, but was const string %*s", expected->constStr.size, expected->constStr.str, was->constStr.size, was->constStr.str);
+				AssertCondition(message, false, function, file, line);
+			}
 		case tagNil:
 		case tagError:
 			break;
 		case tagFunction:
 			if (expected->function != was->function) {
-				sprintf_s(message, "expected function pointer %d, but was function pointer %d", expected->function, was->function);
+				sprintf_s(message, "expected function pointer %p, but was function pointer %p", expected->function, was->function);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
