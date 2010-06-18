@@ -8,7 +8,7 @@ typedef struct structContext Context;
 
 struct structContext {
 	List redex;
-	List bindings;
+	ContextBindings bindings;
 	Context * previous;
 };
 

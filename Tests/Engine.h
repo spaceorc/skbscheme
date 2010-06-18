@@ -7,4 +7,5 @@ extern "C" {
 #include "Pair.h"
 #include "Redex.h"
 #include "Parser.h"
+#include "Dictionary.h"
 }
