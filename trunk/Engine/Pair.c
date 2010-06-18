@@ -1,8 +1,10 @@
+#include <assert.h>
+
 #include "Pair.h"
 
 Term * InternalCons(Term * first, Term * second) {
 	Term * result = 0;
-	result = AllocateTerm(tagPair);	
+	result = AllocateTerm(terPair);	
 	result->pair = AllocatePair();
 	result->pair->first = first;
 	result->pair->second = second;
@@ -20,7 +22,7 @@ Term * FunctionCar(List arguments) {
 	Term * arg = 0, * result = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
-	if (arg->tag != tagPair)
+	if (arg->tag != terPair)
 		return InvalidArgumentType();
 	return arg->pair->first;
 }
@@ -29,7 +31,27 @@ Term * FunctionCdr(List arguments) {
 	Term * arg = 0, * result = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
-	if (arg->tag != tagPair)
+	if (arg->tag != terPair)
 		return InvalidArgumentType();
 	return arg->pair->second;
+}
+
+List InternalAppend(List list, Term * term) {
+	List result = list;
+	Pair * current, * last;
+	if (0 == result)
+		current = result = AllocatePair();
+	else {
+		last = list;
+		while (terNil != last->second->tag) {
+			assert(terPair == last->second->tag);
+			last = last->second->pair;
+		}
+		current = AllocatePair();
+		last->second->tag = terPair;
+		last->second->pair = current;
+	}
+	current->first = term;
+	current->second = Nil();
+	return result;
 }

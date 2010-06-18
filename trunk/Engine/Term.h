@@ -2,13 +2,13 @@
 
 #include "Str.h"
 
-#define tagNumber 0
-#define tagFunction 1
-#define tagPair 2
-#define tagError 3
-#define tagNil 4
-#define tagRedex 5
-#define tagConstantString 6
+#define terNumber 0
+#define terFunction 1
+#define terPair 2
+#define terError 3
+#define terNil 4
+#define terRedex 5
+#define terConstantString 6
 
 const char * DumpTag(int tag);
 
@@ -41,10 +41,8 @@ Term * AllocateTerm(int tag);
 Pair * AllocatePair();
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
-Term * InvalidSymbol();
 Term * Nil();
 Term * IterateList(List * iterator);
-List AppendListElement(List list, Term * term);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 Term * Function(FunctionPtr function);
 Term * ConstantString(ConstStr str);

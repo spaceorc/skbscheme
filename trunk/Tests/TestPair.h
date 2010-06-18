@@ -2,24 +2,24 @@
 
 TEST(PairCons) {
 	Term * z = FunctionCons(MakeList(2, Number(1), Number(2)));
-    AssertTag(tagPair, z);
+    AssertTag(terPair, z);
 	AssertEq(Number(1), z->pair->first);
 	AssertEq(Number(2), z->pair->second);
 }
 
 TEST(PairConsWithOneArgument) {
 	Term * z = FunctionCons(MakeList(1, Number(1)));
-    AssertTag(tagError, z);
+    AssertTag(terError, z);
 }
 
 TEST(PairConsWithThreeArguments) {
 	Term * z = FunctionCons(MakeList(3, Number(1), Number(2), Number(3)));
-    AssertTag(tagError, z);
+    AssertTag(terError, z);
 }
 
 TEST(PairConsWithErrorInside) {
-	Term * z = FunctionCons(MakeList(2, AllocateTerm(tagError), Number(1)));
-    AssertTag(tagError, z);
+	Term * z = FunctionCons(MakeList(2, AllocateTerm(terError), Number(1)));
+    AssertTag(terError, z);
 }
 
 TEST(PairCar) {
@@ -29,7 +29,7 @@ TEST(PairCar) {
 
 TEST(PairCarEmptyList) {
 	Term * z = FunctionCar(MakeList(1, Nil()));
-	AssertTag(tagError, z);
+	AssertTag(terError, z);
 }
 
 TEST(PairCdr) {
@@ -39,5 +39,5 @@ TEST(PairCdr) {
 
 TEST(PairCdrEmptyList) {
 	Term * z = FunctionCdr(MakeList(1, Nil()));
-	AssertTag(tagError, z);
+	AssertTag(terError, z);
 }

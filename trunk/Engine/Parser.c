@@ -2,67 +2,35 @@
 #include <malloc.h>
 #include <string.h>
 
+#include "Dictionary.h"
 #include "Parser.h"
 #include "Number.h"
 #include "Pair.h"
 
-char IterateSymbol(ConstLimitedStr * symbol) {
-	char result = 0;
-	if (symbol->size > 0) {
-		result = *(symbol->str);
-		symbol->str++;
-		symbol->size--;
-	}
+Term * InvalidSymbol() {
+	Term * result = AllocateTerm(terError);
+	result->message = "Invalid symbol";
 	return result;
 }
 
-Term * parseNumber(ConstLimitedStr symbol) {
-	int n = 0;
-	char c;
-	while (c = IterateSymbol(&symbol))
-		n = n * 10 + (c - '0');
-	return Number(n);
-}
-
-int isNumber(ConstLimitedStr symbol) {
-	char c;
-	while (c = IterateSymbol(&symbol)) {
-		if (c < '0')
-			return 0;
-		if (c > '9')
-			return 0;
-	}
-	return 1;
-}
-
-FunctionPtr FindBoundFunction(ConstLimitedStr symbol, Context * context) {
-	List contextBindings;
-	Term * keyValuePair;
+Term * FindBoundTerm(ConstLimitedStr symbol, Context * context) {
+	Term * result = InvalidSymbol();
 	while (0 != context) {
-		contextBindings = context->bindings;
+		result = InternalFind(context->bindings, symbol);
+		if (result != 0)
+			return result;
 		context = context->previous;
-		while (keyValuePair = IterateList(&contextBindings)) {
-			assert(tagPair == keyValuePair->tag);
-			assert(tagConstantString == keyValuePair->pair->first->tag);
-			assert(tagFunction == keyValuePair->pair->second->tag);
-			if (0 == StrCompare(keyValuePair->pair->first->constStr, symbol))
-				return keyValuePair->pair->second->function;
-		}
 	}
-	return 0;
+	return InvalidSymbol();
 }
 
 Term * ParseTerm(ConstLimitedStr symbol, Context * context) {
-	FunctionPtr functionPtr;
 	if (isNumber(symbol))
 		return parseNumber(symbol);
-	functionPtr = FindBoundFunction(symbol, context);
-	if (0 == functionPtr)
-		return InvalidSymbol();
-	return Function(functionPtr);
+	return FindBoundTerm(symbol, context);
 }
 
-Context * AllocateContext(Context * previous) {
+Context * AllocateContext(Context * previous) { // todo one more place to handle with memory
 	Context * result = malloc(sizeof(Context));
 	result->previous = previous;
 	result->redex = 0;
@@ -71,7 +39,7 @@ Context * AllocateContext(Context * previous) {
 }
 
 Term * InvalidClosingBracket() {
-	Term * result = AllocateTerm(tagError);
+	Term * result = AllocateTerm(terError);
 	result->message = "Invalid closing bracket";
 	return result;
 }
@@ -82,12 +50,12 @@ Term * Parse(Token token, Context ** context) {
 		case tokSymbol:
 			assert(token.range.size > 0);
 			term = ParseTerm(token.range, *context);
-			if (term->tag == tagError)
+			if (term->tag == terError)
 				break;
-			assert(term->tag != tagRedex);
+			assert(term->tag != terRedex);
 			if (0 == (*context)->previous)
 				break;
-			(*context)->redex = AppendListElement((*context)->redex, term);
+			(*context)->redex = InternalAppend((*context)->redex, term);
 			term = 0;
 			break;
 		case tokOpeningBracket:
@@ -96,7 +64,7 @@ Term * Parse(Token token, Context ** context) {
 		case tokClosingBracket:
 			if (0 == (*context)->previous)
 				return InvalidClosingBracket();
-			term = AllocateTerm(tagRedex);
+			term = AllocateTerm(terRedex);
 			term->redex = (*context)->redex;
 			*context = (*context)->previous;
 			break;
@@ -106,11 +74,11 @@ Term * Parse(Token token, Context ** context) {
 	return term;
 }
 
-const char * globalNames [] = {"+", "-"};
-FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus};
+const char * globalNames [] = {"+", "-", "cons", "car", "cdr"};
+FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
 
 void AddBindingToContext(Context * context, ConstLimitedStr name, Term * value) {
-	context->bindings = AppendListElement(context->bindings, InternalCons(ConstantStringFromLimited(name), value));
+	context->bindings = InternalSetFromLimited(context->bindings, name, value);
 }
 
 Context * AcquireContext() {
@@ -118,7 +86,7 @@ Context * AcquireContext() {
 	int len = sizeof(globalNames)/sizeof(globalNames[0]);
 	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
 	while (len-- > 0)
-		result->bindings = AppendListElement(result->bindings, InternalCons(ConstantString(globalNames[len]), Function(globalPointers[len])));
+		result->bindings = InternalSet(result->bindings, globalNames[len], Function(globalPointers[len]));
 	return result;
 }
 

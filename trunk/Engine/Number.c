@@ -3,7 +3,7 @@
 #include "Number.h"
 
 Term * Number(int number) {
-	Term * result = AllocateTerm(tagNumber);
+	Term * result = AllocateTerm(terNumber);
 	result->number = number;
 	return result;
 }
@@ -14,7 +14,7 @@ Term * OperatorPlus(List arguments) {
 	while (current = IterateList(&arguments))
 	{
 		argLen++;
-		if (current->tag != tagNumber)
+		if (current->tag != terNumber)
 			return InvalidArgumentType();
 		n += current->number;
 	}
@@ -30,11 +30,30 @@ Term * OperatorMinus(List arguments) {
 		argLen++;
 		if (argLen == 2)
 			n = -n;
-		if (current->tag != tagNumber)
+		if (current->tag != terNumber)
 			return InvalidArgumentType();
 		n -= current->number;
 	}
 	if (argLen < 1)
 		return InvalidArgumentCount();
 	return Number(n);
+}
+
+Term * parseNumber(ConstLimitedStr symbol) {
+	int n = 0;
+	char c;
+	while (c = IterateSymbol(&symbol))
+		n = n * 10 + (c - '0');
+	return Number(n);
+}
+
+int isNumber(ConstLimitedStr symbol) {
+	char c;
+	while (c = IterateSymbol(&symbol)) {
+		if (c < '0')
+			return 0;
+		if (c > '9')
+			return 0;
+	}
+	return 1;
 }

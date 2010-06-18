@@ -100,7 +100,7 @@ List MakeList(int argc, ...) {
 		next->first = va_arg(listPointer, Term *);
 		next->second = Nil();
 		if (current != 0) {
-			current->second = AllocateTerm(tagPair);
+			current->second = AllocateTerm(terPair);
 			current->second->pair = next;
 		}
 		current = next;
@@ -142,26 +142,26 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 	char message[1024];
 	AssertTagCondition(expected->tag, was, function, file, line);
 	switch(expected->tag) {
-		case tagNumber:
+		case terNumber:
 			if (expected->number != was->number) {
 				sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
-		case tagRedex:
-		case tagPair:
+		case terRedex:
+		case terPair:
 			AssertEqCondition(expected->pair->first, was->pair->first, function, file, line);
 			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
 			break;
-		case tagConstantString:
+		case terConstantString:
 			if (StrCompare(expected->constStr, was->constStr)) {
 				sprintf_s(message, "expected const string %*s, but was const string %*s", expected->constStr.size, expected->constStr.str, was->constStr.size, was->constStr.str);
 				AssertCondition(message, false, function, file, line);
 			}
-		case tagNil:
-		case tagError:
+		case terNil:
+		case terError:
 			break;
-		case tagFunction:
+		case terFunction:
 			if (expected->function != was->function) {
 				sprintf_s(message, "expected function pointer %p, but was function pointer %p", expected->function, was->function);
 				AssertCondition(message, false, function, file, line);

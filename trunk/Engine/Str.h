@@ -12,3 +12,4 @@ struct structConstLimitedStr {
 
 int StrCompare(ConstLimitedStr first, ConstLimitedStr second);
 ConstLimitedStr LimitConstStr(ConstStr str);
+char IterateSymbol(ConstLimitedStr * symbol);
