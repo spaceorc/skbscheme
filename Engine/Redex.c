@@ -13,13 +13,6 @@ FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCo
 const char * globalLazyFunctionNames [] = {"let", "define"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine};
 
-ContextBindings * AllocateContextBindings(ContextBindings * previous) {
-	ContextBindings * result = malloc(sizeof(ContextBindings));
-	result->dictionary = 0;
-	result->previous = previous;
-	return result;
-}
-
 ContextBindings * AcquireContextBindings() {
 	ContextBindings * result = AllocateContextBindings(0);
 	int lenFunctions = sizeof(globalFunctionNames)/sizeof(globalFunctionNames[0]);

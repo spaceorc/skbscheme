@@ -128,3 +128,10 @@ Term * SymbolFromLimited(ConstLimitedStr str) {
 	result->symbol = str;
 	return result;
 }
+
+ContextBindings * AllocateContextBindings(ContextBindings * previous) {
+	ContextBindings * result = malloc(sizeof(ContextBindings));
+	result->dictionary = 0;
+	result->previous = previous;
+	return result;
+}
