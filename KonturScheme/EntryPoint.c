@@ -38,8 +38,8 @@ void main() {
 		fprintf(stdout, "scheme> ");
 		if (!gets_s(str, sizeof(str)/sizeof(char)))
 			break;
-		copy = malloc(1024);
-		strcpy_s(copy, 1024, str);
+		copy = malloc(strlen(str) + 1);
+		strcpy_s(copy, strlen(str) + 1, str);
 		while (tokEnd != (token = GetToken(&copy)).tag) {
 			if (term = Parse(token, &context))
 				InternalWrite(stdout, Eval(term, contextBindings));
