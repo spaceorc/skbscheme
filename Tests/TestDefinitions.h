@@ -29,3 +29,10 @@ TEST(LetMultiple) {
 	AssertEq(MakeRedex(2, Symbol("lalala"), Symbol("bububu")), InternalFind(contextBindings->dictionary, LimitConstStr("kukuku")));
 	AssertEq(Function(MockFunction), InternalFind(contextBindings->dictionary, LimitConstStr("lalala")));
 }
+
+TEST(DefineVariable) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), Symbol("lalala"), Number(10));
+	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(Number(10), InternalFind(contextBindings->dictionary, LimitConstStr("lalala")));
+}
