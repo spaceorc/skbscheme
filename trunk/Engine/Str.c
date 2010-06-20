@@ -1,6 +1,5 @@
-#include <malloc.h>
-
 #include "Str.h"
+#include "Memory.h"
 
 int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second) {
 	Chr a, b;
@@ -57,8 +56,7 @@ Chr IterateChr(LimitedStr * str) {
 
 LimitedStr AllocateLimitedStr(unsigned int size) {
 	LimitedStr result;
-	result.str = malloc(size);
-	result.str[0] = 0;
+	result.str = AllocateString(size);
 	result.size = size;
 	return result;
 }

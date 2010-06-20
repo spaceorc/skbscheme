@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Memory.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Number.c"
 				>
 			</File>
@@ -231,6 +235,10 @@
 			</File>
 			<File
 				RelativePath=".\Dictionary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Memory.h"
 				>
 			</File>
 			<File

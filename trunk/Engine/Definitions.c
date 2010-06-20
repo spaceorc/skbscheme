@@ -1,6 +1,8 @@
 #include <assert.h>
+
 #include "Definitions.h"
 #include "Dictionary.h"
+#include "Memory.h"
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 	Term * args[] = {0, 0}, * error = 0, * current = 0, * let[] = {0, 0};

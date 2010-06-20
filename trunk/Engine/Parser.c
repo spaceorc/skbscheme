@@ -1,22 +1,14 @@
 #include <assert.h>
-#include <malloc.h>
-#include <string.h>
 
 #include "Parser.h"
 #include "Number.h"
 #include "Dictionary.h"
+#include "Memory.h"
 
 Term * ParseTerm(LimitedStr symbol) {
 	if (isNumber(symbol))
 		return parseNumber(symbol);
 	return Symbol(symbol);
-}
-
-ParserContext * AllocateParserContext(ParserContext * previous) {
-	ParserContext * result = malloc(sizeof(ParserContext));
-	result->previous = previous;
-	result->redex = 0;
-	return result;
 }
 
 Term * InvalidClosingBracket() {

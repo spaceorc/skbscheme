@@ -1,12 +1,11 @@
 #include <assert.h>
-#include <malloc.h>
-#include <memory.h>
 
 #include "Redex.h"
 #include "Dictionary.h"
 #include "Number.h"
 #include "Pair.h"
 #include "Definitions.h"
+#include "Memory.h"
 
 ConstantStr globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};

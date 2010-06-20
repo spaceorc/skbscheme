@@ -13,19 +13,22 @@
 #define terLazyFunction 8
 #define terDefinedFunction 9
 
-struct structTerm;
-struct structPair;
-struct structContextBindings;
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
 typedef struct structContextBindings ContextBindings;
 typedef struct structDefinedFunction DefinedFunction;
+typedef struct structParserContext ParserContext;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 
 struct structDefinedFunction {
 	List formalArguments;
 	Term * function;
+};
+
+struct structParserContext {
+	List redex;
+	ParserContext * previous;
 };
 
 struct structTerm {
@@ -53,9 +56,6 @@ struct structPair {
 	Term * second;
 };
 
-Term * AllocateTerm(int tag);
-Pair * AllocatePair();
-
 #include "Constructors.h"
 
 Term * InvalidArgumentCount();
@@ -66,5 +66,3 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)
-
-ContextBindings * AllocateContextBindings(ContextBindings * previous);
