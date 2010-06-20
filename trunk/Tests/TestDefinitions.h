@@ -3,22 +3,29 @@
 Term * MockFunction(List arguments) {
 	Term * arg = 0, * error = 0;
 	AssertThat(TakeSingleArgument(arguments, &arg, &error) >= 0);
-	AssertEq(Number(1), arg);
-	return Number(2);
+	AssertTag(terNumber, arg);
+	return Number(arg->number + 1);
 }
 
-TEST(TestLet) {
+TEST(LetSingle) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	InternalSet(contextBindings->dictionary, "lalala", Function(MockFunction));
-	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(2, Symbol("bububu"), Number(1));
-	Term * b = AllocateTerm(terRedex);
-	b->redex = MakeList(1, a);
-	Term * c = AllocateTerm(terRedex);
-	c->redex = MakeList(2, Symbol("lalala"), Symbol("bububu"));
-	Term * d = AllocateTerm(terRedex);
-	d->redex = MakeList(3, LazyFunction(LazyFunctionLet), b, c);
-	AssertEq(Number(2), Eval(c, contextBindings));
-	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitConstStr("bububu")));
+	Term * a = ParseSingle("((bububu 1))");	
+	Term * b = ParseSingle("(lalala bububu)");
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionLet), a, b);
+	AssertEq(Number(2), Eval(z, contextBindings));
+	AssertEq(Number(1), InternalFind(contextBindings->dictionary, LimitConstStr("bububu")));
+	AssertEq(Function(MockFunction), InternalFind(contextBindings->dictionary, LimitConstStr("lalala")));
+}
+
+TEST(LetMultiple) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	InternalSet(contextBindings->dictionary, "lalala", Function(MockFunction));
+	Term * a = ParseSingle("((bububu 1) (kukuku (lalala bububu)))");	
+	Term * b = ParseSingle("(lalala kukuku)");
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionLet), a, b);
+	AssertEq(Number(3), Eval(z, contextBindings));
+	AssertEq(Number(1), InternalFind(contextBindings->dictionary, LimitConstStr("bububu")));
+	AssertEq(MakeRedex(2, Symbol("lalala"), Symbol("bububu")), InternalFind(contextBindings->dictionary, LimitConstStr("kukuku")));
 	AssertEq(Function(MockFunction), InternalFind(contextBindings->dictionary, LimitConstStr("lalala")));
 }

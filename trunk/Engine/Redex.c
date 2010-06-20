@@ -84,7 +84,12 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 }
 
 Term * Eval(Term * term, ContextBindings * contextBindings) {
-	if (terRedex != term->tag)
-		return term;
-	return InternalApply(term->redex, contextBindings);
+	switch (term->tag) {
+		case terRedex:
+			return InternalApply(term->redex, contextBindings);
+		case terSymbol:
+			return Eval(Resolve(contextBindings, term->symbol), contextBindings);
+		default:
+			return term;
+	}
 }
