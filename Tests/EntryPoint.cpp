@@ -4,6 +4,7 @@
 #include "TestRedex.h"
 #include "TestTokenizer.h"
 #include "TestParser.h"
+#include "TestDefinitions.h"
 #include <stdio.h>
 
 void main() {

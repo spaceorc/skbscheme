@@ -14,6 +14,12 @@ void InternalWrite(FILE * file, Term * term) {
 		case terSymbol:
 			fprintf(file, "%*s\n", term->symbol.size, term->symbol.str);
 			break;
+		case terNil:
+			fprintf(file, "nil\n");
+			break;
+		case terError:
+			fprintf(file, "error: %s\n", term->message);
+			break;
 		default:
 			assert(0);
 	}

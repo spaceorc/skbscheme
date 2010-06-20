@@ -6,9 +6,12 @@
 #include "Dictionary.h"
 #include "Number.h"
 #include "Pair.h"
+#include "Definitions.h"
 
-const char * globalNames [] = {"+", "-", "cons", "car", "cdr"};
-FunctionPtr globalPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
+const char * globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
+const char * globalLazyFunctionNames [] = {"let", "define"};
+LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine};
 
 ContextBindings * AllocateContextBindings() {
 	ContextBindings * result = malloc(sizeof(ContextBindings));
@@ -19,10 +22,14 @@ ContextBindings * AllocateContextBindings() {
 
 ContextBindings * AcquireContextBindings() {
 	ContextBindings * result = AllocateContextBindings();
-	int len = sizeof(globalNames)/sizeof(globalNames[0]);
-	assert((sizeof(globalPointers)/sizeof(globalPointers[0])) == len);
-	while (len-- > 0)
-		result->dictionary = InternalSet(result->dictionary, globalNames[len], Function(globalPointers[len]));
+	int lenFunctions = sizeof(globalFunctionNames)/sizeof(globalFunctionNames[0]);
+	int lenLazyFunctions = sizeof(globalLazyFunctionNames)/sizeof(globalLazyFunctionNames[0]);
+	assert((sizeof(globalFunctionPointers)/sizeof(globalFunctionPointers[0])) == lenFunctions);
+	while (lenFunctions-- > 0)
+		result->dictionary = InternalSet(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
+	assert((sizeof(globalLazyFunctionPointers)/sizeof(globalLazyFunctionPointers[0])) == lenLazyFunctions);
+	while (lenLazyFunctions-- > 0)
+		result->dictionary = InternalSet(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions]));
 	return result;
 }
 

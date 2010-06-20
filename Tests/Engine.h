@@ -8,4 +8,5 @@ extern "C" {
 #include "Redex.h"
 #include "Parser.h"
 #include "Dictionary.h"
+#include "Definitions.h"
 }
