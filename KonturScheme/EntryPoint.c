@@ -39,6 +39,7 @@ void main() {
 		if (!gets_s(str, sizeof(str)/sizeof(char)))
 			break;
 		copy = malloc(strlen(str) + 1);
+		// bug: free copy? when? where?
 		strcpy_s(copy, strlen(str) + 1, str);
 		while (tokEnd != (token = GetToken(&copy)).tag) {
 			if (term = Parse(token, &context))
