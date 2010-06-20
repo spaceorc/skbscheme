@@ -8,9 +8,9 @@
 #include "Pair.h"
 #include "Definitions.h"
 
-const char * globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
+ConstantStr globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
-const char * globalLazyFunctionNames [] = {"let", "define"};
+ConstantStr globalLazyFunctionNames [] = {"let", "define"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine};
 
 ContextBindings * AcquireContextBindings() {
@@ -19,20 +19,20 @@ ContextBindings * AcquireContextBindings() {
 	int lenLazyFunctions = sizeof(globalLazyFunctionNames)/sizeof(globalLazyFunctionNames[0]);
 	assert((sizeof(globalFunctionPointers)/sizeof(globalFunctionPointers[0])) == lenFunctions);
 	while (lenFunctions-- > 0)
-		result->dictionary = InternalSet(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
+		result->dictionary = InternalSetConstantStr(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
 	assert((sizeof(globalLazyFunctionPointers)/sizeof(globalLazyFunctionPointers[0])) == lenLazyFunctions);
 	while (lenLazyFunctions-- > 0)
-		result->dictionary = InternalSet(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions]));
+		result->dictionary = InternalSetConstantStr(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions]));
 	return result;
 }
 
 Term * InvalidSymbol() {
 	Term * result = AllocateTerm(terError);
-	result->message = "Invalid symbol";
+	result->message = LimitedStrFromConstantStr("Invalid symbol");
 	return result;
 }
 
-Term * Resolve(ContextBindings * contextBindings, ConstLimitedStr symbol) {
+Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
 	Term * result = 0;
 	if (0 == contextBindings)
 		return InvalidSymbol();

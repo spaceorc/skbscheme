@@ -36,10 +36,10 @@ struct structTerm {
 		FunctionPtr function;
 		int number;
 		Pair * pair;
-		ConstStr message;
+		LimitedStr message;
 		List redex;
-		ConstLimitedStr constStr;
-		ConstLimitedStr symbol;
+		LimitedStr constantString;
+		LimitedStr symbol;
 		LazyFunctionPtr lazyFunction;
 		DefinedFunction definedFunction;
 	};
@@ -65,10 +65,12 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 Term * Function(FunctionPtr function);
 Term * LazyFunction(LazyFunctionPtr lazyFunction);
 Term * DefineFunction(List formalArguments, Term * function);
-Term * ConstantString(ConstStr str);
-Term * Symbol(ConstStr str);
-Term * ConstantStringFromLimited(ConstLimitedStr str);
-Term * SymbolFromLimited(ConstLimitedStr str);
+Term * ConstantStringFromConstantStr(ConstantStr str);
+Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str);
+Term * ConstantString(LimitedStr str);
+Term * Symbol(LimitedStr str);
+Term * SymbolFromConstantStr(ConstantStr str);
+Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)

@@ -33,20 +33,16 @@ void InternalWrite(FILE * file, Term * term) {
 }
 
 void main() {
-	char str[1024];
 	Token token;
 	Term * term;
 	ParserContext * context = AcquireParserContext();
 	ContextBindings * contextBindings = AcquireContextBindings();
 	while (1) {
-		char * copy = 0;
+		LimitedStr str = AllocateLimitedStr(1024);
 		fprintf(stdout, "scheme> ");
-		if (!gets_s(str, sizeof(str)/sizeof(char)))
+		if (!gets_s(str.str, str.size))
 			break;
-		copy = malloc(strlen(str) + 1);
-		// bug: free copy? when? where?
-		strcpy_s(copy, strlen(str) + 1, str);
-		while (tokEnd != (token = GetToken(&copy)).tag) {
+		while (tokEnd != (token = GetToken(&str)).tag) {
 			if (term = Parse(token, &context))
 				InternalWrite(stdout, Eval(term, contextBindings));
 		}

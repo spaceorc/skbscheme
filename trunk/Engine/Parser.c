@@ -6,10 +6,10 @@
 #include "Number.h"
 #include "Dictionary.h"
 
-Term * ParseTerm(ConstLimitedStr symbol) {
+Term * ParseTerm(LimitedStr symbol) {
 	if (isNumber(symbol))
 		return parseNumber(symbol);
-	return SymbolFromLimited(symbol);
+	return Symbol(symbol);
 }
 
 ParserContext * AllocateParserContext(ParserContext * previous) {
@@ -21,7 +21,7 @@ ParserContext * AllocateParserContext(ParserContext * previous) {
 
 Term * InvalidClosingBracket() {
 	Term * result = AllocateTerm(terError);
-	result->message = "Invalid closing bracket";
+	result->message = LimitedStrFromConstantStr("Invalid closing bracket");
 	return result;
 }
 

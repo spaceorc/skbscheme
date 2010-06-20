@@ -12,9 +12,9 @@ typedef struct structToken Token;
 
 struct structToken {
 	int tag;
-	ConstLimitedStr range;
+	LimitedStr range;
 };
 
-Token GetToken(ConstStr * input);
+Token GetToken(LimitedStr * input);
 
 const char * DumpTok(int tag);

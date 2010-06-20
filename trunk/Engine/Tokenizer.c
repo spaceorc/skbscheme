@@ -2,64 +2,53 @@
 
 #include "Tokenizer.h"
 
-int IsEnd(ConstStr * input) {
-	if (*input == 0 || **input == 0)
-		return 1;
-	return 0;
+int IsEnd(LimitedStr * input) {
+	return 0 == CurrentChr(input);
 }
 
-int IsOpeningBracket(ConstStr * input) {
-	if (**input == '(')
-		return 1;
-	return 0;
+int IsOpeningBracket(LimitedStr * input) {
+	return '(' == CurrentChr(input);
 }
 
-int IsClosingBracket(ConstStr * input) {
-	if (**input == ')')
-		return 1;
-	return 0;
+int IsClosingBracket(LimitedStr * input) {
+	return ')' == CurrentChr(input);
 }
 
-int IsWhitespace(ConstStr * input) {
-	if (**input <= 32)
-		return 1;
-	return 0;
+int IsWhitespace(LimitedStr * input) {
+	return CurrentChr(input) <= 32;
 }
 
-void SkipWhitespaces(ConstStr * input) {
-	while (!IsEnd(input) && IsWhitespace(input)) {
-		*input = *input + 1;
-	}
+void SkipWhitespaces(LimitedStr * input) {
+	while (!IsEnd(input) && IsWhitespace(input))
+		IterateChr(input);
 }
 
-void SkipSymbol(ConstStr * input) {
-	while (!IsEnd(input) && !IsOpeningBracket(input) && !IsClosingBracket(input) && !IsWhitespace(input)) {
-		*input = *input + 1;
-	}
+void SkipSymbol(LimitedStr * input) {
+	while (!IsEnd(input) && !IsOpeningBracket(input) && !IsClosingBracket(input) && !IsWhitespace(input))
+		IterateChr(input);
 }
 
-Token GetToken(ConstStr * input) {
+Token GetToken(LimitedStr * input) {
 	Token result;
+	result.tag = tokEnd;
+	result.range.str = 0;
+	result.range.size = 0;
 	SkipWhitespaces(input);
-	if (IsEnd(input)) {
-		result.tag = tokEnd;
-		*input = 0;
-	}
-	else {
-		result.range.str = *input;
+	if (!IsEnd(input)) {
+		result.range.str = input->str;
 		if (IsOpeningBracket(input)) {
 			result.tag = tokOpeningBracket;
-			*input = *input + 1;
+			IterateChr(input);
 		}
 		else if (IsClosingBracket(input))	{
 			result.tag = tokClosingBracket;
-			*input = *input + 1;
+			IterateChr(input);
 		}
 		else {
 			result.tag = tokSymbol;
 			SkipSymbol(input);
 		}
-		result.range.size = *input - result.range.str;
+		result.range.size = input->str - result.range.str;
 	}
 	return result;
 }

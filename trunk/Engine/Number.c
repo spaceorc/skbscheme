@@ -39,17 +39,17 @@ Term * OperatorMinus(List arguments) {
 	return Number(n);
 }
 
-Term * parseNumber(ConstLimitedStr symbol) {
+Term * parseNumber(LimitedStr symbol) {
 	int n = 0;
-	char c;
-	while (c = IterateSymbol(&symbol))
+	Chr c;
+	while (c = IterateChr(&symbol))
 		n = n * 10 + (c - '0');
 	return Number(n);
 }
 
-int isNumber(ConstLimitedStr symbol) {
-	char c;
-	while (c = IterateSymbol(&symbol)) {
+int isNumber(LimitedStr symbol) {
+	Chr c;
+	while (c = IterateChr(&symbol)) {
 		if (c < '0')
 			return 0;
 		if (c > '9')

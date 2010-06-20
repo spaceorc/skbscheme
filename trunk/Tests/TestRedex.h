@@ -32,7 +32,7 @@ TEST(EvalRecursiveRedex) {
 
 TEST(EvalRedexUnresolvedSymbols) {
 	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, Symbol("+"), Number(1), Number(2));
+	a->redex = MakeList(3, SymbolFromConstantStr(STR("+")), Number(1), Number(2));
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
 
@@ -44,16 +44,16 @@ Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
 
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSet(contextBindings->dictionary, "lalala", LazyFunction(MockLazyFunction));
+	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction));
 	Term * a = MakeRedex(3, Function(OperatorPlus), Number(1), Number(2));
-	Term * b = MakeRedex(2, Symbol("lalala"), a);
+	Term * b = MakeRedex(2, SymbolFromConstantStr(STR("lalala")), a);
 	AssertEq(Number(5), Eval(b, contextBindings));
 }
 
 TEST(EvalRedexStartingWithDefinedFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSet(contextBindings->dictionary, "lalala", DefineFunction(MakeList(2, Symbol("a"), Symbol("b")), MakeRedex(3, Function(OperatorPlus), Symbol("a"), Symbol("b"))));
-	AssertEq(Number(3), Eval(MakeRedex(3, Symbol("lalala"), Number(1), Number(2)), contextBindings));
-	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitConstStr("a")));
-	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitConstStr("b")));
+	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), DefineFunction(MakeList(2, SymbolFromConstantStr(STR("a")), SymbolFromConstantStr(STR("b"))), MakeRedex(3, Function(OperatorPlus), SymbolFromConstantStr(STR("a")), SymbolFromConstantStr(STR("b")))));
+	AssertEq(Number(3), Eval(MakeRedex(3, SymbolFromConstantStr(STR("lalala")), Number(1), Number(2)), contextBindings));
+	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("a")));
+	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("b")));
 }
