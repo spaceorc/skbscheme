@@ -30,7 +30,7 @@ struct structTerm
 		FunctionPtr function;
 		int number;
 		Pair * pair;
-		const char * message;
+		ConstStr message;
 		List redex;
 		ConstLimitedStr constStr;
 		ConstLimitedStr symbol;
