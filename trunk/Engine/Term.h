@@ -65,3 +65,5 @@ Term * SymbolFromLimited(ConstLimitedStr str);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)
+
+ContextBindings * AllocateContextBindings(ContextBindings * previous);

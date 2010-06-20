@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
+#include <malloc.h>
+#include <string.h>
 
 #include "Tokenizer.h"
 #include "Parser.h"
@@ -32,7 +34,7 @@ void main() {
 	ParserContext * context = AcquireParserContext();
 	ContextBindings * contextBindings = AcquireContextBindings();
 	while (1) {
-		ConstStr copy = 0;
+		char * copy = 0;
 		fprintf(stdout, "scheme> ");
 		if (!gets_s(str, sizeof(str)/sizeof(char)))
 			break;
