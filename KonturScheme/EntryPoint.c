@@ -26,13 +26,19 @@ void InternalWrite(FILE * file, Term * term) {
 }
 
 void main() {
-	char str[1024], * offset;
+	char str[1024];
 	Token token;
 	Term * term;
 	ParserContext * context = AcquireParserContext();
 	ContextBindings * contextBindings = AcquireContextBindings();
-	while (offset = gets_s(str, sizeof(str)/sizeof(char))) {
-		while (tokEnd != (token = GetToken(&offset)).tag) {
+	while (1) {
+		ConstStr copy = 0;
+		fprintf(stdout, "scheme> ");
+		if (!gets_s(str, sizeof(str)/sizeof(char)))
+			break;
+		copy = malloc(1024);
+		strcpy_s(copy, 1024, str);
+		while (tokEnd != (token = GetToken(&copy)).tag) {
 			if (term = Parse(token, &context))
 				InternalWrite(stdout, Eval(term, contextBindings));
 		}
