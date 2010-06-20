@@ -71,6 +71,9 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 			return function->function(EvalList(arguments, contextBindings));
 		case terLazyFunction:
 			return function->lazyFunction(arguments, contextBindings);
+		case terDefinedFunction:
+			// todo arguments -> EvalList(arguments, contextBindings)
+			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
 		default:
 			return InvalidArgumentType();
 	}

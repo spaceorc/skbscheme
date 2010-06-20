@@ -11,6 +11,7 @@
 #define terConstantString 6
 #define terSymbol 7
 #define terLazyFunction 8
+#define terDefinedFunction 9
 
 const char * DumpTag(int tag);
 
@@ -20,11 +21,16 @@ struct structContextBindings;
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
 typedef struct structContextBindings ContextBindings;
+typedef struct structDefinedFunction DefinedFunction;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 
-struct structTerm
-{
+struct structDefinedFunction {
+	List formalArguments;
+	Term * function;
+};
+
+struct structTerm {
 	int tag;
 	union {
 		FunctionPtr function;
@@ -35,6 +41,7 @@ struct structTerm
 		ConstLimitedStr constStr;
 		ConstLimitedStr symbol;
 		LazyFunctionPtr lazyFunction;
+		DefinedFunction definedFunction;
 	};
 };
 
@@ -43,8 +50,7 @@ struct structContextBindings {
 	ContextBindings * previous;
 };
 
-struct structPair
-{
+struct structPair {
 	Term * first;
 	Term * second;
 };
@@ -58,6 +64,7 @@ Term * IterateList(List * iterator);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 Term * Function(FunctionPtr function);
 Term * LazyFunction(LazyFunctionPtr lazyFunction);
+Term * DefineFunction(List formalArguments, Term * function);
 Term * ConstantString(ConstStr str);
 Term * Symbol(ConstStr str);
 Term * ConstantStringFromLimited(ConstLimitedStr str);
