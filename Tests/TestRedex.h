@@ -45,9 +45,15 @@ Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	InternalSet(contextBindings->dictionary, "lalala", LazyFunction(MockLazyFunction));
-	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
-	Term * b = AllocateTerm(terRedex);
-	b->redex = MakeList(2, Symbol("lalala"), a);
+	Term * a = MakeRedex(3, Function(OperatorPlus), Number(1), Number(2));
+	Term * b = MakeRedex(2, Symbol("lalala"), a);
 	AssertEq(Number(5), Eval(b, contextBindings));
+}
+
+TEST(EvalRedexStartingWithDefinedFunction) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	InternalSet(contextBindings->dictionary, "lalala", DefineFunction(MakeList(2, Symbol("a"), Symbol("b")), MakeRedex(3, Function(OperatorPlus), Symbol("a"), Symbol("b"))));
+	AssertEq(Number(3), Eval(MakeRedex(3, Symbol("lalala"), Number(1), Number(2)), contextBindings));
+	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitConstStr("a")));
+	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitConstStr("b")));
 }

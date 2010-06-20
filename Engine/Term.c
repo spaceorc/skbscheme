@@ -22,7 +22,9 @@ const char * DumpTag(int tag) {
 		case terSymbol:
 			return "Symbol";
 		case terLazyFunction:
-			return "Lazy fymbol";
+			return "Lazy function";
+		case terDefinedFunction:
+			return "Defined function";
 		default:
 			assert(0);
 			return 0;
@@ -106,6 +108,13 @@ Term * Function(FunctionPtr function) {
 Term * LazyFunction(LazyFunctionPtr lazyFunction) {
 	Term * result = AllocateTerm(terLazyFunction);
 	result->lazyFunction = lazyFunction;
+	return result;
+}
+
+Term * DefineFunction(List formalArguments, Term * function) {
+	Term * result = AllocateTerm(terDefinedFunction);
+	result->definedFunction.formalArguments = formalArguments;
+	result->definedFunction.function = function;
 	return result;
 }
 
