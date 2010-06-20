@@ -163,6 +163,7 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 		case terError:
 			break;
 		case terFunction:
+		case terLazyFunction:
 			if (expected->function != was->function) {
 				sprintf_s(message, "expected function pointer %p, but was function pointer %p", expected->function, was->function);
 				AssertCondition(message, false, function, file, line);

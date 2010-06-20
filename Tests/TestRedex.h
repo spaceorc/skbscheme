@@ -35,3 +35,19 @@ TEST(EvalRedexUnresolvedSymbols) {
 	a->redex = MakeList(3, Symbol("+"), Number(1), Number(2));
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
+
+Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
+	AssertTag(terRedex, IterateList(&arguments));
+	AssertThat(0 == IterateList(&arguments));
+	return Number(5);
+}
+
+TEST(EvalRedexStartingWithLazyFunction) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	InternalSet(contextBindings->dictionary, "lalala", LazyFunction(MockLazyFunction));
+	Term * a = AllocateTerm(terRedex);
+	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
+	Term * b = AllocateTerm(terRedex);
+	b->redex = MakeList(2, Symbol("lalala"), a);
+	AssertEq(Number(5), Eval(b, contextBindings));
+}
