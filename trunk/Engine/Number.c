@@ -2,12 +2,6 @@
 
 #include "Number.h"
 
-Term * Number(int number) {
-	Term * result = AllocateTerm(terNumber);
-	result->number = number;
-	return result;
-}
-
 Term * OperatorPlus(List arguments) {
 	Term * current;
 	int n = 0, argLen = 0;

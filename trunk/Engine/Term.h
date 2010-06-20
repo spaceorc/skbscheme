@@ -13,8 +13,6 @@
 #define terLazyFunction 8
 #define terDefinedFunction 9
 
-const char * DumpTag(int tag);
-
 struct structTerm;
 struct structPair;
 struct structContextBindings;
@@ -33,8 +31,8 @@ struct structDefinedFunction {
 struct structTerm {
 	int tag;
 	union {
-		FunctionPtr function;
 		int number;
+		FunctionPtr function;
 		Pair * pair;
 		LimitedStr message;
 		List redex;
@@ -57,20 +55,14 @@ struct structPair {
 
 Term * AllocateTerm(int tag);
 Pair * AllocatePair();
+
+#include "Constructors.h"
+
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
-Term * Nil();
+
 Term * IterateList(List * iterator);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
-Term * Function(FunctionPtr function);
-Term * LazyFunction(LazyFunctionPtr lazyFunction);
-Term * DefineFunction(List formalArguments, Term * function);
-Term * ConstantStringFromConstantStr(ConstantStr str);
-Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str);
-Term * ConstantString(LimitedStr str);
-Term * Symbol(LimitedStr str);
-Term * SymbolFromConstantStr(ConstantStr str);
-Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)
