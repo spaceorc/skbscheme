@@ -3,34 +3,6 @@
 
 #include "Term.h"
 
-const char * DumpTag(int tag) {
-	switch(tag) {
-		case terNumber:
-			return "Number";
-		case terFunction:
-			return "Function";
-		case terPair:
-			return "Pair";
-		case terError:
-			return "Error";
-		case terNil:
-			return "Nil";
-		case terRedex:
-			return "Redex";
-		case terConstantString:
-			return "Constant string";
-		case terSymbol:
-			return "Symbol";
-		case terLazyFunction:
-			return "Lazy function";
-		case terDefinedFunction:
-			return "Defined function";
-		default:
-			assert(0);
-			return 0;
-	}
-}
-
 Term * AllocateTerm(int tag) {
 	Term * result = malloc(sizeof(Term));
 	result->tag = tag;
@@ -55,10 +27,6 @@ Term * InvalidArgumentType() {
 	Term * result = AllocateTerm(terError);
 	result->message = LimitedStrFromConstantLimitedStr(LimitConstantStr("Invalid argument type"));
 	return result;
-}
-
-Term * Nil() {
-	return AllocateTerm(terNil);
 }
 
 Term * IterateList(List * iterator) {
@@ -98,56 +66,11 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 	return argLen;
 }
 
-Term * Function(FunctionPtr function) {
-	Term * result = AllocateTerm(terFunction);
-	result->function = function;
-	return result;
-}
-
-Term * LazyFunction(LazyFunctionPtr lazyFunction) {
-	Term * result = AllocateTerm(terLazyFunction);
-	result->lazyFunction = lazyFunction;
-	return result;
-}
-
-Term * DefineFunction(List formalArguments, Term * function) {
-	Term * result = AllocateTerm(terDefinedFunction);
-	result->definedFunction.formalArguments = formalArguments;
-	result->definedFunction.function = function;
-	return result;
-}
-
-Term * ConstantStringFromConstantStr(ConstantStr str) {
-	return ConstantStringFromConstantLimitedStr(LimitConstantStr(str));
-}
-
-Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str) {
-	return ConstantString(LimitedStrFromConstantLimitedStr(str));
-}
-
-Term * ConstantString(LimitedStr str) {
-	Term * result = AllocateTerm(terConstantString);
-	result->constantString = str;
-	return result;
-}
-
-Term * Symbol(LimitedStr str) {
-	Term * result = AllocateTerm(terSymbol);
-	result->symbol = str;
-	return result;
-}
-
-Term * SymbolFromConstantStr(ConstantStr str) {
-	return SymbolFromConstantLimitedStr(LimitConstantStr(str));
-}
-
-Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str) {
-	return Symbol(LimitedStrFromConstantLimitedStr(str));
-}
-
 ContextBindings * AllocateContextBindings(ContextBindings * previous) {
 	ContextBindings * result = malloc(sizeof(ContextBindings));
 	result->dictionary = 0;
 	result->previous = previous;
 	return result;
 }
+
+

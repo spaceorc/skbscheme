@@ -2,15 +2,6 @@
 
 #include "Pair.h"
 
-Term * InternalCons(Term * first, Term * second) {
-	Term * result = 0;
-	result = AllocateTerm(terPair);	
-	result->pair = AllocatePair();
-	result->pair->first = first;
-	result->pair->second = second;
-	return result;
-}
-
 Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)

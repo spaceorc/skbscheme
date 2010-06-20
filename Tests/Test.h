@@ -143,6 +143,34 @@ Term * ParseSingle(ConstantStr expression) {
 	return result;
 }
 
+const char * DumpTag(int tag) {
+	switch(tag) {
+		case terNumber:
+			return "Number";
+		case terFunction:
+			return "Function";
+		case terPair:
+			return "Pair";
+		case terError:
+			return "Error";
+		case terNil:
+			return "Nil";
+		case terRedex:
+			return "Redex";
+		case terConstantString:
+			return "Constant string";
+		case terSymbol:
+			return "Symbol";
+		case terLazyFunction:
+			return "Lazy function";
+		case terDefinedFunction:
+			return "Defined function";
+		default:
+			assert(0);
+			return 0;
+	}
+}
+
 #define AssertTag(expected, term) AssertTagCondition(expected, term, __FUNCTION__, __FILE__, __LINE__)
 #define AssertTok(expected, token) AssertTokCondition(expected, token, __FUNCTION__, __FILE__, __LINE__)
 
