@@ -22,6 +22,11 @@ void InternalWrite(FILE * file, Term * term) {
 		case terError:
 			fprintf(file, "error: %s\n", term->message);
 			break;
+		case terFunction:
+		case terLazyFunction:
+		case terDefinedFunction:
+			fprintf(file, "function\n");
+			break;
 		default:
 			assert(0);
 	}
