@@ -1,12 +1,13 @@
 #pragma once
 
 extern "C" {
-#include "Tokenizer.h"
+#include "Str.h"
 #include "Term.h"
+#include "Tokenizer.h"
 #include "Number.h"
 #include "Pair.h"
+#include "Dictionary.h"
 #include "Redex.h"
 #include "Parser.h"
-#include "Dictionary.h"
 #include "Definitions.h"
 }

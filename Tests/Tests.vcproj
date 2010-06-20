@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestStr.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestTokenizer.h"
 				>
 			</File>

@@ -47,13 +47,13 @@ Pair * AllocatePair() {
 
 Term * InvalidArgumentCount() {
 	Term * result = AllocateTerm(terError);
-	result->message = "Invalid argument count";
+	result->message = LimitedStrFromConstantLimitedStr(LimitConstantStr("Invalid argument count"));
 	return result;
 }
 
 Term * InvalidArgumentType() {
 	Term * result = AllocateTerm(terError);
-	result->message = "Invalid argument type";
+	result->message = LimitedStrFromConstantLimitedStr(LimitConstantStr("Invalid argument type"));
 	return result;
 }
 
@@ -76,7 +76,6 @@ Term * IterateList(List * iterator) {
 	}
 	return first;
 }
-
 
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
 	Term * current;
@@ -118,24 +117,32 @@ Term * DefineFunction(List formalArguments, Term * function) {
 	return result;
 }
 
-Term * ConstantString(ConstStr str) {
-	return ConstantStringFromLimited(LimitConstStr(str));
+Term * ConstantStringFromConstantStr(ConstantStr str) {
+	return ConstantStringFromConstantLimitedStr(LimitConstantStr(str));
 }
 
-Term * ConstantStringFromLimited(ConstLimitedStr str) {
+Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str) {
+	return ConstantString(LimitedStrFromConstantLimitedStr(str));
+}
+
+Term * ConstantString(LimitedStr str) {
 	Term * result = AllocateTerm(terConstantString);
-	result->constStr = str;
+	result->constantString = str;
 	return result;
 }
 
-Term * Symbol(ConstStr str) {
-	return SymbolFromLimited(LimitConstStr(str));
-}
-
-Term * SymbolFromLimited(ConstLimitedStr str) {
+Term * Symbol(LimitedStr str) {
 	Term * result = AllocateTerm(terSymbol);
 	result->symbol = str;
 	return result;
+}
+
+Term * SymbolFromConstantStr(ConstantStr str) {
+	return SymbolFromConstantLimitedStr(LimitConstantStr(str));
+}
+
+Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str) {
+	return Symbol(LimitedStrFromConstantLimitedStr(str));
 }
 
 ContextBindings * AllocateContextBindings(ContextBindings * previous) {

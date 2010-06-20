@@ -1,44 +1,42 @@
 #include "Test.h"
 
 TEST(GetTokenFromEmptyString) {
-	const char * str = "";
-	AssertTok(tokEnd, GetToken(&str));
-	AssertThat(str == 0);
+	LimitedStr str = LimitedStrFromConstantStr(STR(""));
 	AssertTok(tokEnd, GetToken(&str));
 }
 
 TEST(GetTokenOpeningBracket) {
-	const char * str = "(";
-	AssertBracket(tokOpeningBracket, "(", GetToken(&str));
+	LimitedStr str = LimitedStrFromConstantStr(STR("("));
+	AssertBracket(tokOpeningBracket, STR("("), GetToken(&str));
 }
 
 TEST(GetTokenClosingBracket) {
-	const char * str = ")";
-	AssertBracket(tokClosingBracket, ")", GetToken(&str));
+	LimitedStr str = LimitedStrFromConstantStr(STR(")"));
+	AssertBracket(tokClosingBracket, STR(")"), GetToken(&str));
 }
 
 TEST(GetTokenSymbol) {
-	const char * str = "lalala";
-	AssertSymbol("lalala", GetToken(&str));
+	LimitedStr str = LimitedStrFromConstantStr(STR("lalala"));
+	AssertSymbol(STR("lalala"), GetToken(&str));
 }
 
 TEST(GetTokenSkipsWhitespaces) {
-	const char * str = "   bubu";
-	AssertSymbol("bubu", GetToken(&str));
+	LimitedStr str = LimitedStrFromConstantStr(STR("   bubu"));
+	AssertSymbol(STR("bubu"), GetToken(&str));
 }
 
 TEST(GetTokenSkipsWhitespacesBeforeBracket) {
-	const char * str = "   (";
+	LimitedStr str = LimitedStrFromConstantStr(STR("   ("));
 	AssertTok(tokOpeningBracket, GetToken(&str));
 }
 
 TEST(GetTokenStepByStep) {
-	const char * str = "  (  +  a  b  )  ";
+	LimitedStr str = LimitedStrFromConstantStr(STR("  (  +  a  b  )  "));
 	AssertTok(tokOpeningBracket, GetToken(&str));
-	AssertSymbol("+", GetToken(&str));
-	AssertSymbol("a", GetToken(&str));
-	AssertSymbol("b", GetToken(&str));
+	AssertSymbol(STR("+"), GetToken(&str));
+	AssertSymbol(STR("a"), GetToken(&str));
+	AssertSymbol(STR("b"), GetToken(&str));
 	AssertTok(tokClosingBracket, GetToken(&str));
 	AssertTok(tokEnd, GetToken(&str));
-	AssertThat(str == 0);
+	AssertTok(tokEnd, GetToken(&str));
 }
