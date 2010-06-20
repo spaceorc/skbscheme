@@ -10,14 +10,18 @@
 #define terRedex 5
 #define terConstantString 6
 #define terSymbol 7
+#define terLazyFunction 8
 
 const char * DumpTag(int tag);
 
 struct structTerm;
 struct structPair;
+struct structContextBindings;
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
+typedef struct structContextBindings ContextBindings;
 typedef Term * (*FunctionPtr)(List arguments);
+typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 
 struct structTerm
 {
@@ -30,7 +34,13 @@ struct structTerm
 		List redex;
 		ConstLimitedStr constStr;
 		ConstLimitedStr symbol;
+		LazyFunctionPtr lazyFunction;
 	};
+};
+
+struct structContextBindings {
+	List dictionary;
+	ContextBindings * previous;
 };
 
 struct structPair
@@ -47,6 +57,7 @@ Term * Nil();
 Term * IterateList(List * iterator);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 Term * Function(FunctionPtr function);
+Term * LazyFunction(LazyFunctionPtr lazyFunction);
 Term * ConstantString(ConstStr str);
 Term * Symbol(ConstStr str);
 Term * ConstantStringFromLimited(ConstLimitedStr str);

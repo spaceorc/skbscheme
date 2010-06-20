@@ -21,6 +21,8 @@ const char * DumpTag(int tag) {
 			return "Constant string";
 		case terSymbol:
 			return "Symbol";
+		case terLazyFunction:
+			return "Lazy fymbol";
 		default:
 			assert(0);
 			return 0;
@@ -98,6 +100,12 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 Term * Function(FunctionPtr function) {
 	Term * result = AllocateTerm(terFunction);
 	result->function = function;
+	return result;
+}
+
+Term * LazyFunction(LazyFunctionPtr lazyFunction) {
+	Term * result = AllocateTerm(terLazyFunction);
+	result->lazyFunction = lazyFunction;
 	return result;
 }
 

@@ -20,7 +20,7 @@ ContextBindings * AllocateContextBindings() {
 ContextBindings * AcquireContextBindings() {
 	ContextBindings * result = AllocateContextBindings();
 	int len = sizeof(globalNames)/sizeof(globalNames[0]);
-	assert(len == (sizeof(globalPointers)/sizeof(globalPointers[0])));
+	assert((sizeof(globalPointers)/sizeof(globalPointers[0])) == len);
 	while (len-- > 0)
 		result->dictionary = InternalSet(result->dictionary, globalNames[len], Function(globalPointers[len]));
 	return result;
@@ -34,7 +34,7 @@ Term * InvalidSymbol() {
 
 Term * Resolve(ContextBindings * contextBindings, ConstLimitedStr symbol) {
 	Term * result = InternalFind(contextBindings->dictionary, symbol);
-	if (result == 0)
+	if (0 == result)
 		return InvalidSymbol();
 	return result;
 }
@@ -47,12 +47,12 @@ List EvalList(List list, ContextBindings * contextBindings) {
 		Pair * next = AllocatePair();
 		next->first = Eval(i, contextBindings);
 		next->second = Nil();
-		if (current != 0) {
+		if (0 != current) {
 			current->second = AllocateTerm(terPair);
 			current->second->pair = next;
 		}
 		current = next;
-		if (result == 0)
+		if (0 == result)
 			result = current;
 	}
 	return result;
@@ -69,15 +69,15 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	switch(function->tag) {
 		case terFunction:
 			return function->function(EvalList(arguments, contextBindings));
-//		case terLazyFunction:
-//			return function->lazyFunction(arguments, contextBindings);
+		case terLazyFunction:
+			return function->lazyFunction(arguments, contextBindings);
 		default:
 			return InvalidArgumentType();
 	}
 }
 
 Term * Eval(Term * term, ContextBindings * contextBindings) {
-	if (term->tag != terRedex)
+	if (terRedex != term->tag)
 		return term;
 	return InternalApply(term->redex, contextBindings);
 }
