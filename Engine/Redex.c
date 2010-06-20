@@ -13,15 +13,15 @@ FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCo
 const char * globalLazyFunctionNames [] = {"let", "define"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine};
 
-ContextBindings * AllocateContextBindings() {
+ContextBindings * AllocateContextBindings(ContextBindings * previous) {
 	ContextBindings * result = malloc(sizeof(ContextBindings));
 	result->dictionary = 0;
-	result->previous = 0;
+	result->previous = previous;
 	return result;
 }
 
 ContextBindings * AcquireContextBindings() {
-	ContextBindings * result = AllocateContextBindings();
+	ContextBindings * result = AllocateContextBindings(0);
 	int lenFunctions = sizeof(globalFunctionNames)/sizeof(globalFunctionNames[0]);
 	int lenLazyFunctions = sizeof(globalLazyFunctionNames)/sizeof(globalLazyFunctionNames[0]);
 	assert((sizeof(globalFunctionPointers)/sizeof(globalFunctionPointers[0])) == lenFunctions);
@@ -40,9 +40,12 @@ Term * InvalidSymbol() {
 }
 
 Term * Resolve(ContextBindings * contextBindings, ConstLimitedStr symbol) {
-	Term * result = InternalFind(contextBindings->dictionary, symbol);
-	if (0 == result)
+	Term * result = 0;
+	if (0 == contextBindings)
 		return InvalidSymbol();
+	result = InternalFind(contextBindings->dictionary, symbol);
+	if (0 == result)
+		return Resolve(contextBindings->previous, symbol);
 	return result;
 }
 
@@ -69,10 +72,7 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	Term * function = IterateList(&arguments);
 	if (0 == function)
 		return InvalidArgumentCount();
-	if (terRedex == function->tag)
-		function = Eval(function, contextBindings);
-	if (terSymbol == function->tag)
-		function = Resolve(contextBindings, function->symbol);
+	function = Eval(function, contextBindings);
 	switch(function->tag) {
 		case terFunction:
 			return function->function(EvalList(arguments, contextBindings));
