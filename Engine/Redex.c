@@ -39,19 +39,7 @@ Term * Resolve(ContextBindings * contextBindings, ConstLimitedStr symbol) {
 	return result;
 }
 
-Term * InternalApply(List arguments, ContextBindings * contextBindings) {
-	Term * function = 0;
-	function = IterateList(&arguments);
-	if (0 == function)
-		return InvalidArgumentCount();
-	if (terSymbol == function->tag)
-		function = Resolve(contextBindings, function->symbol);
-	if (terFunction != function->tag)
-		return InvalidArgumentType();
-	return function->function(arguments);
-}
-
-List ReduceList(List list, ContextBindings * contextBindings) {
+List EvalList(List list, ContextBindings * contextBindings) {
 	List result = 0;
 	Pair * current = 0;
 	Term * i = 0;
@@ -70,8 +58,26 @@ List ReduceList(List list, ContextBindings * contextBindings) {
 	return result;
 }
 
+Term * InternalApply(List arguments, ContextBindings * contextBindings) {
+	Term * function = IterateList(&arguments);
+	if (0 == function)
+		return InvalidArgumentCount();
+	if (terRedex == function->tag)
+		function = Eval(function, contextBindings);
+	if (terSymbol == function->tag)
+		function = Resolve(contextBindings, function->symbol);
+	switch(function->tag) {
+		case terFunction:
+			return function->function(EvalList(arguments, contextBindings));
+//		case terLazyFunction:
+//			return function->lazyFunction(arguments, contextBindings);
+		default:
+			return InvalidArgumentType();
+	}
+}
+
 Term * Eval(Term * term, ContextBindings * contextBindings) {
 	if (term->tag != terRedex)
 		return term;
-	return InternalApply(ReduceList(term->redex, contextBindings), contextBindings);
+	return InternalApply(term->redex, contextBindings);
 }
