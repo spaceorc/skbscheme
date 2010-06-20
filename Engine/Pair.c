@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include "Pair.h"
+#include "Memory.h"
 
 Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;

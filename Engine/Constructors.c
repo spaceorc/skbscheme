@@ -1,4 +1,5 @@
 #include "Constructors.h"
+#include "Memory.h"
 
 Term * Number(int number) {
 	Term * result = AllocateTerm(terNumber);
