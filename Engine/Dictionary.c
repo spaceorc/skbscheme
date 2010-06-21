@@ -11,8 +11,8 @@ Term * InternalFindConstantLimitedStr(List dictionary, ConstantLimitedStr key) {
 			return InvalidArgumentType();
 		if (terConstantString != keyValuePair->pair->first->tag)
 			return InvalidArgumentType();
-			if (0 == CompareConstantLimitedStr(ConstLimitedStr(keyValuePair->pair->first->constantString), key))
-				return keyValuePair->pair->second;
+		if (0 == CompareConstantLimitedStr(ConstLimitedStr(keyValuePair->pair->first->constantString), key))
+			return keyValuePair->pair->second;
 	}
 	return 0;
 }
