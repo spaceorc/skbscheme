@@ -31,6 +31,13 @@ Term * Parse(Token token, ParserContext ** context) {
 			(*context)->redex = InternalAppend((*context)->redex, term);
 			term = 0;
 			break;
+		case tokQuotedString:
+			term = ConstantString(token.range);
+			if (0 == *context)
+				break;
+			(*context)->redex = InternalAppend((*context)->redex, term);
+			term = 0;
+			break;
 		case tokOpeningBracket:
 			*context = AllocateParserContext(*context);
 			break;

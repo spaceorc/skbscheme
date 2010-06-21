@@ -9,9 +9,13 @@ Token BuildToken(int tag, ConstantStr range) {
 
 TEST(ParseNumber) {
 	ParserContext * context = AcquireParserContext();
-	Term * term = AllocateTerm(terNumber);
-	term->number = 12345;
-	AssertEq(term, Parse(BuildToken(tokSymbol, STR("12345")), &context));
+	AssertEq(Number(12345), Parse(BuildToken(tokSymbol, STR("12345")), &context));
+}
+
+TEST(ParseConstantString) {
+	ParserContext * context = AcquireParserContext();
+	AssertEq(ConstantStringFromConstantStr(STR("12345")), Parse(BuildToken(tokQuotedString, STR("12345")), &context));
+	AssertEq(ConstantStringFromConstantStr(STR("12345")), Parse(BuildToken(tokQuotedString, STR("12345")), &context));
 }
 
 TEST(ParseOpeningBracket) {

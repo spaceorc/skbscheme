@@ -7,14 +7,14 @@
 #include "Parser.h"
 #include "Redex.h"
 
-// bug with %*s format
 void InternalWrite(FILE * file, Term * term) {
 	switch(term->tag) {
 		case terNumber:
 			fprintf(file, "%d\n", term->number);
 			break;
 		case terSymbol:
-			fprintf(file, "%*s\n", term->symbol.size, term->symbol.str);
+		case terConstantString:
+			fprintf(file, "%.*s\n", term->symbol.size, term->symbol.str);
 			break;
 		case terNil:
 			fprintf(file, "nil\n");

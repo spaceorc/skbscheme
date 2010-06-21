@@ -38,11 +38,29 @@ TEST(GetTokenStepByStep) {
 	AssertSymbol(STR("b"), GetToken(&str));
 	AssertTok(tokClosingBracket, GetToken(&str));
 	AssertTok(tokEnd, GetToken(&str));
-	AssertTok(tokEnd, GetToken(&str));
 }
 
 TEST(GetTokenSymbolAfterEscape) {
-	LimitedStr str = LimitedStrFromConstantStr(STR("'lalala"));
+	LimitedStr str = LimitedStrFromConstantStr(STR("  'lalala  "));
 	AssertTok(tokEscape, GetToken(&str));
 	AssertSymbol(STR("lalala"), GetToken(&str));
+	AssertTok(tokEnd, GetToken(&str));
+}
+
+TEST(GetTokenBetweenQuotes) {
+	LimitedStr str = LimitedStrFromConstantStr(STR("  \"lalala\"  "));
+	AssertQuotedString(STR("lalala"), GetToken(&str));
+	AssertTok(tokEnd, GetToken(&str));
+}
+
+TEST(GetTokenWithUnterminatedQuotedString) {
+	LimitedStr str = LimitedStrFromConstantStr(STR("  \"lal"));
+	AssertTok(tokError, GetToken(&str));
+	AssertTok(tokEnd, GetToken(&str));
+}
+
+TEST(GetTokenWithEscapesBetweenQuotes) {
+	LimitedStr str = LimitedStrFromConstantStr(STR("  \"lal\\\"ala\" "));
+	AssertQuotedString(STR("lal\"ala"), GetToken(&str));
+	AssertTok(tokEnd, GetToken(&str));
 }

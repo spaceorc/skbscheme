@@ -14,6 +14,10 @@ int IsEscape(LimitedStr * input) {
 	return '\'' == CurrentChr(input);
 }
 
+int IsQuote(LimitedStr * input) {
+	return '\"' == CurrentChr(input);
+}
+
 int IsClosingBracket(LimitedStr * input) {
 	return ')' == CurrentChr(input);
 }
@@ -32,8 +36,14 @@ void SkipSymbol(LimitedStr * input) {
 		IterateChr(input);
 }
 
+void SkipQuotedString(LimitedStr * input) {
+	while (!IsEnd(input) && !IsQuote(input))
+		IterateChr(input);
+}
+
 Token GetToken(LimitedStr * input) {
 	Token result;
+	unsigned int delta = 0, offset = 0;
 	result.tag = tokEnd;
 	result.range.str = 0;
 	result.range.size = 0;
@@ -52,11 +62,24 @@ Token GetToken(LimitedStr * input) {
 			result.tag = tokEscape;
 			IterateChr(input);
 		}
+		else if (IsQuote(input))	{
+			result.tag = tokQuotedString;
+			IterateChr(input);
+			SkipQuotedString(input);
+			if (IsQuote(input)) {
+				IterateChr(input);
+				delta = 1;
+				offset = 1;
+			}
+			else
+				result.tag = tokError;
+		}
 		else {
 			result.tag = tokSymbol;
 			SkipSymbol(input);
 		}
-		result.range.size = input->str - result.range.str;
+		result.range.str = result.range.str + offset;
+		result.range.size = input->str - result.range.str - delta;
 	}
 	return result;
 }
