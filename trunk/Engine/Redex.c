@@ -41,13 +41,17 @@ Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
 	return result;
 }
 
-List EvalList(List list, ContextBindings * contextBindings) {
+int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
 	List result = 0;
 	Pair * current = 0;
 	Term * i = 0;
-	while(i = IterateList(&list)) {
+	while(i = IterateList(list)) {
 		Pair * next = AllocatePair();
 		next->first = Eval(i, contextBindings);
+		if (terError == next->first->tag) {
+			*error = next->first;
+			return 0;
+		}
 		next->second = Nil();
 		if (0 != current) {
 			current->second = AllocateTerm(terPair);
@@ -57,21 +61,25 @@ List EvalList(List list, ContextBindings * contextBindings) {
 		if (0 == result)
 			result = current;
 	}
-	return result;
+	*list = result;
+	return 1;
 }
 
 Term * InternalApply(List arguments, ContextBindings * contextBindings) {
-	Term * function = IterateList(&arguments);
+	Term * function = IterateList(&arguments), * error;
 	if (0 == function)
 		return InvalidArgumentCount();
 	function = Eval(function, contextBindings);
 	switch(function->tag) {
 		case terFunction:
-			return function->function(EvalList(arguments, contextBindings));
+			if (!EvalList(&arguments, contextBindings, &error))
+				return error;
+			return function->function(arguments, contextBindings);
 		case terLazyFunction:
 			return function->lazyFunction(arguments, contextBindings);
 		case terDefinedFunction:
-			// todo arguments -> EvalList(arguments, contextBindings)
+			if (!EvalList(&arguments, contextBindings, &error))
+				return error;
 			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
 		default:
 			return InvalidArgumentType();

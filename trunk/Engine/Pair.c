@@ -29,6 +29,7 @@ Term * FunctionCdr(List arguments) {
 }
 
 List InternalAppend(List list, Term * term) {
+	// todo ??? maybe term->tag(error) cannot be added?
 	List result = list;
 	Pair * current, * last;
 	if (0 == result)
