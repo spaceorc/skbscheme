@@ -68,10 +68,8 @@ LimitedStr LimitedStrFromConstantStr(ConstantStr str) {
 LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 	LimitedStr result = AllocateLimitedStr(str.size + 1);
 	char from, *to = result.str;
-	while (from = IterateChrConstantLimitedStr(&str)) {
-		*to = from;
-		to++;
-	}
+	while (from = IterateChrConstantLimitedStr(&str))
+		*(to++) = from;
 	*to = 0;
 	return result;
 }

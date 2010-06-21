@@ -196,8 +196,12 @@ const char * DumpTok(int tag) {
 			return "Symbol";
 		case tokEscape:
 			return "Escape";
+		case tokQuotedString:
+			return "Quoted string";
 		case tokEnd:
 			return "End";
+		case tokError:
+			return "Error";
 		default:
 			assert(0);
 			return 0;
@@ -213,9 +217,6 @@ void AssertTokCondition(int expected, Token token, const char * function, const 
 }
 
 #define AssertEq(expected, was) AssertEqCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
-
-void AssertEqLists(Pair * expected, Pair * was, const char * function, const char * file, int line) {
-}
 
 void AssertEqCondition(Term * expected, Term * was, const char * function, const char * file, int line) {
 	char message[1024];
@@ -235,7 +236,7 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 		case terSymbol:
 		case terConstantString:
 			if (Compare(expected->constantString, was->constantString)) {
-				sprintf_s(message, "expected const string %*s, but was const string %*s", expected->constantString.size, expected->constantString.str, was->constantString.size, was->constantString.str);
+				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->constantString.size, expected->constantString.str, was->constantString.size, was->constantString.str);
 				AssertCondition(message, false, function, file, line);
 			}
 		case terNil:
@@ -254,13 +255,23 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 }
 
 #define AssertSymbol(expected, was) AssertSymbolCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
+#define AssertQuotedString(expected, was) AssertQuotedStringCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
 #define AssertBracket(expectedTag, expectedRange, was) AssertBracketCondition(expectedTag, expectedRange, was, __FUNCTION__, __FILE__, __LINE__)
 
 void AssertSymbolCondition(ConstantStr expected, Token was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTokCondition(tokSymbol, was, function, file, line);
 	if (0 != CompareConstantLimitedStr(LimitConstantStr(expected), ConstLimitedStr(was.range))) {
-		sprintf_s(message, "expected symbol '*s', but was symbol '%*s' with size %d", expected, was.range.size, was.range.str);
+		sprintf_s(message, "expected symbol '%s', but was symbol '%.*s'", expected, was.range.size, was.range.str);
+		AssertCondition(message, false, function, file, line);
+	}
+}
+
+void AssertQuotedStringCondition(ConstantStr expected, Token was, const char * function, const char * file, int line) {
+	char message[1024];
+	AssertTokCondition(tokQuotedString, was, function, file, line);
+	if (0 != CompareConstantLimitedStr(LimitConstantStr(expected), ConstLimitedStr(was.range))) {
+		sprintf_s(message, "expected quoted string '%s', but was quoted string '%.*s'", expected, was.range.size, was.range.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }
@@ -269,7 +280,7 @@ void AssertBracketCondition(int expectedTag, ConstantStr expectedRange, Token wa
 	char message[1024];
 	AssertTokCondition(expectedTag, was, function, file, line);
 	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedRange), ConstLimitedStr(was.range))) {
-		sprintf_s(message, "expected bracket '%s', but was bracket '%*s'", expectedRange, was.range.size, was.range.str);
+		sprintf_s(message, "expected bracket '%s', but was bracket '%.*s'", expectedRange, was.range.size, was.range.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }
