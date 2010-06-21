@@ -1,25 +1,25 @@
 #include <malloc.h>
+#include <memory.h>
 #include <assert.h>
 
 #include "Memory.h"
 
 Term * AllocateTerm(int tag) {
 	Term * result = malloc(sizeof(Term));
+	memset(result, 0, sizeof(*result));
 	result->tag = tag;
-	result->number = 0;
 	return result;
 }
 
 Pair * AllocatePair() {
 	Pair * result = malloc(sizeof(Pair));
-	result->first = 0;
-	result->second = 0;
+	memset(result, 0, sizeof(*result));
 	return result;
 }
 
 ContextBindings * AllocateContextBindings(ContextBindings * previous) {
 	ContextBindings * result = malloc(sizeof(ContextBindings));
-	result->dictionary = 0;
+	memset(result, 0, sizeof(*result));
 	result->previous = previous;
 	return result;
 }
@@ -33,7 +33,7 @@ Chr * AllocateString(unsigned int size) {
 
 ParserContext * AllocateParserContext(ParserContext * previous) {
 	ParserContext * result = malloc(sizeof(ParserContext));
+	memset(result, 0, sizeof(*result));
 	result->previous = previous;
-	result->redex = 0;
 	return result;
 }
