@@ -87,3 +87,10 @@ TEST(EvalDefinedFunctionEvaluatesArgumentsFirst) {
 			MakeRedex(3, Function(OperatorPlus), SymbolFromConstantStr(STR("a")), SymbolFromConstantStr(STR("b")))));
 	AssertEq(InvalidArgumentType(), Eval(MakeRedex(4, SymbolFromConstantStr(STR("lalala")), Number(1), Number(2), InvalidArgumentType()), contextBindings));
 }
+
+TEST(EvalDefinedFunctionClosedToItsContext) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	/* ??? AssertEq(Nil(), ??? */Eval(ParseSingle(STR("(define (lalala a b) (+ a b c))")), contextBindings)/* ??? ) ??? */;
+	InternalSetConstantStr(contextBindings->dictionary, STR("c"), Number(10));
+	AssertEq(Number(13), Eval(ParseSingle(STR("(let ((c 100)) (lalala 1 2))")), contextBindings));
+}
