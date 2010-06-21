@@ -186,6 +186,24 @@ void AssertTagCondition(int expected, Term * term, const char * function, const 
 	}
 }
 
+const char * DumpTok(int tag) {
+	switch(tag) {
+		case tokOpeningBracket:
+			return "OpeningBracket";
+		case tokClosingBracket:
+			return "ClosingBracket";
+		case tokSymbol:
+			return "Symbol";
+		case tokEscape:
+			return "Escape";
+		case tokEnd:
+			return "End";
+		default:
+			assert(0);
+			return 0;
+	}
+}
+
 void AssertTokCondition(int expected, Token token, const char * function, const char * file, int line) {
 	char message[1024];
 	if (expected != token.tag) {

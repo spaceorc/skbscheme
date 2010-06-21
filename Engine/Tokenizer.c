@@ -10,6 +10,10 @@ int IsOpeningBracket(LimitedStr * input) {
 	return '(' == CurrentChr(input);
 }
 
+int IsEscape(LimitedStr * input) {
+	return '\'' == CurrentChr(input);
+}
+
 int IsClosingBracket(LimitedStr * input) {
 	return ')' == CurrentChr(input);
 }
@@ -44,6 +48,10 @@ Token GetToken(LimitedStr * input) {
 			result.tag = tokClosingBracket;
 			IterateChr(input);
 		}
+		else if (IsEscape(input))	{
+			result.tag = tokEscape;
+			IterateChr(input);
+		}
 		else {
 			result.tag = tokSymbol;
 			SkipSymbol(input);
@@ -51,20 +59,4 @@ Token GetToken(LimitedStr * input) {
 		result.range.size = input->str - result.range.str;
 	}
 	return result;
-}
-
-const char * DumpTok(int tag) {
-	switch(tag) {
-		case tokOpeningBracket:
-			return "OpeningBracket";
-		case tokClosingBracket:
-			return "ClosingBracket";
-		case tokSymbol:
-			return "Symbol";
-		case tokEnd:
-			return "End";
-		default:
-			assert(0);
-			return 0;
-	}
 }
