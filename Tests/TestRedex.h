@@ -57,3 +57,33 @@ TEST(EvalRedexStartingWithDefinedFunction) {
 	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("a")));
 	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("b")));
 }
+
+TEST(EvalDefinedFunctionInsufficientAgruments) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle(STR("(define (lalala p1 p2) (+ p1 p2))"));
+	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(lalala 10)")), contextBindings));
+}
+
+TEST(EvalDefinedFunctionTooManyAgruments) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle(STR("(define (lalala p1 p2) (+ p1 p2))"));
+	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(lalala 10 20 30)")), contextBindings));
+}
+
+TEST(EvalDefinedFunctionBadArgumentsList) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle(STR("(define (lalala p1 (p2 p3)) (+ p1 p2))"));
+	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle(STR("(lalala 10 20 30)")), contextBindings));
+}
+
+TEST(EvalDefinedFunctionEvaluatesArgumentsFirst) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), 
+		DefineFunction(
+			MakeList(3, SymbolFromConstantStr(STR("a")), SymbolFromConstantStr(STR("b")), SymbolFromConstantStr(STR("c"))), 
+			MakeRedex(3, Function(OperatorPlus), SymbolFromConstantStr(STR("a")), SymbolFromConstantStr(STR("b")))));
+	AssertEq(InvalidArgumentType(), Eval(MakeRedex(4, SymbolFromConstantStr(STR("lalala")), Number(1), Number(2), InvalidArgumentType()), contextBindings));
+}

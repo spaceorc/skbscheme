@@ -11,14 +11,21 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
     // todo free context bindings
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	assert(args[0]->tag == terRedex); // todo InvalidArgumentType()
+	if (terRedex != args[0]->tag)
+		return InvalidArgumentType();
 	lets = args[0]->redex;
 	while (current = IterateList(&lets)) {
-		assert(current->tag == terRedex); // todo InvalidArgumentType()
+		Term * value = 0;
+		if (terRedex != current->tag)
+			return InvalidArgumentType();
 		if (TakeSeveralArguments(current->redex, let, &error) < 0)
 			return error;
-		assert(let[0]->tag == terSymbol); // todo InvalidArgumentType()
-		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, let[0]->symbol, let[1]);
+		if (terSymbol != let[0]->tag)
+			return InvalidArgumentType();
+		value = Eval(let[1], contextBindings);
+		if (value->tag == terError)
+			return value;
+		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, let[0]->symbol, value);
 	}
 	
 	return Eval(args[1], childContextBindings);
@@ -30,15 +37,17 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 		return error;
 	if (terSymbol == args[0]->tag)
 		contextBindings->dictionary = InternalSet(contextBindings->dictionary, args[0]->symbol, Eval(args[1], contextBindings));
-	else {
+	else if (terRedex == args[0]->tag) {
 		List definition = 0;
 		Term * name;
-		assert(terRedex == args[0]->tag); // todo maybe error : InvalidDefine ???
 		definition = args[0]->redex;
 		name = IterateList(&definition);
-		assert(terSymbol == name->tag); // todo maybe error : InvalidDefine ???
+		if (terSymbol != name->tag)
+			return InvalidArgumentType();
 		contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, DefineFunction(definition, args[1]));
 	}
+	else
+		return InvalidArgumentType();
 	return Nil();
 }
 
@@ -48,10 +57,13 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, Con
     // todo free context bindings
 	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
 		argument = IterateList(&arguments);
-		assert(argument); // todo - error: InvalidArgumentCount();
-		assert(formalArgument->tag == terSymbol); // todo - maybe error: InvalidDefine ??;
+		if (!argument)
+			return InvalidArgumentCount();
+		if (formalArgument->tag != terSymbol)
+			return InvalidArgumentType();
 		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
 	}
-	assert(!IterateList(&arguments)); // todo - error: InvalidArgumentCount();
+	if (IterateList(&arguments))
+		return InvalidArgumentCount();
 	return Eval(definedFunction.function, childContextBindings);
 }

@@ -4,3 +4,4 @@
 
 Term * Eval(Term * term, ContextBindings * contextBindings);
 ContextBindings * AcquireContextBindings();
+Term * InvalidSymbol();
