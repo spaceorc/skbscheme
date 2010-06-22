@@ -36,7 +36,7 @@ TEST(EvalRedexUnresolvedSymbols) {
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
 
-Term * MockLazyFunction(List arguments, ContextBindings * contextBindings, int inExpressionMode) {
+Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
 	AssertTag(terRedex, IterateList(&arguments));
 	AssertThat(0 == IterateList(&arguments));
 	return Number(5);

@@ -63,7 +63,8 @@ TEST(DefineFunction) {
 	AssertEq(Empty(), Eval(z, contextBindings));
     Term * func = InternalFindConstantStr(contextBindings->dictionary, STR("func"));
 	AssertTag(terDefinedFunction, func);
-	AssertEq(ParseSingle("(+ p1 p2)"), func->definedFunction.function);
+	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->definedFunction.body));
+	AssertThat(0 == IterateList(&func->definedFunction.body));
 	AssertEq(SymbolFromConstantStr(STR("p1")), IterateList(&func->definedFunction.formalArguments));
 	AssertEq(SymbolFromConstantStr(STR("p2")), IterateList(&func->definedFunction.formalArguments));
 	AssertThat(0 == IterateList(&func->definedFunction.formalArguments));

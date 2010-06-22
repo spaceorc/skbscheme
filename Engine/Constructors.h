@@ -15,5 +15,5 @@ Term * Symbol(LimitedStr str);
 Term * SymbolFromConstantStr(ConstantStr str);
 Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
 Term * LazyFunction(LazyFunctionPtr lazyFunction);
-Term * DefineFunction(List formalArguments, Term * function, ContextBindings * context, int useRuntimeContext);
+Term * DefineFunction(List formalArguments, List body, ContextBindings * context);
 Term * Empty();
