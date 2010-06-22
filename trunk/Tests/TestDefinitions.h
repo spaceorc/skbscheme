@@ -10,8 +10,8 @@ Term * MockFunction(List arguments) {
 TEST(LetSingle) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
-	Term * a = ParseSingle(STR("((bububu 1))"));
-	Term * b = ParseSingle(STR("(lalala bububu)"));
+	Term * a = ParseSingle("((bububu 1))");
+	Term * b = ParseSingle("(lalala bububu)");
 	Term * z = MakeRedex(3, LazyFunction(LazyFunctionLet), a, b);
 	AssertEq(Number(2), Eval(z, contextBindings));
 	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("bububu")));
@@ -20,17 +20,17 @@ TEST(LetSingle) {
 
 TEST(LetInvalid) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(InvalidArgumentType(), Eval(ParseSingle(STR("(let a a)")), contextBindings));
-	AssertEq(InvalidArgumentType(), Eval(ParseSingle(STR("(let (a 10) a)")), contextBindings));
-	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(let ((a)) a)")), contextBindings));
-	AssertEq(InvalidArgumentType(), Eval(ParseSingle(STR("(let ((10 20)) a)")), contextBindings));
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(let a a)"), contextBindings));
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(let (a 10) a)"), contextBindings));
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(let ((a)) a)"), contextBindings));
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(let ((10 20)) a)"), contextBindings));
 }
 
 TEST(LetMultiple) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
-	Term * a = ParseSingle(STR("((bububu 10) (kukuku (lalala 2)))"));	
-	Term * b = ParseSingle(STR("(+ bububu (lalala kukuku))"));
+	Term * a = ParseSingle("((bububu 10) (kukuku (lalala 2)))");
+	Term * b = ParseSingle("(+ bububu (lalala kukuku))");
 	Term * z = MakeRedex(3, LazyFunction(LazyFunctionLet), a, b);
 	AssertEq(Number(14), Eval(z, contextBindings));
 	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("bububu")));
@@ -40,7 +40,7 @@ TEST(LetMultiple) {
 
 TEST(LetEvalsVariablesFirst) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(let ((a (+ 1))) 10)")), contextBindings));
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(let ((a (+ 1))) 10)"), contextBindings));
 }
 
 TEST(DefineVariable) {
@@ -59,11 +59,11 @@ TEST(DefineVariableEvaluatesValue) {
 
 TEST(DefineFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle(STR("(func p1 p2)")), ParseSingle(STR("(+ p1 p2)")));
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle("(func p1 p2)"), ParseSingle("(+ p1 p2)"));
 	AssertEq(Empty(), Eval(z, contextBindings));
     Term * func = InternalFindConstantStr(contextBindings->dictionary, STR("func"));
 	AssertTag(terDefinedFunction, func);
-	AssertEq(ParseSingle(STR("(+ p1 p2)")), func->definedFunction.function);
+	AssertEq(ParseSingle("(+ p1 p2)"), func->definedFunction.function);
 	AssertEq(SymbolFromConstantStr(STR("p1")), IterateList(&func->definedFunction.formalArguments));
 	AssertEq(SymbolFromConstantStr(STR("p2")), IterateList(&func->definedFunction.formalArguments));
 	AssertThat(0 == IterateList(&func->definedFunction.formalArguments));
@@ -71,12 +71,12 @@ TEST(DefineFunction) {
 
 TEST(DefineWithNumberAsName) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle(STR("10")), ParseSingle(STR("(+ p1 p2)")));
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle("10"), ParseSingle("(+ p1 p2)"));
 	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
 }
 
 TEST(DefineWithNumberAsFunctionName) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle(STR("(10 p1 p2)")), ParseSingle(STR("(+ p1 p2)")));
+	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle("(10 p1 p2)"), ParseSingle("(+ p1 p2)"));
 	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
 }
