@@ -65,9 +65,21 @@ int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
 	return 1;
 }
 
+Term * EvalDefinedFunctionBody(List body, ContextBindings * contextBindings) {
+	Term * result = 0;
+	Term * i = 0;
+	while(i = IterateList(&body)) {
+		result = Eval(i, contextBindings);
+		if (terError == result->tag)
+			break;
+	}
+	assert(result); 
+	return result;
+}
+
 Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
 	Term * formalArgument = 0, * argument = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.useRuntimeContext?contextBindings:definedFunction.context);
+	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.context);
 	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
 		argument = IterateList(&arguments);
 		if (!argument)
@@ -78,10 +90,10 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, Con
 	}
 	if (IterateList(&arguments))
 		return InvalidArgumentCount();
-	return Eval(definedFunction.function, childContextBindings);
+	return EvalDefinedFunctionBody(definedFunction.body, childContextBindings);
 }
 
-Term * InternalApply(List arguments, ContextBindings * contextBindings, int inExpressionMode) {
+Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	Term * function = IterateList(&arguments), * error;
 	if (0 == function)
 		return InvalidArgumentCount();
@@ -92,7 +104,7 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings, int inEx
 				return error;
 			return function->function(arguments);
 		case terLazyFunction:
-			return function->lazyFunction(arguments, contextBindings, inExpressionMode);
+			return function->lazyFunction(arguments, contextBindings);
 		case terDefinedFunction:
 			if (!EvalList(&arguments, contextBindings, &error))
 				return error;
@@ -102,22 +114,13 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings, int inEx
 	}
 }
 
-Term * InternalEval(Term * term, ContextBindings * contextBindings, int inExpressionMode) {
+Term * Eval(Term * term, ContextBindings * contextBindings) {
 	switch (term->tag) {
 		case terRedex:
-			return InternalApply(term->redex, contextBindings, inExpressionMode);
+			return InternalApply(term->redex, contextBindings);
 		case terSymbol:
 			return Eval(Resolve(contextBindings, term->symbol), contextBindings);
 		default:
 			return term;
 	}
-}
-
-Term * Eval(Term * term, ContextBindings * contextBindings) {
-	return InternalEval(term, contextBindings, 1);
-}
-
-
-Term * EvalInDefineMode(Term * term, ContextBindings * contextBindings) {
-	return InternalEval(term, contextBindings, 0);
 }

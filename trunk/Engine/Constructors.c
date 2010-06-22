@@ -60,12 +60,11 @@ Term * LazyFunction(LazyFunctionPtr lazyFunction) {
 	return result;
 }
 
-Term * DefineFunction(List formalArguments, Term * function, ContextBindings * context, int useRuntimeContext) {
+Term * DefineFunction(List formalArguments, List body, ContextBindings * context) {
 	Term * result = AllocateTerm(terDefinedFunction);
 	result->definedFunction.formalArguments = formalArguments;
-	result->definedFunction.function = function;
+	result->definedFunction.body = body;
 	result->definedFunction.context = context;
-	result->definedFunction.useRuntimeContext = useRuntimeContext;
 	return result;
 }
 

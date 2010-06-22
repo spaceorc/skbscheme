@@ -20,7 +20,7 @@ typedef struct structContextBindings ContextBindings;
 typedef struct structDefinedFunction DefinedFunction;
 typedef struct structParserContext ParserContext;
 typedef Term * (*FunctionPtr)(List arguments);
-typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings, int inExpressionMode);
+typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 
 struct structParserContext {
 	List redex;
@@ -35,9 +35,8 @@ struct structContextBindings {
 
 struct structDefinedFunction {
 	List formalArguments;
-	Term * function;
+	List body;
 	ContextBindings * context;
-	int useRuntimeContext;
 };
 
 struct structTerm {
