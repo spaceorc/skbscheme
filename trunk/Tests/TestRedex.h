@@ -36,7 +36,7 @@ TEST(EvalRedexUnresolvedSymbols) {
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
 
-Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
+Term * MockLazyFunction(List arguments, ContextBindings * contextBindings, int inExpressionMode) {
 	AssertTag(terRedex, IterateList(&arguments));
 	AssertThat(0 == IterateList(&arguments));
 	return Number(5);
@@ -90,12 +90,6 @@ TEST(EvalDefinedFunctionEvaluatesArgumentsFirst) {
 TEST(EvalDefinedFunctionClosedToItsContext) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Empty(), Eval(ParseSingle("(define (lalala a b) (+ a b c))"), contextBindings));
-	InternalSetConstantStr(contextBindings->dictionary, STR("c"), Number(10));
+	AssertEq(Empty(), Eval(ParseSingle("(define c 10)"), contextBindings));
 	AssertEq(Number(13), Eval(ParseSingle("(let ((c 100)) (lalala 1 2))"), contextBindings));
-}
-
-TEST(EvalNestedDefinedFunction) {
-	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
-	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
 }

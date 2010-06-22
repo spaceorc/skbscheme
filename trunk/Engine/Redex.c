@@ -25,16 +25,16 @@ ContextBindings * AcquireContextBindings() {
 	return result;
 }
 
-Term * InvalidSymbol() {
+Term * InvalidSymbol(LimitedStr symbol) {
 	Term * result = AllocateTerm(terError);
-	result->message = LimitedStrFromConstantStr("Invalid symbol");
+	result->message = ConcatenateConstantLimitedStr(LimitConstantStr("invalid symbol "), ConstLimitedStr(symbol));
 	return result;
 }
 
 Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
 	Term * result = 0;
 	if (0 == contextBindings)
-		return InvalidSymbol();
+		return InvalidSymbol(symbol);
 	result = InternalFind(contextBindings->dictionary, symbol);
 	if (0 == result)
 		return Resolve(contextBindings->previous, symbol);
@@ -65,9 +65,9 @@ int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
 	return 1;
 }
 
-Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments) {
+Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
 	Term * formalArgument = 0, * argument = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.context);
+	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.useRuntimeContext?contextBindings:definedFunction.context);
 	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
 		argument = IterateList(&arguments);
 		if (!argument)
@@ -81,7 +81,7 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments) {
 	return Eval(definedFunction.function, childContextBindings);
 }
 
-Term * InternalApply(List arguments, ContextBindings * contextBindings) {
+Term * InternalApply(List arguments, ContextBindings * contextBindings, int inExpressionMode) {
 	Term * function = IterateList(&arguments), * error;
 	if (0 == function)
 		return InvalidArgumentCount();
@@ -92,23 +92,32 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 				return error;
 			return function->function(arguments);
 		case terLazyFunction:
-			return function->lazyFunction(arguments, contextBindings);
+			return function->lazyFunction(arguments, contextBindings, inExpressionMode);
 		case terDefinedFunction:
 			if (!EvalList(&arguments, contextBindings, &error))
 				return error;
-			return DefinedFunctionApply(function->definedFunction, arguments);
+			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
 		default:
 			return InvalidArgumentType();
 	}
 }
 
-Term * Eval(Term * term, ContextBindings * contextBindings) {
+Term * InternalEval(Term * term, ContextBindings * contextBindings, int inExpressionMode) {
 	switch (term->tag) {
 		case terRedex:
-			return InternalApply(term->redex, contextBindings);
+			return InternalApply(term->redex, contextBindings, inExpressionMode);
 		case terSymbol:
 			return Eval(Resolve(contextBindings, term->symbol), contextBindings);
 		default:
 			return term;
 	}
+}
+
+Term * Eval(Term * term, ContextBindings * contextBindings) {
+	return InternalEval(term, contextBindings, 1);
+}
+
+
+Term * EvalInDefineMode(Term * term, ContextBindings * contextBindings) {
+	return InternalEval(term, contextBindings, 0);
 }
