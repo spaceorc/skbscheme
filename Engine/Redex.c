@@ -9,8 +9,8 @@
 
 ConstantStr globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
-ConstantStr globalLazyFunctionNames [] = {"let", "define"};
-LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine};
+ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda"};
+LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda};
 
 ContextBindings * AcquireContextBindings() {
 	ContextBindings * result = AllocateContextBindings(0);
