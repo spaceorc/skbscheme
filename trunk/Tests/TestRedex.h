@@ -61,21 +61,21 @@ TEST(EvalRedexStartingWithDefinedFunction) {
 TEST(EvalDefinedFunctionInsufficientAgruments) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle(STR("(define (lalala p1 p2) (+ p1 p2))"));
-	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(lalala 10)")), contextBindings));
 }
 
 TEST(EvalDefinedFunctionTooManyAgruments) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle(STR("(define (lalala p1 p2) (+ p1 p2))"));
-	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle(STR("(lalala 10 20 30)")), contextBindings));
 }
 
 TEST(EvalDefinedFunctionBadArgumentsList) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle(STR("(define (lalala p1 (p2 p3)) (+ p1 p2))"));
-	/* ??? AssertEq(Nil(), ??? */Eval(z, contextBindings)/* ??? ) ??? */;
+	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle(STR("(lalala 10 20 30)")), contextBindings));
 }
 
@@ -90,7 +90,7 @@ TEST(EvalDefinedFunctionEvaluatesArgumentsFirst) {
 
 TEST(EvalDefinedFunctionClosedToItsContext) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	/* ??? AssertEq(Nil(), ??? */Eval(ParseSingle(STR("(define (lalala a b) (+ a b c))")), contextBindings)/* ??? ) ??? */;
+	AssertEq(Empty(), Eval(ParseSingle(STR("(define (lalala a b) (+ a b c))")), contextBindings));
 	InternalSetConstantStr(contextBindings->dictionary, STR("c"), Number(10));
 	AssertEq(Number(13), Eval(ParseSingle(STR("(let ((c 100)) (lalala 1 2))")), contextBindings));
 }

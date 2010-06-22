@@ -9,6 +9,8 @@
 
 void InternalWrite(FILE * file, Term * term) {
 	switch(term->tag) {
+		case terEmpty:
+			break;
 		case terNumber:
 			fprintf(file, "%d\n", term->number);
 			break;

@@ -165,6 +165,8 @@ const char * DumpTag(int tag) {
 			return "Lazy function";
 		case terDefinedFunction:
 			return "Defined function";
+		case terEmpty:
+			return "Empty";
 		default:
 			assert(0);
 			return 0;
@@ -240,6 +242,7 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 				AssertCondition(message, false, function, file, line);
 			}
 		case terNil:
+		case terEmpty:
 		case terError:
 			break;
 		case terFunction:

@@ -12,6 +12,7 @@
 #define terSymbol 7
 #define terLazyFunction 8
 #define terDefinedFunction 9
+#define terEmpty 10
 
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;

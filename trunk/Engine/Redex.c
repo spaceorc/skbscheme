@@ -74,7 +74,7 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 		case terFunction:
 			if (!EvalList(&arguments, contextBindings, &error))
 				return error;
-			return function->function(arguments, contextBindings);
+			return function->function(arguments);
 		case terLazyFunction:
 			return function->lazyFunction(arguments, contextBindings);
 		case terDefinedFunction:

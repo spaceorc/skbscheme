@@ -8,7 +8,6 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 	Term * args[] = {0, 0}, * error = 0, * current = 0, * let[] = {0, 0};
 	List lets = 0;
 	ContextBindings * childContextBindings = AllocateContextBindings(contextBindings);
-    // todo free context bindings
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
 	if (terRedex != args[0]->tag)
@@ -48,13 +47,12 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 	}
 	else
 		return InvalidArgumentType();
-	return Nil();
+	return Empty();
 }
 
 Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
 	Term * formalArgument = 0, * argument = 0;
 	ContextBindings * childContextBindings = AllocateContextBindings(contextBindings);
-    // todo free context bindings
 	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
 		argument = IterateList(&arguments);
 		if (!argument)
