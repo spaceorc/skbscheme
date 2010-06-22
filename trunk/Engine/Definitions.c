@@ -43,7 +43,7 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 		name = IterateList(&definition);
 		if (terSymbol != name->tag)
 			return InvalidArgumentType();
-		contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, DefineFunction(definition, args[1]));
+		contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, DefineFunction(definition, args[1], contextBindings));
 	}
 	else
 		return InvalidArgumentType();

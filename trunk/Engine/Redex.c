@@ -65,9 +65,9 @@ int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
 	return 1;
 }
 
-Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
+Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments) {
 	Term * formalArgument = 0, * argument = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(contextBindings);
+	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.context);
 	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
 		argument = IterateList(&arguments);
 		if (!argument)
@@ -96,7 +96,7 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 		case terDefinedFunction:
 			if (!EvalList(&arguments, contextBindings, &error))
 				return error;
-			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
+			return DefinedFunctionApply(function->definedFunction, arguments);
 		default:
 			return InvalidArgumentType();
 	}
