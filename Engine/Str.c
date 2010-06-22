@@ -16,6 +16,21 @@ int Compare(LimitedStr first, LimitedStr second) {
 	return CompareConstantLimitedStr(ConstLimitedStr(first), ConstLimitedStr(second));
 }
 
+LimitedStr Concatenate(LimitedStr first, LimitedStr second) {
+	return ConcatenateConstantLimitedStr(ConstLimitedStr(first), ConstLimitedStr(second));
+}
+
+LimitedStr ConcatenateConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second) {
+	LimitedStr result = AllocateLimitedStr(first.size + second.size - 1);
+	Chr * to = result.str, from;
+	while(from = IterateChrConstantLimitedStr(&first))
+		*(to++) = from;
+	while(from = IterateChrConstantLimitedStr(&second))
+		*(to++) = from;
+	*to = 0;
+	return result;
+}
+
 ConstantLimitedStr LimitConstantStr(ConstantStr str) {
 	ConstantLimitedStr result;
 	result.str = str;

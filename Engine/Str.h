@@ -21,6 +21,8 @@ struct structLimitedStr {
 
 int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second);
 int Compare(LimitedStr first, LimitedStr second);
+LimitedStr Concatenate(LimitedStr first, LimitedStr second);
+LimitedStr ConcatenateConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second);
 ConstantLimitedStr LimitConstantStr(ConstantStr str);
 ConstantLimitedStr ConstLimitedStr(LimitedStr str);
 Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
