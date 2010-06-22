@@ -7,37 +7,66 @@
 #include "Parser.h"
 #include "Redex.h"
 
-void InternalWrite(FILE * file, Term * term) {
+int InternalWrite(FILE * file, Term * term);
+
+void InternalWritePair(FILE * file, Pair * pair) {
+	char delimiter = '(';
+	while(pair) {
+		fputc(delimiter, file);
+		delimiter = ' ';
+		InternalWrite(file, pair->first);
+		switch(pair->second->tag) {
+			case terPair:
+				pair = pair->second->pair;
+				break;
+			case terNil:
+				pair = 0;
+				break;
+			default:
+				fprintf(file, " . ");
+				InternalWrite(file, pair->second);
+				pair = 0;
+				break;
+		}
+	}
+	fputc(')', file);
+}
+
+int InternalWrite(FILE * file, Term * term) {
 	switch(term->tag) {
 		case terEmpty:
-			break;
+			return 0;
 		case terNumber:
-			fprintf(file, "%d\n", term->number);
+			fprintf(file, "%d", term->number);
 			break;
 		case terSymbol:
 		case terConstantString:
-			fprintf(file, "%.*s\n", term->symbol.size, term->symbol.str);
+			fprintf(file, "%.*s", term->symbol.size, term->symbol.str);
 			break;
 		case terNil:
-			fprintf(file, "()\n");
+			fprintf(file, "()");
 			break;
 		case terError:
-			fprintf(file, "error: %s\n", term->message);
+			fprintf(file, "error: %s", term->message);
 			break;
 		case terFunction:
 		case terLazyFunction:
 		case terDefinedFunction:
-			fprintf(file, "function\n");
+			fprintf(file, "function");
 			break;
 		case terBoolean:
 			if (term->boolean)
-				fprintf(file, "#t\n");
+				fprintf(file, "#t");
 			else
-				fprintf(file, "#f\n");
+				fprintf(file, "#f");
+			break;
+		case terPair:
+			InternalWritePair(file, term->pair);
 			break;
 		default:
 			assert(0);
 	}
+	return 1;
 }
 
 void Prompt(FILE * file) {
@@ -56,8 +85,10 @@ void main() {
 		if (!gets_s(str.str, str.size))
 			break;
 		while (tokEnd != (token = GetToken(&str)).tag) {
-			if (term = Parse(token, &context))
-				InternalWrite(stdout, Eval(term, contextBindings));
+			if (term = Parse(token, &context)) {
+				if (InternalWrite(stdout, Eval(term, contextBindings)))
+					fprintf(stdout, "\n");
+			}
 		}
 	}
 }
