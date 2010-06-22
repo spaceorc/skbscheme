@@ -34,6 +34,10 @@ void InternalWrite(FILE * file, Term * term) {
 	}
 }
 
+void Prompt(FILE * file) {
+	fprintf(file, "> ");
+}
+
 void main() {
 	Token token;
 	Term * term;
@@ -41,7 +45,8 @@ void main() {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	while (1) {
 		LimitedStr str = AllocateLimitedStr(1024);
-		fprintf(stdout, "scheme> ");
+		if (CanFinishParsing(context))
+			Prompt(stdout);
 		if (!gets_s(str.str, str.size))
 			break;
 		while (tokEnd != (token = GetToken(&str)).tag) {
