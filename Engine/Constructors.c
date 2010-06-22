@@ -66,3 +66,7 @@ Term * DefineFunction(List formalArguments, Term * function) {
 	result->definedFunction.function = function;
 	return result;
 }
+
+Term * Empty() {
+	return AllocateTerm(terEmpty);
+}
