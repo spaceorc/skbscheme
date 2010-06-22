@@ -13,6 +13,7 @@
 #define terLazyFunction 8
 #define terDefinedFunction 9
 #define terEmpty 10
+#define terBoolean 11
 
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
@@ -21,6 +22,7 @@ typedef struct structDefinedFunction DefinedFunction;
 typedef struct structParserContext ParserContext;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
+typedef Term * (*CreateConstantPtr)();
 
 struct structParserContext {
 	List redex;
@@ -51,6 +53,7 @@ struct structTerm {
 		LimitedStr symbol;
 		LazyFunctionPtr lazyFunction;
 		DefinedFunction definedFunction;
+		int boolean;
 	};
 };
 
