@@ -23,7 +23,7 @@ TEST(AnythingExceptFalseIsTrue) {
 	AssertThat(0 == IsFalse(Number(0)));
 }
 
-TEST(EvalOfOperatorEq) {
+TEST(EvalOfOperatorNumberEq) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(False(), Eval(ParseSingle("(= 1 2)"), contextBindings)); 
 }
