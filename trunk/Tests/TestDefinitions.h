@@ -80,3 +80,15 @@ TEST(DefineWithNumberAsFunctionName) {
 	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle("(10 p1 p2)"), ParseSingle("(+ p1 p2)"));
 	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
 }
+
+TEST(DefineLambdaWithOneArgument) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle("((lambda(x) (+ x 2)) 3)");
+	AssertEq(Number(5), Eval(z, contextBindings));
+}
+
+TEST(DefineLambdaWithInvalidArgumentNames) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle("(lambda 1 (+ x 2))");
+	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
+}

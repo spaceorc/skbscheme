@@ -49,3 +49,14 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 		return InvalidArgumentType();
 	return Empty();
 }
+
+Term * LazyFunctionLambda(List arguments, ContextBindings * contextBindings) {
+	Term * args[] = {0, 0}, * error = 0;
+	if (TakeSeveralArguments(arguments, args, &error) < 0)
+		return error;
+	if (terRedex == args[0]->tag)
+		return DefineFunction(args[0]->redex, args[1], contextBindings);
+	else
+		return InvalidArgumentType();
+	return Empty();
+}

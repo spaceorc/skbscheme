@@ -5,3 +5,4 @@
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings);
 Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings);
+Term * LazyFunctionLambda(List arguments, ContextBindings * contextBindings);
