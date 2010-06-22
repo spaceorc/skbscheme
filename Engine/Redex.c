@@ -8,8 +8,8 @@
 #include "Conditionals.h"
 #include "Memory.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "cons", "car", "cdr"};
-FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, FunctionCons, FunctionCar, FunctionCdr};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda};
 ConstantStr globalConstantNames [] = {"#t", "#f", "null"};
