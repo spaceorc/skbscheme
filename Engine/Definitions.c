@@ -42,7 +42,9 @@ Term * InternalDefineFunction(List definition, List body, ContextBindings * cont
 }
 
 Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
-	Term * prototype = IterateList(&arguments), * value = 0;
+	Term * prototype = 0, * value = 0;
+	if (!(prototype = IterateList(&arguments)))
+		return InvalidArgumentCount();
 	switch(prototype->tag) {
 		case terSymbol:
 			value = IterateList(&arguments);

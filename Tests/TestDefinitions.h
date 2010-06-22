@@ -80,6 +80,11 @@ TEST(DefineFunction) {
 	AssertThat(0 == IterateList(&func->definedFunction.formalArguments));
 }
 
+TEST(DefineWithZeroArguments) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(define)"), contextBindings));
+}
+
 TEST(DefineWithNumberAsName) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = MakeRedex(3, LazyFunction(LazyFunctionDefine), ParseSingle("10"), ParseSingle("(+ p1 p2)"));
