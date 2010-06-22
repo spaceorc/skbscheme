@@ -97,14 +97,20 @@ TEST(DefineWithNumberAsFunctionName) {
 	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
 }
 
-TEST(DefineLambdaWithOneArgument) {
+TEST(LambdaWithOneArgument) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("((lambda(x) (+ x 2)) 3)");
 	AssertEq(Number(5), Eval(z, contextBindings));
 }
 
-TEST(DefineLambdaWithInvalidArgumentNames) {
+TEST(LambdaWithInvalidArgumentNames) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(lambda 1 (+ x 2))");
 	AssertEq(InvalidArgumentType(), Eval(z, contextBindings));
+}
+
+TEST(LambdaWithMultipleExpressions) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	Term * z = ParseSingle("((lambda () 1 2 3))");
+	AssertEq(Number(3), Eval(z, contextBindings));
 }
