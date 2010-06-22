@@ -19,7 +19,7 @@ void InternalWrite(FILE * file, Term * term) {
 			fprintf(file, "%.*s\n", term->symbol.size, term->symbol.str);
 			break;
 		case terNil:
-			fprintf(file, "nil\n");
+			fprintf(file, "()\n");
 			break;
 		case terError:
 			fprintf(file, "error: %s\n", term->message);
@@ -28,6 +28,12 @@ void InternalWrite(FILE * file, Term * term) {
 		case terLazyFunction:
 		case terDefinedFunction:
 			fprintf(file, "function\n");
+			break;
+		case terBoolean:
+			if (term->boolean)
+				fprintf(file, "#t\n");
+			else
+				fprintf(file, "#f\n");
 			break;
 		default:
 			assert(0);

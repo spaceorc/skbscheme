@@ -3,7 +3,7 @@
 #include "Number.h"
 
 Term * OperatorPlus(List arguments) {
-	Term * current;
+	Term * current = 0;
 	int n = 0, argLen = 0;
 	while (current = IterateList(&arguments))
 	{
@@ -18,7 +18,7 @@ Term * OperatorPlus(List arguments) {
 }
 
 Term * OperatorMinus(List arguments) {
-	Term * current;
+	Term * current = 0;
 	int n = 0, argLen = 0;
 	while (current = IterateList(&arguments)) {
 		argLen++;
@@ -31,6 +31,25 @@ Term * OperatorMinus(List arguments) {
 	if (argLen < 1)
 		return InvalidArgumentCount();
 	return Number(n);
+}
+
+Term * OperatorNumberEq(List arguments) {
+	Term * current = 0, * first = 0;
+	int argLen = 0, allEquals = 1;
+	while (current = IterateList(&arguments))
+	{
+		argLen++;
+		if (current->tag != terNumber)
+			return InvalidArgumentType();
+		if (!first)
+			first = current;
+		else if (first->number != current->number)
+			allEquals = 0;
+
+	}
+	if (argLen < 2)
+		return InvalidArgumentCount();
+	return allEquals ? True() : False();
 }
 
 Term * ParseNumber(LimitedStr symbol) {

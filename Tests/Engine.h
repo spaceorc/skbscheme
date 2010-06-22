@@ -11,4 +11,5 @@ extern "C" {
 #include "Redex.h"
 #include "Parser.h"
 #include "Definitions.h"
+#include "Conditionals.h"
 }

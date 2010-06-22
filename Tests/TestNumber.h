@@ -54,3 +54,16 @@ TEST(NumberMinus1stIsNotANumber) {
 	Term * z = OperatorMinus(MakeList(1, Nil()));
     AssertThat(z->tag == terError);
 }
+
+TEST(NumberEq) {
+	AssertEq(True(), OperatorNumberEq(MakeList(3, Number(1), Number(1), Number(1))));
+	AssertEq(False(), OperatorNumberEq(MakeList(3, Number(1), Number(1), Number(10))));
+}
+
+TEST(NumberEqWith1Argument) {
+	AssertEq(InvalidArgumentCount(), OperatorNumberEq(MakeList(1, Number(1))));
+}
+
+TEST(NumberEqWithNotANumber) {
+	AssertEq(InvalidArgumentType(), OperatorNumberEq(MakeList(3, Number(1), Number(2), Nil())));
+}

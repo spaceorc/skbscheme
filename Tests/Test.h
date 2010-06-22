@@ -169,6 +169,8 @@ const char * DumpTag(int tag) {
 			return "Defined function";
 		case terEmpty:
 			return "Empty";
+		case terBoolean:
+			return "Boolean";
 		default:
 			assert(0);
 			return 0;
@@ -251,6 +253,12 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 		case terLazyFunction:
 			if (expected->function != was->function) {
 				sprintf_s(message, "expected function pointer %p, but was function pointer %p", expected->function, was->function);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
+		case terBoolean:
+			if (expected->boolean != was->boolean) {
+				sprintf_s(message, "expected boolean %s, but was boolean %s", expected->boolean ? "True" : "False", was->boolean ? "True" : "False");
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
