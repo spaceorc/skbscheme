@@ -6,8 +6,8 @@
 #include "Memory.h"
 
 Term * ParseTerm(LimitedStr symbol) {
-	if (isNumber(symbol))
-		return parseNumber(symbol);
+	if (IsNumber(symbol))
+		return ParseNumber(symbol);
 	return Symbol(symbol);
 }
 
