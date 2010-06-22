@@ -22,14 +22,21 @@ typedef struct structParserContext ParserContext;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 
-struct structDefinedFunction {
-	List formalArguments;
-	Term * function;
-};
-
 struct structParserContext {
 	List redex;
 	ParserContext * previous;
+};
+
+
+struct structContextBindings {
+	List dictionary;
+	ContextBindings * previous;
+};
+
+struct structDefinedFunction {
+	List formalArguments;
+	Term * function;
+	ContextBindings * context;
 };
 
 struct structTerm {
@@ -45,11 +52,6 @@ struct structTerm {
 		LazyFunctionPtr lazyFunction;
 		DefinedFunction definedFunction;
 	};
-};
-
-struct structContextBindings {
-	List dictionary;
-	ContextBindings * previous;
 };
 
 struct structPair {

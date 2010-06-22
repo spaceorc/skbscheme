@@ -60,10 +60,11 @@ Term * LazyFunction(LazyFunctionPtr lazyFunction) {
 	return result;
 }
 
-Term * DefineFunction(List formalArguments, Term * function) {
+Term * DefineFunction(List formalArguments, Term * function, ContextBindings * context) {
 	Term * result = AllocateTerm(terDefinedFunction);
 	result->definedFunction.formalArguments = formalArguments;
 	result->definedFunction.function = function;
+	result->definedFunction.context = context;
 	return result;
 }
 
