@@ -49,19 +49,3 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 		return InvalidArgumentType();
 	return Empty();
 }
-
-Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
-	Term * formalArgument = 0, * argument = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(contextBindings);
-	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
-		argument = IterateList(&arguments);
-		if (!argument)
-			return InvalidArgumentCount();
-		if (formalArgument->tag != terSymbol)
-			return InvalidArgumentType();
-		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
-	}
-	if (IterateList(&arguments))
-		return InvalidArgumentCount();
-	return Eval(definedFunction.function, childContextBindings);
-}

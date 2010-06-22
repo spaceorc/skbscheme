@@ -7,6 +7,8 @@
 
 #include "Engine.h"
 
+#define STR(x) ((ConstantStr)(x))
+
 class AssertException {
 private:
 	char m_message[4096];
@@ -132,10 +134,10 @@ Term * MakeRedex(int argc, ...) {
 	return term;
 }
 
-Term * ParseSingle(ConstantStr expression) {
+Term * ParseSingle(const char * expression) {
 	Token token;
 	Term * result = 0;
-	LimitedStr limitedExpression = LimitedStrFromConstantStr(expression);
+	LimitedStr limitedExpression = LimitedStrFromConstantStr(STR(expression));
 	ParserContext * context = AcquireParserContext();
 	while(tokEnd != (token = GetToken(&limitedExpression)).tag) {
 		result = Parse(token, &context);
@@ -287,5 +289,3 @@ void AssertBracketCondition(int expectedTag, ConstantStr expectedRange, Token wa
 		AssertCondition(message, false, function, file, line);
 	}
 }
-
-#define STR(x) ((ConstantStr)(x))
