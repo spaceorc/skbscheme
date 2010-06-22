@@ -93,3 +93,16 @@ TEST(EvalDefinedFunctionClosedToItsContext) {
 	AssertEq(Empty(), Eval(ParseSingle("(define c 10)"), contextBindings));
 	AssertEq(Number(13), Eval(ParseSingle("(let ((c 100)) (lalala 1 2))"), contextBindings));
 }
+
+TEST(EvalDefinesNestedDefineInsideOuterDefineScope) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
+	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
+	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitedStrFromConstantStr(STR("bububu"))));
+}
+
+TEST(EvalResolvedSymbolsUsingOutermostRelevantScope) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (let((p1 10)) (bububu p2)))"), contextBindings));
+	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
+}
