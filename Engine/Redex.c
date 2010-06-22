@@ -41,11 +41,11 @@ Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
 	return result;
 }
 
-int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
+int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** error) {
 	List result = 0;
 	Pair * current = 0;
 	Term * i = 0;
-	while(i = IterateList(list)) {
+	while(i = IterateList(arguments)) {
 		Pair * next = AllocatePair();
 		next->first = Eval(i, contextBindings);
 		if (terError == next->first->tag) {
@@ -61,19 +61,20 @@ int EvalList(List * list, ContextBindings * contextBindings, Term ** error) {
 		if (0 == result)
 			result = current;
 	}
-	*list = result;
+	*arguments = result;
 	return 1;
 }
 
-Term * EvalDefinedFunctionBody(List body, ContextBindings * contextBindings) {
+Term * EvalList(List list, ContextBindings * contextBindings) {
 	Term * result = 0;
 	Term * i = 0;
-	while(i = IterateList(&body)) {
+	while(i = IterateList(&list)) {
 		result = Eval(i, contextBindings);
 		if (terError == result->tag)
 			break;
 	}
-	assert(result); 
+	if (!result)
+		return InvalidArgumentCount();
 	return result;
 }
 
@@ -90,7 +91,7 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, Con
 	}
 	if (IterateList(&arguments))
 		return InvalidArgumentCount();
-	return EvalDefinedFunctionBody(definedFunction.body, childContextBindings);
+	return EvalList(definedFunction.body, childContextBindings);
 }
 
 Term * InternalApply(List arguments, ContextBindings * contextBindings) {
@@ -100,13 +101,13 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	function = Eval(function, contextBindings);
 	switch(function->tag) {
 		case terFunction:
-			if (!EvalList(&arguments, contextBindings, &error))
+			if (!EvalArguments(&arguments, contextBindings, &error))
 				return error;
 			return function->function(arguments);
 		case terLazyFunction:
 			return function->lazyFunction(arguments, contextBindings);
 		case terDefinedFunction:
-			if (!EvalList(&arguments, contextBindings, &error))
+			if (!EvalArguments(&arguments, contextBindings, &error))
 				return error;
 			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
 		default:
