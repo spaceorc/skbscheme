@@ -93,3 +93,9 @@ TEST(EvalDefinedFunctionClosedToItsContext) {
 	InternalSetConstantStr(contextBindings->dictionary, STR("c"), Number(10));
 	AssertEq(Number(13), Eval(ParseSingle("(let ((c 100)) (lalala 1 2))"), contextBindings));
 }
+
+TEST(EvalNestedDefinedFunction) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
+	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
+}
