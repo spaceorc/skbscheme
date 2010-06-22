@@ -4,5 +4,5 @@
 
 Term * OperatorPlus(List arguments);
 Term * OperatorMinus(List arguments);
-Term * parseNumber(LimitedStr symbol);
-int isNumber(LimitedStr symbol);
+Term * ParseNumber(LimitedStr symbol);
+int IsNumber(LimitedStr symbol);
