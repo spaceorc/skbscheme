@@ -5,16 +5,17 @@
 #include "Memory.h"
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0}, * error = 0, * current = 0, * let[] = {0, 0};
-	List lets = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(contextBindings);
-	if (TakeSeveralArguments(arguments, args, &error) < 0)
-		return error;
-	if (terRedex != args[0]->tag)
+	ContextBindings * childContextBindings = 0;
+	Term * lets = 0, * current = 0;
+	List letsList = 0;
+	if (!(lets = IterateList(&arguments)))
+		return InvalidArgumentCount();
+	if (terRedex != lets->tag)
 		return InvalidArgumentType();
-	lets = args[0]->redex;
-	while (current = IterateList(&lets)) {
-		Term * value = 0;
+	letsList = lets->redex;
+	childContextBindings = AllocateContextBindings(contextBindings);
+	while (current = IterateList(&letsList)) {
+		Term * value = 0, * let[] = {0, 0}, * error;
 		if (terRedex != current->tag)
 			return InvalidArgumentType();
 		if (TakeSeveralArguments(current->redex, let, &error) < 0)
@@ -26,8 +27,7 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 			return value;
 		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, let[0]->symbol, value);
 	}
-
-	return Eval(args[1], childContextBindings);
+	return EvalList(arguments, childContextBindings);
 }
 
 Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {

@@ -18,6 +18,16 @@ TEST(LetSingle) {
 	AssertEq(Function(MockFunction), InternalFindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
+TEST(LetMultipleExpressions) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(3), Eval(ParseSingle("(let () 1 2 3)"), contextBindings));
+}
+
+TEST(LetNoExpressions) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(let ((a 10)) )"), contextBindings));
+}
+
 TEST(LetInvalid) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(let a a)"), contextBindings));
