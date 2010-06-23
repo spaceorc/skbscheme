@@ -2,6 +2,7 @@
 
 #include "Parser.h"
 #include "Number.h"
+#include "Character.h"
 #include "Dictionary.h"
 #include "Memory.h"
 #include "Error.h"
@@ -9,6 +10,8 @@
 Term * ParseTerm(LimitedStr symbol) {
 	if (IsNumber(symbol))
 		return ParseNumber(symbol);
+	if (IsCharacter(symbol))
+		return ParseCharacter(symbol);
 	return Symbol(symbol);
 }
 

@@ -171,6 +171,8 @@ const char * DumpTag(int tag) {
 			return "Empty";
 		case terBoolean:
 			return "Boolean";
+		case terCharacter:
+			return "Character";
 		default:
 			assert(0);
 			return 0;
@@ -245,6 +247,13 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->constantString.size, expected->constantString.str, was->constantString.size, was->constantString.str);
 				AssertCondition(message, false, function, file, line);
 			}
+			break;
+		case terCharacter:
+			if (expected->character != was->character) {
+				sprintf_s(message, "expected character '%c', but was character '%c'", expected->character, was->character);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
 		case terNil:
 		case terEmpty:
 		case terError:
