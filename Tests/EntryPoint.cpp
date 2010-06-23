@@ -6,7 +6,7 @@
 #include "TestRedex.h"
 #include "TestParser.h"
 #include "TestDefinitions.h"
-#include "TestConditionals.h"
+#include "TestBoolean.h"
 #include <stdio.h>
 
 void main() {
