@@ -36,16 +36,32 @@ TEST(And) {
 	AssertEq(False(), Eval(ParseSingle("(and #f (error \"lalala\"))"), contextBindings));
 }
 
+TEST(AndErrorIn1stArgument) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(and (+ 1) 2)"), contextBindings));
+}
+
 TEST(Or) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Number(1), Eval(ParseSingle("(or #f 1)"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(or #f (+ 0 1))"), contextBindings));
 	AssertEq(True(), Eval(ParseSingle("(or #t #f)"), contextBindings));
 	AssertEq(True(), Eval(ParseSingle("(or #t (error \"lalala\"))"), contextBindings));
+	AssertEq(Number(1), Eval(ParseSingle("(or 1 (error \"lalala\"))"), contextBindings));
+}
+
+TEST(OrErrorIn1stArgument) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(or (+ 1) 1)"), contextBindings));
 }
 
 TEST(If) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Number(0), Eval(ParseSingle("(if (and #t #f) (error \"lalala\") (+ 0 0))"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(if (or #t #f) (+ 0 1) (error \"lalala\"))"), contextBindings));
+}
+
+TEST(IfErrorInCondition) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(if (+ 1) 1 2)"), contextBindings));
 }
