@@ -55,5 +55,20 @@ Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
 }
 
 Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
-	return Nil();
+	Term * condItem = 0, * condition = 0;
+	List condItemArguments = 0;
+	while (condItem = IterateList(&arguments)) {
+		if (terRedex != condItem->tag)
+			return BadSyntax();
+		condItemArguments = condItem->redex;
+		condition = IterateList(&condItemArguments);
+		if (!condition)
+			return BadSyntax();
+		condition = Eval(condition, contextBindings);
+		if (terError == condition->tag)
+			return condition;
+		if (IsTrue(condition))
+			return condItemArguments ? EvalList(condItemArguments, contextBindings) : condition;
+	}
+	return Empty();
 }

@@ -8,3 +8,4 @@ Term * InvalidClosingBracket();
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 Term * FunctionError(List arguments);
+Term * BadSyntax();

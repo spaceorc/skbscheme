@@ -16,6 +16,10 @@ Term * InvalidArgumentType() {
 	return Error(LimitedStrFromConstantStr("Invalid argument type"));
 }
 
+Term * BadSyntax() {
+	return Error(LimitedStrFromConstantStr("Bad syntax"));
+}
+
 Term * FunctionError(List arguments) {
 	Term * message = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &message, &error) < 0)

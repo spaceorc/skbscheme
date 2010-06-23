@@ -12,4 +12,5 @@ extern "C" {
 #include "Parser.h"
 #include "Definitions.h"
 #include "Boolean.h"
+#include "Error.h"
 }
