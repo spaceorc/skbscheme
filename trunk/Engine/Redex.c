@@ -5,7 +5,7 @@
 #include "Number.h"
 #include "Pair.h"
 #include "Definitions.h"
-#include "Conditionals.h"
+#include "Boolean.h"
 #include "Memory.h"
 #include "Error.h"
 
