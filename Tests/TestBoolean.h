@@ -69,4 +69,32 @@ TEST(IfErrorInCondition) {
 TEST(Cond) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 1))"), contextBindings));
+	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 2 1))"), contextBindings));
+	AssertEq(Number(2), Eval(ParseSingle("(cond (#f 1) (#t 2))"), contextBindings));
+	AssertEq(Empty(), Eval(ParseSingle("(cond (#f 1) (#f 2))"), contextBindings));
+	AssertEq(Number(1), Eval(ParseSingle("(cond (1))"), contextBindings));
+}
+
+TEST(CondErrorInCondition) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(cond ((+ 1) 1))"), contextBindings));
+}
+
+TEST(CondBadSyntax) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#f 1) 2)"), contextBindings));
+	AssertEq(BadSyntax(), Eval(ParseSingle("(cond ())"), contextBindings));
+	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#t 1) 2)"), contextBindings)); // todo plt says "bad syntax" ???
+}
+
+TEST(CondElse) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(1), Eval(ParseSingle("(cond (else 1))"), contextBindings));
+	AssertEq(Number(3), Eval(ParseSingle("(cond (#f 1) (#f 2) (else 3))"), contextBindings));
+}
+
+TEST(CondElseBadSyntax) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#f 1) (else))"), contextBindings));
+	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#t 1) (else 3) (#t 4))"), contextBindings)); // todo plt says "bad syntax" ???
 }
