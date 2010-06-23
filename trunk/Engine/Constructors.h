@@ -17,3 +17,4 @@ Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
 Term * LazyFunction(LazyFunctionPtr lazyFunction);
 Term * DefineFunction(List formalArguments, List body, ContextBindings * context);
 Term * Empty();
+Term * Character(Chr character);

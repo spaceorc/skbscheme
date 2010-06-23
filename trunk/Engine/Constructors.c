@@ -77,3 +77,9 @@ Term * DefineFunction(List formalArguments, List body, ContextBindings * context
 Term * Empty() {
 	return AllocateTerm(terEmpty);
 }
+
+Term * Character(Chr character) {
+	Term * result = AllocateTerm(terCharacter);
+	result->character = character;
+	return result;
+}

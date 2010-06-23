@@ -14,6 +14,7 @@
 #define terDefinedFunction 9
 #define terEmpty 10
 #define terBoolean 11
+#define terCharacter 12
 
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
@@ -54,6 +55,7 @@ struct structTerm {
 		LazyFunctionPtr lazyFunction;
 		DefinedFunction definedFunction;
 		int boolean;
+		Chr character;
 	};
 };
 

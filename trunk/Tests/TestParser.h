@@ -89,3 +89,8 @@ TEST(ParseRedexContainingNestedRedexes) {
 	nested->redex = MakeList(1, Number(1));
 	AssertEq(expected, was);
 }
+
+TEST(ParseCharacter) {
+	ParserContext * context = AcquireParserContext();
+	AssertEq(Character('x'), Parse(BuildToken(tokSymbol, STR("#\\x")), &context));
+}
