@@ -1,3 +1,5 @@
+#include <stdarg.h>
+
 #include "Constructors.h"
 #include "Memory.h"
 
@@ -30,6 +32,32 @@ Term * Error(LimitedStr str) {
 
 Term * Nil() {
 	return AllocateTerm(terNil);
+}
+
+List MakeListFromArray(unsigned int count, Term * terms[]) {
+	List result = 0;
+	Pair * iterator = 0;
+	unsigned int i = 0;
+	while (i < count)
+		result = AppendList(result, &iterator, terms[i++]);
+	return result;
+}
+
+List MakeList(unsigned int count, ...) {
+	List result = 0;
+	Pair * iterator = 0;
+	unsigned int i = 0;
+	va_list listPointer;
+	va_start(listPointer, count);
+	while(i++ < count)
+		result = AppendList(result, &iterator, va_arg(listPointer, Term *));
+	return result;
+}
+
+Term * Redex(List redex) {
+	Term * result = AllocateTerm(terRedex);
+	result->redex = redex;
+	return result;
 }
 
 Term * ConstantStringFromConstantStr(ConstantStr str) {
