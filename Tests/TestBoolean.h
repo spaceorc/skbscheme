@@ -65,3 +65,8 @@ TEST(IfErrorInCondition) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(if (+ 1) 1 2)"), contextBindings));
 }
+
+TEST(Cond) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 1))"), contextBindings));
+}

@@ -53,3 +53,7 @@ Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
 		return Eval(args[1], contextBindings);
 	return Eval(args[2], contextBindings);
 }
+
+Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
+	return Nil();
+}

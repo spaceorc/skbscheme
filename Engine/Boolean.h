@@ -9,3 +9,4 @@ int IsFalse(Term * term);
 Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings);
 Term * LazyFunctionOr(List arguments, ContextBindings * contextBindings);
 Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings);
+Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings);
