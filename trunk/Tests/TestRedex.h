@@ -45,8 +45,8 @@ Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction));
-	Term * a = MakeRedex(3, Function(OperatorPlus), Number(1), Number(2));
-	Term * b = MakeRedex(2, SymbolFromConstantStr(STR("lalala")), a);
+	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
+	Term * b = Redex(MakeList(2, SymbolFromConstantStr(STR("lalala")), a));
 	AssertEq(Number(5), Eval(b, contextBindings));
 }
 

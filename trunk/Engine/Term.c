@@ -7,7 +7,7 @@
 Term * IterateList(List * iterator) {
 	Term * first;
 	Term * next;
-	if (*iterator == 0)
+	if (0 == *iterator)
 		return 0;
 	first = (*iterator)->first;
 	next = (*iterator)->second;
@@ -18,6 +18,21 @@ Term * IterateList(List * iterator) {
 		*iterator = next->pair;
 	}
 	return first;
+}
+
+List AppendList(List list, Pair ** iterator, Term * term) {
+	Pair * current = (*iterator);
+	Pair * next = AllocatePair();
+	next->first = term;
+	next->second = Nil();
+	if (0 != current) {
+		current->second = AllocateTerm(terPair);
+		current->second->pair = next;
+	}
+	*iterator = next;
+	if (0 == list)
+		return next;
+	return list;
 }
 
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {

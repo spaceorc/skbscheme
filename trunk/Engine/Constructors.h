@@ -7,7 +7,9 @@ Term * Function(FunctionPtr function);
 Term * InternalCons(Term * first, Term * second);
 Term * Error(LimitedStr str);
 Term * Nil();
-// Redex
+List MakeListFromArray(unsigned int count, Term * terms[]);
+List MakeList(unsigned int count, ...);
+Term * Redex(List redex);
 Term * ConstantStringFromConstantStr(ConstantStr str);
 Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str);
 Term * ConstantString(LimitedStr str);

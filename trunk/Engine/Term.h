@@ -70,6 +70,7 @@ Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 
 Term * IterateList(List * iterator);
+List AppendList(List list, Pair ** iterator, Term * term);
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)

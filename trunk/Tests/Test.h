@@ -1,8 +1,6 @@
 #pragma once
 
 #include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
 #include <assert.h>
 
 #include "Engine.h"
@@ -91,48 +89,6 @@ void TestFixture::RunTests() {
 #define CONCAT2(x,y) x##y
 #define CONCAT(x,y) CONCAT2(x,y)
 #define TEST(x) void CONCAT(Test,x)(); TestFixture CONCAT(testFixture,__COUNTER__)(CONCAT(Test,x), #x); void CONCAT(Test,x)()
-
-List MakeList(int argc, ...) {
-	va_list listPointer;
-	va_start(listPointer, argc);
-	List result = 0;
-	Pair * current = 0;
-	for(int i = 0; i < argc; i++) {
-		Pair * next = AllocatePair();
-		next->first = va_arg(listPointer, Term *);
-		next->second = Nil();
-		if (current != 0) {
-			current->second = AllocateTerm(terPair);
-			current->second->pair = next;
-		}
-		current = next;
-		if (result == 0)
-			result = current;
-	}
-	return result;
-}
-
-Term * MakeRedex(int argc, ...) {
-	va_list listPointer;
-	va_start(listPointer, argc);
-	List result = 0;
-	Pair * current = 0;
-	for(int i = 0; i < argc; i++) {
-		Pair * next = AllocatePair();
-		next->first = va_arg(listPointer, Term *);
-		next->second = Nil();
-		if (current != 0) {
-			current->second = AllocateTerm(terPair);
-			current->second->pair = next;
-		}
-		current = next;
-		if (result == 0)
-			result = current;
-	}
-	Term * term = AllocateTerm(terRedex);
-	term->redex = result;
-	return term;
-}
 
 Term * ParseSingle(const char * expression) {
 	Token token;
