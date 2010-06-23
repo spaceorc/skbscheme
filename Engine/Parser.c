@@ -4,17 +4,12 @@
 #include "Number.h"
 #include "Dictionary.h"
 #include "Memory.h"
+#include "Error.h"
 
 Term * ParseTerm(LimitedStr symbol) {
 	if (IsNumber(symbol))
 		return ParseNumber(symbol);
 	return Symbol(symbol);
-}
-
-Term * InvalidClosingBracket() {
-	Term * result = AllocateTerm(terError);
-	result->message = LimitedStrFromConstantStr("Invalid closing bracket");
-	return result;
 }
 
 Term * Parse(Token token, ParserContext ** context) {

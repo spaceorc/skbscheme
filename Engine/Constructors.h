@@ -5,7 +5,7 @@
 Term * Number(int number);
 Term * Function(FunctionPtr function);
 Term * InternalCons(Term * first, Term * second);
-// Error
+Term * Error(LimitedStr str);
 Term * Nil();
 // Redex
 Term * ConstantStringFromConstantStr(ConstantStr str);

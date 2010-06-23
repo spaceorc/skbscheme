@@ -2,18 +2,7 @@
 
 #include "Term.h"
 #include "Memory.h"
-
-Term * InvalidArgumentCount() {
-	Term * result = AllocateTerm(terError);
-	result->message = LimitedStrFromConstantLimitedStr(LimitConstantStr("Invalid argument count"));
-	return result;
-}
-
-Term * InvalidArgumentType() {
-	Term * result = AllocateTerm(terError);
-	result->message = LimitedStrFromConstantLimitedStr(LimitConstantStr("Invalid argument type"));
-	return result;
-}
+#include "Error.h"
 
 Term * IterateList(List * iterator) {
 	Term * first;
