@@ -11,8 +11,8 @@
 
 ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError};
-ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda"};
-LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda};
+ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if"};
+LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf};
 ConstantStr globalConstantNames [] = {"#t", "#f", "null"};
 CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil};
 
