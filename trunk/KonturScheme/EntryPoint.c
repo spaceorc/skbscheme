@@ -47,7 +47,7 @@ int InternalWrite(FILE * file, Term * term) {
 			fprintf(file, "()");
 			break;
 		case terError:
-			fprintf(file, "error: %s", term->message);
+			fprintf(file, "error: %.*s", term->message.size, term->message.str);
 			break;
 		case terFunction:
 		case terLazyFunction:

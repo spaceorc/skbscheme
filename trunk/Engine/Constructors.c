@@ -22,6 +22,12 @@ Term * InternalCons(Term * first, Term * second) {
 	return result;
 }
 
+Term * Error(LimitedStr str) {
+	Term * result = AllocateTerm(terError);
+	result->message = str;
+	return result;
+}
+
 Term * Nil() {
 	return AllocateTerm(terNil);
 }

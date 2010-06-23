@@ -7,9 +7,10 @@
 #include "Definitions.h"
 #include "Conditionals.h"
 #include "Memory.h"
+#include "Error.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr"};
-FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda};
 ConstantStr globalConstantNames [] = {"#t", "#f", "null"};
@@ -29,12 +30,6 @@ ContextBindings * AcquireContextBindings() {
 	assert((sizeof(globalConstantFunctionPointers)/sizeof(globalConstantFunctionPointers[0])) == lenConstants);
 	while (lenConstants-- > 0)
 		result->dictionary = InternalSetConstantStr(result->dictionary, globalConstantNames[lenConstants], (globalConstantFunctionPointers[lenConstants])());
-	return result;
-}
-
-Term * InvalidSymbol(LimitedStr symbol) {
-	Term * result = AllocateTerm(terError);
-	result->message = ConcatenateConstantLimitedStr(LimitConstantStr("invalid symbol "), ConstLimitedStr(symbol));
 	return result;
 }
 
