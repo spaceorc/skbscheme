@@ -176,23 +176,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Boolean.c"
-				>
-			</File>
-			<File
 				RelativePath=".\Constructors.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Definitions.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Dictionary.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Error.c"
 				>
 			</File>
 			<File
@@ -200,19 +184,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Number.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Pair.c"
-				>
-			</File>
-			<File
 				RelativePath=".\Parser.c"
-				>
-			</File>
-			<File
-				RelativePath=".\Redex.c"
 				>
 			</File>
 			<File
@@ -227,6 +199,38 @@
 				RelativePath=".\Tokenizer.c"
 				>
 			</File>
+			<Filter
+				Name="Term"
+				>
+				<File
+					RelativePath=".\Boolean.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Definitions.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Dictionary.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Error.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Number.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Pair.c"
+					>
+				</File>
+				<File
+					RelativePath=".\Redex.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -234,15 +238,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Boolean.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Constructors.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Definitions.h"
 				>
 			</File>
 			<File
@@ -250,27 +246,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Error.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Memory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Number.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Pair.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Parser.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Redex.h"
 				>
 			</File>
 			<File
@@ -285,6 +265,34 @@
 				RelativePath=".\Tokenizer.h"
 				>
 			</File>
+			<Filter
+				Name="Term"
+				>
+				<File
+					RelativePath=".\Boolean.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Definitions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Error.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Number.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Pair.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Redex.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
