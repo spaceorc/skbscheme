@@ -1,7 +1,7 @@
 #include <assert.h>
 
 #include "Number.h"
-#include "Conditionals.h"
+#include "Boolean.h"
 
 Term * OperatorPlus(List arguments) {
 	Term * current = 0;
