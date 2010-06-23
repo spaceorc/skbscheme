@@ -23,28 +23,33 @@ int IsFalse(Term * term) {
 }
 
 Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {0, 0}, * error = 0, * first;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	if (IsTrue(Eval(args[0], contextBindings)))
-		return Eval(args[1], contextBindings);
-	return False();
+	first = Eval(args[0], contextBindings);
+	if (terError == first->tag || IsFalse(first))
+		return first;
+	return Eval(args[1], contextBindings);
 }
 
 Term * LazyFunctionOr(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {0, 0}, * error = 0, * first;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	if (IsFalse(Eval(args[0], contextBindings)))
-		return Eval(args[1], contextBindings);
-	return True();
+	first = Eval(args[0], contextBindings);
+	if (terError == first->tag || IsTrue(first))
+		return first;
+	return Eval(args[1], contextBindings);
 }
 
 Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0, 0}, * error = 0;
+	Term * args[] = {0, 0, 0}, * error = 0, * condition;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	if (IsTrue(Eval(args[0], contextBindings)))
+	condition = Eval(args[0], contextBindings);
+	if (terError == condition->tag)
+		return condition;
+	if (IsTrue(condition))
 		return Eval(args[1], contextBindings);
 	return Eval(args[2], contextBindings);
 }
