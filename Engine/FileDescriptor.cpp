@@ -56,7 +56,7 @@ Term * FunctionRead(List arguments) {
 	str = AllocateLimitedStr(args[1]->number);
 	size = read(args[0]->fildes, str.str, str.size);
 	if (size < 0)
-		RaisePosixError(errno);
+		return RaisePosixError(errno);
 	str.size = size;
 	return ConstantString(str);
 }
@@ -72,7 +72,7 @@ Term * FunctionWrite(List arguments) {
 		return InvalidArgumentType();
 	size = write(args[0]->fildes, args[1]->constantString.str, args[1]->constantString.size);
 	if (size < 0)
-		RaisePosixError(errno);
+		return RaisePosixError(errno);
 	return Number(size);
 }
 
