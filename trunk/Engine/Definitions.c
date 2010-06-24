@@ -3,6 +3,7 @@
 #include "Definitions.h"
 #include "Dictionary.h"
 #include "Memory.h"
+#include "Error.h"
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 	ContextBindings * childContextBindings = 0;

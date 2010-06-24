@@ -39,6 +39,9 @@ int InternalWrite(FILE * file, Term * term) {
 		case terNumber:
 			fprintf(file, "%d", term->number);
 			break;
+		case terFileDescriptor:
+			fprintf(file, "%d", term->fildes);
+			break;
 		case terCharacter:
 			fprintf(file, "%c", (int)term->character);
 			break;

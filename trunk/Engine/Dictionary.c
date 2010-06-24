@@ -1,4 +1,5 @@
 #include "Dictionary.h"
+#include "Error.h"
 
 Term * InternalFindConstantStr(List dictionary, ConstantStr key) {
 	return InternalFindConstantLimitedStr(dictionary, LimitConstantStr(key));

@@ -111,3 +111,9 @@ Term * Character(Chr character) {
 	result->character = character;
 	return result;
 }
+
+Term * FileDescriptor(int fildes) {
+	Term * result = AllocateTerm(terFileDescriptor);
+	result->fildes = fildes;
+	return result;
+}

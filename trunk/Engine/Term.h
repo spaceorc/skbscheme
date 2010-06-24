@@ -15,6 +15,7 @@
 #define terEmpty 10
 #define terBoolean 11
 #define terCharacter 12
+#define terFileDescriptor 13
 
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
@@ -56,6 +57,7 @@ struct structTerm {
 		DefinedFunction definedFunction;
 		int boolean;
 		Chr character;
+		int fildes;
 	};
 };
 
