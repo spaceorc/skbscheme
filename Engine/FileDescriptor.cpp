@@ -8,6 +8,8 @@
 #include "Constructors.h"
 #include "Error.h"
 
+// todo functional tests required
+
 // warning C4996: 'open': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
 // warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
 // warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
@@ -70,6 +72,8 @@ Term * InternalWrite(int fildes, LimitedStr str) {
 	return Number(size);
 }
 
+#pragma warning(default:4996)
+
 Term * InternalWriteConstantStr(int fildes, ConstantStr str) {
 	return InternalWrite(fildes, LimitedStrFromConstantStr(str));
 }
@@ -90,8 +94,10 @@ Term * InternalWriteTerm(int fildes, Term * term) {
 			sprintf_s(buffer, 1024, "#\\%c\n", (int)term->character);
 			break;
 		case terSymbol:
+			sprintf_s(buffer, 1024, "%.*s\n", term->symbol.size, term->symbol.str);
+			break;
 		case terConstantString:
-			sprintf_s(buffer, 1024, "\"%.*s\"\n", term->symbol.size, term->symbol.str);
+			sprintf_s(buffer, 1024, "\"%.*s\"\n", term->constantString.size, term->constantString.str);
 			break;
 		case terEmpty:
 			return Empty();
@@ -188,6 +194,3 @@ Term * InternalWritePair(int fildes, Pair * pair) {
 		return term;
 	return Empty();
 }
-
-
-#pragma warning(default:4996)

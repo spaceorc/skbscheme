@@ -13,4 +13,5 @@ extern "C" {
 #include "Definitions.h"
 #include "Boolean.h"
 #include "Error.h"
+#include "Library.h"
 }
