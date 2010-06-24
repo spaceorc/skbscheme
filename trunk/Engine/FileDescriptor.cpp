@@ -15,6 +15,7 @@
 
 Term * FunctionOpen(List arguments) {
 	Term * args[] = {0, 0, 0}, * error = 0;
+	LimitedStr filename;
 	int fd;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
@@ -24,9 +25,10 @@ Term * FunctionOpen(List arguments) {
 		return InvalidArgumentType();
 	if (terNumber != args[2]->tag)
 		return InvalidArgumentType();
-	fd = open(args[0]->constantString.str, args[1]->number, args[2]->number);
+	filename = DeepCopy(args[0]->constantString);
+	fd = open(filename.str, args[1]->number, args[2]->number);
 	if (fd < 0)
-		RaisePosixError(errno);
+		return RaisePosixError(errno);
 	return FileDescriptor(fd);
 }
 
@@ -72,6 +74,18 @@ Term * FunctionWrite(List arguments) {
 	if (size < 0)
 		RaisePosixError(errno);
 	return Number(size);
+}
+
+Term * StdIn() {
+	return FileDescriptor(0);
+}
+
+Term * StdOut() {
+	return FileDescriptor(1);
+}
+
+Term * StdErr() {
+	return FileDescriptor(2);
 }
 
 #pragma warning(default:4996)

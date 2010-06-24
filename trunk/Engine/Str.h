@@ -31,3 +31,4 @@ Chr CurrentChr(LimitedStr * str);
 LimitedStr AllocateLimitedStr(unsigned int size);
 LimitedStr LimitedStrFromConstantStr(ConstantStr str);
 LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str);
+LimitedStr DeepCopy(LimitedStr str);

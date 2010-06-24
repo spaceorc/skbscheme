@@ -88,3 +88,7 @@ LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 	*to = 0;
 	return result;
 }
+
+LimitedStr DeepCopy(LimitedStr str) {
+	return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
+}
