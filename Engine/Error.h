@@ -9,3 +9,4 @@ Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 Term * FunctionError(List arguments);
 Term * BadSyntax();
+Term * RaisePosixError(int errorNumber);

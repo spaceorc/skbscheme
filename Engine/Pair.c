@@ -2,6 +2,7 @@
 
 #include "Pair.h"
 #include "Memory.h"
+#include "Error.h"
 
 Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;

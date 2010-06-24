@@ -129,6 +129,8 @@ const char * DumpTag(int tag) {
 			return "Boolean";
 		case terCharacter:
 			return "Character";
+		case terFileDescriptor:
+			return "File descriptor";
 		default:
 			assert(0);
 			return 0;
@@ -189,6 +191,12 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 		case terNumber:
 			if (expected->number != was->number) {
 				sprintf_s(message, "expected number %d, but was number %d", expected->number, was->number);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
+		case terFileDescriptor:
+			if (expected->fildes != was->fildes) {
+				sprintf_s(message, "expected file descriptor %d, but was file descriptor %d", expected->number, was->number);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;

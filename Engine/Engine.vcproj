@@ -223,6 +223,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\FileDescriptor.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Number.c"
 					>
 				</File>
@@ -286,6 +290,10 @@
 				</File>
 				<File
 					RelativePath=".\Error.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FileDescriptor.h"
 					>
 				</File>
 				<File
