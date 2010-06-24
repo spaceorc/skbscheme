@@ -8,13 +8,14 @@
 #include "Boolean.h"
 #include "Memory.h"
 #include "Error.h"
+#include "FileDescriptor.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error"};
-FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "open-file", "close-file", "read-file", "write-file"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
-ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else"};
-CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True};
+ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "stdin", "stdout", "stderr"};
+CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True, StdIn, StdOut, StdErr};
 
 ContextBindings * AcquireContextBindings() {
 	ContextBindings * result = AllocateContextBindings(0);
