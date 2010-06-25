@@ -9,11 +9,11 @@
 #include "Boolean.h"
 #include "Dictionary.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "open-file", "close-file", "read-file", "write-file", "write-term-to-file"};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
-ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "stdin", "stdout", "stderr"};
+ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "posix-stdin", "posix-stdout", "posix-stderr"};
 CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True, StdIn, StdOut, StdErr};
 
 ContextBindings * AcquireContextBindings() {
