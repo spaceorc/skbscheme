@@ -84,7 +84,7 @@ TEST(CondBadSyntax) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#f 1) 2)"), contextBindings));
 	AssertEq(BadSyntax(), Eval(ParseSingle("(cond ())"), contextBindings));
-	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#t 1) 2)"), contextBindings)); // todo plt says "bad syntax" ???
+	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 1) 2)"), contextBindings)); // todo plt says "bad syntax" ???
 }
 
 TEST(CondElse) {
@@ -95,6 +95,6 @@ TEST(CondElse) {
 
 TEST(CondElseBadSyntax) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#f 1) (else))"), contextBindings));
-	AssertEq(BadSyntax(), Eval(ParseSingle("(cond (#t 1) (else 3) (#t 4))"), contextBindings)); // todo plt says "bad syntax" ???
+	AssertEq(True(), Eval(ParseSingle("(cond (#f 1) (else))"), contextBindings)); // todo plt says "bad syntax" ???
+	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 1) (else 3) (#t 4))"), contextBindings)); // todo plt says "bad syntax" ???
 }
