@@ -13,15 +13,18 @@ int main() {
 		Term * str = 0;
 		Token token;
 		if (CanFinishParsing(context))
-			printf("> ");
+			printf("\n> ");
 		str = FunctionRead(MakeList(2, StdIn(), Number(1024)));
 		if (terConstantString != str->tag)
 			return 0;
 		while (tokEnd != (token = GetToken(&(str->constantString))).tag) {
 			Term * term = Parse(token, &context);
 			if (0 != term) {
-				if (terEmpty != FunctionWriteTerm(MakeList(2, StdOut(), Eval(term, contextBindings)))->tag)
-					return 0;
+				Term * fileDescriptor = StdOut();
+				if (terError == term->tag)
+					fileDescriptor = StdErr();
+				if (terEmpty != FunctionWriteTerm(MakeList(2, fileDescriptor, Eval(term, contextBindings)))->tag)
+					return 0;			
 			}
 		}
 	}

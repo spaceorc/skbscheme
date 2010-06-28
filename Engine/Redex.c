@@ -42,11 +42,8 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 Term * EvalList(List list, ContextBindings * contextBindings) {
 	Term * result = 0;
 	Term * i = 0;
-	while(i = IterateList(&list)) {
-		result = Eval(i, contextBindings);
-		if (terError == result->tag)
-			break;
-	}
+	while(i = IterateList(&list))
+		EvalTermAndCheckError(result, i, contextBindings);
 	if (!result)
 		return InvalidArgumentCount();
 	return result;
@@ -59,8 +56,7 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, Con
 		argument = IterateList(&arguments);
 		if (!argument)
 			return InvalidArgumentCount();
-		if (formalArgument->tag != terSymbol)
-			return InvalidArgumentType();
+		CheckTermType(formalArgument, terSymbol);
 		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
 	}
 	if (IterateList(&arguments))

@@ -11,21 +11,16 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 	List letsList = 0;
 	if (!(lets = IterateList(&arguments)))
 		return InvalidArgumentCount();
-	if (terRedex != lets->tag)
-		return InvalidArgumentType();
+	CheckTermType(lets, terRedex);
 	letsList = lets->redex;
 	childContextBindings = AllocateContextBindings(contextBindings);
 	while (current = IterateList(&letsList)) {
 		Term * value = 0, * let[] = {0, 0}, * error;
-		if (terRedex != current->tag)
-			return InvalidArgumentType();
+		CheckTermType(current, terRedex);
 		if (TakeSeveralArguments(current->redex, let, &error) < 0)
 			return error;
-		if (terSymbol != let[0]->tag)
-			return InvalidArgumentType();
-		value = Eval(let[1], contextBindings);
-		if (value->tag == terError)
-			return value;
+		CheckTermType(let[0], terSymbol);
+		EvalTermAndCheckError(value, let[1], contextBindings);
 		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, let[0]->symbol, value);
 	}
 	return EvalList(arguments, childContextBindings);
@@ -36,8 +31,7 @@ Term * InternalDefineFunction(List definition, List body, ContextBindings * cont
 	Term * second = 0;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
-	if (terSymbol != name->tag)
-		return InvalidArgumentType();
+	CheckTermType(name, terSymbol);
 	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, DefineFunction(definition, body, contextBindings));
 	return Empty();
 }
@@ -53,9 +47,7 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 				return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (missing expression after identifier)"
 			if (IterateList(&arguments))
 				return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
-			value = Eval(value, contextBindings);
-			if (terError == value->tag)
-				return value;
+			EvalTermAndCheckError(value, value, contextBindings);
 			contextBindings->dictionary = InternalSet(contextBindings->dictionary, prototype->symbol, value);
 			return Empty();
 		case terRedex:
@@ -71,11 +63,9 @@ Term * LazyFunctionLambda(List arguments, ContextBindings * contextBindings) {
 	Term * prototype = IterateList(&arguments);
 	if (!prototype)
 		return InvalidArgumentCount();
-	if (terError == prototype->tag)
-		return prototype;
-	if (terRedex != prototype->tag)
-		return InvalidArgumentType();
 	if (!arguments)
 		return InvalidArgumentCount(); // todo ??? plt says this: "lambda: bad syntax"
+	CheckErrorTerm(prototype);
+	CheckTermType(prototype, terRedex);
 	return DefineFunction(prototype->redex, arguments, contextBindings);
 }
