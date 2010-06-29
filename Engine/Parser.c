@@ -4,7 +4,7 @@
 #include "Number.h"
 #include "Character.h"
 #include "Dictionary.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Error.h"
 
 Term * ParseTerm(LimitedStr symbol) {

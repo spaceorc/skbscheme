@@ -1,7 +1,7 @@
 #include <assert.h>
 
 #include "Redex.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Error.h"
 #include "Dictionary.h"
 

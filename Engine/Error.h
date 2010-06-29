@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Term.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 
 Term * InvalidSymbol(LimitedStr symbol);
 Term * InvalidClosingBracket();

@@ -2,7 +2,7 @@
 #include <memory.h>
 #include <assert.h>
 
-#include "Memory.h"
+#include "MemoryManager.h"
 
 Term * AllocateTerm(int tag) {
 	Term * result = malloc(sizeof(Term));

@@ -7,6 +7,7 @@
 #include "TestParser.h"
 #include "TestDefinitions.h"
 #include "TestBoolean.h"
+#include "TestEvaluation.h"
 #include <stdio.h>
 
 void main() {
