@@ -171,7 +171,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Memory.c"
+				RelativePath=".\MemoryManager.c"
 				>
 			</File>
 			<File
@@ -230,6 +230,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Evaluation"
+				>
+				<File
+					RelativePath=".\Evaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\RedexEvaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\TermEvaluation.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -249,7 +265,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Memory.h"
+				RelativePath=".\MemoryManager.h"
 				>
 			</File>
 			<File
@@ -301,6 +317,22 @@
 				</File>
 				<File
 					RelativePath=".\Redex.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Evaluation"
+				>
+				<File
+					RelativePath=".\Evaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RedexEvaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TermEvaluation.h"
 					>
 				</File>
 			</Filter>

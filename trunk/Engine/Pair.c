@@ -1,7 +1,7 @@
 #include <assert.h>
 
 #include "Pair.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Error.h"
 
 Term * FunctionCons(List arguments) {

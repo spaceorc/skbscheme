@@ -1,5 +1,5 @@
 #include "Str.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 
 int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second) {
 	Chr a, b;

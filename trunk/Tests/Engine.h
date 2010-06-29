@@ -3,7 +3,7 @@
 extern "C" {
 #include "Str.h"
 #include "Term.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Tokenizer.h"
 #include "Number.h"
 #include "Pair.h"
@@ -14,4 +14,5 @@ extern "C" {
 #include "Boolean.h"
 #include "Error.h"
 #include "Library.h"
+#include "Evaluation.h"
 }

@@ -1,5 +1,5 @@
 #include "Boolean.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Redex.h"
 #include "Error.h"
 

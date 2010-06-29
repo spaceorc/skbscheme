@@ -1,7 +1,7 @@
 #include <stdarg.h>
 
 #include "Constructors.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 
 Term * Number(int number) {
 	Term * result = AllocateTerm(terNumber);

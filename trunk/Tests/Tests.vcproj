@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestEvaluation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestNumber.h"
 				>
 			</File>

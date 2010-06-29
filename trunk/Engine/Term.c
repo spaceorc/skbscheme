@@ -1,7 +1,7 @@
 #include <assert.h>
 
 #include "Term.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Error.h"
 
 Term * IterateList(List * iterator) {
