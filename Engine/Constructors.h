@@ -17,7 +17,7 @@ Term * Symbol(LimitedStr str);
 Term * SymbolFromConstantStr(ConstantStr str);
 Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
 Term * LazyFunction(LazyFunctionPtr lazyFunction);
-Term * DefineFunction(List formalArguments, List body, ContextBindings * context);
+Term * MakeLambda(List formalArguments, List body, ContextBindings * context);
 Term * Empty();
 Term * Character(Chr character);
 Term * FileDescriptor(int fildes);

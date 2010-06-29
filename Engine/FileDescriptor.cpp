@@ -113,7 +113,7 @@ Term * InternalWriteTerm(int fildes, Term * term) {
 		case terLazyFunction:
 			sprintf_s(buffer, 1024, "lazy function\n");
 			break;
-		case terDefinedFunction:
+		case terLambda:
 			sprintf_s(buffer, 1024, "function\n");
 			break;
 		case terBoolean:

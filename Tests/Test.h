@@ -121,8 +121,8 @@ const char * DumpTag(int tag) {
 			return "Symbol";
 		case terLazyFunction:
 			return "Lazy function";
-		case terDefinedFunction:
-			return "Defined function";
+		case terLambda:
+			return "Lambda";
 		case terEmpty:
 			return "Empty";
 		case terBoolean:
