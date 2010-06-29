@@ -94,11 +94,11 @@ Term * LazyFunction(LazyFunctionPtr lazyFunction) {
 	return result;
 }
 
-Term * DefineFunction(List formalArguments, List body, ContextBindings * context) {
-	Term * result = AllocateTerm(terDefinedFunction);
-	result->definedFunction.formalArguments = formalArguments;
-	result->definedFunction.body = body;
-	result->definedFunction.context = context;
+Term * MakeLambda(List formalArguments, List body, ContextBindings * context) {
+	Term * result = AllocateTerm(terLambda);
+	result->lambda.formalArguments = formalArguments;
+	result->lambda.body = body;
+	result->lambda.context = context;
 	return result;
 }
 

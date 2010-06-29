@@ -49,10 +49,10 @@ Term * EvalList(List list, ContextBindings * contextBindings) {
 	return result;
 }
 
-Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, ContextBindings * contextBindings) {
+Term * EvalLambda(Lambda lambda, List arguments, ContextBindings * contextBindings) {
 	Term * formalArgument = 0, * argument = 0;
-	ContextBindings * childContextBindings = AllocateContextBindings(definedFunction.context);
-	while(formalArgument = IterateList(&definedFunction.formalArguments)) {
+	ContextBindings * childContextBindings = AllocateContextBindings(lambda.context);
+	while(formalArgument = IterateList(&lambda.formalArguments)) {
 		argument = IterateList(&arguments);
 		if (!argument)
 			return InvalidArgumentCount();
@@ -61,7 +61,7 @@ Term * DefinedFunctionApply(DefinedFunction definedFunction, List arguments, Con
 	}
 	if (IterateList(&arguments))
 		return InvalidArgumentCount();
-	return EvalList(definedFunction.body, childContextBindings);
+	return EvalList(lambda.body, childContextBindings);
 }
 
 Term * InternalApply(List arguments, ContextBindings * contextBindings) {
@@ -76,10 +76,10 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 			return function->function(arguments);
 		case terLazyFunction:
 			return function->lazyFunction(arguments, contextBindings);
-		case terDefinedFunction:
+		case terLambda:
 			if (!EvalArguments(&arguments, contextBindings, &error))
 				return error;
-			return DefinedFunctionApply(function->definedFunction, arguments, contextBindings);
+			return EvalLambda(function->lambda, arguments, contextBindings);
 		default:
 			return InvalidArgumentType();
 	}

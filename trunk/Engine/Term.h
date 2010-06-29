@@ -11,7 +11,7 @@
 #define terConstantString 6
 #define terSymbol 7
 #define terLazyFunction 8
-#define terDefinedFunction 9
+#define terLambda 9
 #define terEmpty 10
 #define terBoolean 11
 #define terCharacter 12
@@ -20,7 +20,7 @@
 typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
 typedef struct structContextBindings ContextBindings;
-typedef struct structDefinedFunction DefinedFunction;
+typedef struct structLambda Lambda;
 typedef struct structParserContext ParserContext;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
@@ -36,7 +36,7 @@ struct structContextBindings {
 	ContextBindings * previous;
 };
 
-struct structDefinedFunction {
+struct structLambda {
 	List formalArguments;
 	List body;
 	ContextBindings * context;
@@ -53,7 +53,7 @@ struct structTerm {
 		LimitedStr constantString;
 		LimitedStr symbol;
 		LazyFunctionPtr lazyFunction;
-		DefinedFunction definedFunction;
+		Lambda lambda;
 		int boolean;
 		Chr character;
 		int fildes;

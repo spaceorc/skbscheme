@@ -72,12 +72,12 @@ TEST(DefineFunction) {
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine), ParseSingle("(func p1 p2)"), ParseSingle("(+ p1 p2)")));
 	AssertEq(Empty(), Eval(z, contextBindings));
     Term * func = InternalFindConstantStr(contextBindings->dictionary, STR("func"));
-	AssertTag(terDefinedFunction, func);
-	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->definedFunction.body));
-	AssertThat(0 == IterateList(&func->definedFunction.body));
-	AssertEq(SymbolFromConstantStr(STR("p1")), IterateList(&func->definedFunction.formalArguments));
-	AssertEq(SymbolFromConstantStr(STR("p2")), IterateList(&func->definedFunction.formalArguments));
-	AssertThat(0 == IterateList(&func->definedFunction.formalArguments));
+	AssertTag(terLambda, func);
+	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->lambda.body));
+	AssertThat(0 == IterateList(&func->lambda.body));
+	AssertEq(SymbolFromConstantStr(STR("p1")), IterateList(&func->lambda.formalArguments));
+	AssertEq(SymbolFromConstantStr(STR("p2")), IterateList(&func->lambda.formalArguments));
+	AssertThat(0 == IterateList(&func->lambda.formalArguments));
 }
 
 TEST(DefineWithZeroArguments) {

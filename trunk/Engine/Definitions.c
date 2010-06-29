@@ -32,7 +32,7 @@ Term * InternalDefineFunction(List definition, List body, ContextBindings * cont
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terSymbol);
-	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, DefineFunction(definition, body, contextBindings));
+	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
 	return Empty();
 }
 
@@ -67,5 +67,5 @@ Term * LazyFunctionLambda(List arguments, ContextBindings * contextBindings) {
 		return InvalidArgumentCount(); // todo ??? plt says this: "lambda: bad syntax"
 	CheckErrorTerm(prototype);
 	CheckTermType(prototype, terRedex);
-	return DefineFunction(prototype->redex, arguments, contextBindings);
+	return MakeLambda(prototype->redex, arguments, contextBindings);
 }
