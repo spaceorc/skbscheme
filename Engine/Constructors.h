@@ -16,7 +16,7 @@ Term * ConstantString(LimitedStr str);
 Term * Symbol(LimitedStr str);
 Term * SymbolFromConstantStr(ConstantStr str);
 Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str);
-Term * LazyFunction(LazyFunctionPtr lazyFunction);
+Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext);
 Term * MakeLambda(List formalArguments, List body, ContextBindings * context);
 Term * Empty();
 Term * Character(Chr character);

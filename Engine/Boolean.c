@@ -27,32 +27,32 @@ Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings) {
 	Term * args[] = {0, 0}, * error = 0, * first;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	first = Eval(args[0], contextBindings);
+	first = EvalRecursive(args[0], contextBindings);
 	if (terError == first->tag || IsFalse(first))
 		return first;
-	return Eval(args[1], contextBindings);
+	return EvalRecursive(args[1], contextBindings);
 }
 
 Term * LazyFunctionOr(List arguments, ContextBindings * contextBindings) {
 	Term * args[] = {0, 0}, * error = 0, * first;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	first = Eval(args[0], contextBindings);
+	first = EvalRecursive(args[0], contextBindings);
 	if (terError == first->tag || IsTrue(first))
 		return first;
-	return Eval(args[1], contextBindings);
+	return EvalRecursive(args[1], contextBindings);
 }
 
 Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
 	Term * args[] = {0, 0, 0}, * error = 0, * condition;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	condition = Eval(args[0], contextBindings);
+	condition = EvalRecursive(args[0], contextBindings);
 	if (terError == condition->tag)
 		return condition;
 	if (IsTrue(condition))
-		return Eval(args[1], contextBindings);
-	return Eval(args[2], contextBindings);
+		return EvalRecursive(args[1], contextBindings);
+	return EvalRecursive(args[2], contextBindings);
 }
 
 Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
@@ -65,7 +65,7 @@ Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
 		condition = IterateList(&condItemArguments);
 		if (!condition)
 			return BadSyntax();
-		condition = Eval(condition, contextBindings);
+		condition = EvalRecursive(condition, contextBindings);
 		if (terError == condition->tag)
 			return condition;
 		if (IsTrue(condition))

@@ -15,13 +15,13 @@ Term * Evaluate(EvaluationContextBase * evaluationContext) {
 	while(1) {
 		if (!evaluationContext->result)
 			evaluationContext = evaluationContext->evaluate(evaluationContext);
-		else if (evaluationContext->parent)
-			evaluationContext = evaluationContext->parent->childEvaluated(evaluationContext->parent, evaluationContext->result);
-		else
+		else if (!evaluationContext->parent || terError == evaluationContext->result->tag)
 			return evaluationContext->result;
+		else
+			evaluationContext = evaluationContext->parent->childEvaluated(evaluationContext->parent, evaluationContext->result);
 	}
 }
 
-Term * Eval2(Term * term) {
-	return Evaluate(AcquireTermEvaluationContext(0, AcquireContextBindings(), term));
+Term * EvalIterative(Term * term, ContextBindings * contextBindings) {
+	return Evaluate(AcquireTermEvaluationContext(0, contextBindings, term));
 }

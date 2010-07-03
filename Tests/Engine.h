@@ -15,4 +15,9 @@ extern "C" {
 #include "Error.h"
 #include "Library.h"
 #include "Evaluation.h"
+#include "TermEvaluation.h"
+#include "TermListEvaluation.h"
+#include "RedexEvaluation.h"
+#include "LetEvaluation.h"
+#include "DefineEvaluation.h"
 }

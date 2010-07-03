@@ -26,7 +26,7 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 	return EvalList(arguments, childContextBindings);
 }
 
-Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
+static Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
 	Term * name = IterateList(&definition);
 	Term * second = 0;
 	if (!body)

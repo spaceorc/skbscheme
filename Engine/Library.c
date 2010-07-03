@@ -8,11 +8,15 @@
 #include "Definitions.h"
 #include "Boolean.h"
 #include "Dictionary.h"
+#include "LetEvaluation.h"
+#include "DefineEvaluation.h"
+#include "BooleanEvaluation.h"
 
 ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
+AcquireLazyEvaluationContextPtr globalAcquireLazyEvaluationContextPointers [] = {AcquireLetEvaluationContext, AcquireDefineEvaluationContext, AcquireDefineLambdaEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext};
 ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "posix-stdin", "posix-stdout", "posix-stderr"};
 CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True, StdIn, StdOut, StdErr};
 
@@ -25,8 +29,9 @@ ContextBindings * AcquireContextBindings() {
 	while (lenFunctions-- > 0)
 		result->dictionary = InternalSetConstantStr(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
 	assert((sizeof(globalLazyFunctionPointers)/sizeof(globalLazyFunctionPointers[0])) == lenLazyFunctions);
+	assert((sizeof(globalAcquireLazyEvaluationContextPointers)/sizeof(globalAcquireLazyEvaluationContextPointers[0])) == lenLazyFunctions);
 	while (lenLazyFunctions-- > 0)
-		result->dictionary = InternalSetConstantStr(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions]));	
+		result->dictionary = InternalSetConstantStr(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions], globalAcquireLazyEvaluationContextPointers[lenLazyFunctions]));	
 	assert((sizeof(globalConstantFunctionPointers)/sizeof(globalConstantFunctionPointers[0])) == lenConstants);
 	while (lenConstants-- > 0)
 		result->dictionary = InternalSetConstantStr(result->dictionary, globalConstantNames[lenConstants], (globalConstantFunctionPointers[lenConstants])());

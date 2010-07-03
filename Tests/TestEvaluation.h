@@ -20,7 +20,7 @@ EvaluationContextBase * MockChildEvaluated(EvaluationContextBase * evaluationCon
 	return evaluationContext;
 }
 
-EvaluationContextBase * MockContext() {
+static EvaluationContextBase * MockContext() {
 	expectedEvaluateCallCount = 0;
 	expectedEvaluateResult = 0;
 	EvaluationContextBase * result = (EvaluationContextBase*) malloc(sizeof(*result));
