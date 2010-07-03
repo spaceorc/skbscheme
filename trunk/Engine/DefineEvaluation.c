@@ -1,0 +1,102 @@
+#include "DefineEvaluation.h"
+#include "TermEvaluation.h"
+#include "Error.h"
+#include "Dictionary.h"
+#include <malloc.h>
+#include <memory.h>
+#include <assert.h>
+
+static EvaluationContextBase * DefineChildEvaluated(DefineEvaluationContext * evaluationContext, Term * childResult) {
+	THIS_CONTEXT->contextBindings->dictionary = InternalSet(THIS_CONTEXT->contextBindings->dictionary, evaluationContext->name, childResult);
+	THIS_CONTEXT->result = Empty();
+	return THIS_CONTEXT;
+}
+
+static EvaluationContextBase * DefineLambdaChildEvaluated(DefineLambdaEvaluationContext * evaluationContext, Term * childResult) {
+	assert(0);
+	return 0;
+}
+
+static Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
+	Term * name = IterateList(&definition);
+	Term * second = 0;
+	if (!body)
+		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
+	CheckTermType(name, terSymbol);
+	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
+	return Empty();
+}
+
+static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContext * evaluationContext) {
+	Term * prototype = 0;
+	List arguments = evaluationContext->arguments;
+	if (!(prototype = IterateList(&arguments))) {
+		THIS_CONTEXT->result = InvalidArgumentCount();
+		return THIS_CONTEXT;
+	}
+	if (!arguments) {
+		THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "lambda: bad syntax"
+		return THIS_CONTEXT;
+	} 
+	if (terRedex != prototype->tag) {
+		THIS_CONTEXT->result = InvalidArgumentType();
+		return THIS_CONTEXT;
+	}
+	THIS_CONTEXT->result = MakeLambda(prototype->redex, arguments, THIS_CONTEXT->contextBindings);
+	return THIS_CONTEXT;
+}
+
+static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluationContext) {
+	Term * prototype = 0, * value = 0;
+	List arguments = evaluationContext->arguments;
+	if (!(prototype = IterateList(&arguments))) {
+		THIS_CONTEXT->result = InvalidArgumentCount();
+		return THIS_CONTEXT;
+	}
+	switch(prototype->tag) {
+		case terSymbol:
+			value = IterateList(&arguments);
+			if (!value) {
+				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (missing expression after identifier)"
+				return THIS_CONTEXT;
+			} 
+			if (IterateList(&arguments)) {
+				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
+				return THIS_CONTEXT;
+			}
+			evaluationContext->name = prototype->symbol;
+			return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, value);
+		case terRedex:
+			THIS_CONTEXT->result = InternalDefineFunction(prototype->redex, arguments, THIS_CONTEXT->contextBindings);
+			return THIS_CONTEXT;
+		default: 
+			THIS_CONTEXT->result = InvalidArgumentType();
+			return THIS_CONTEXT;
+	}
+}
+
+DefineEvaluationContext * AllocateDefineEvaluationContext() {
+	DefineEvaluationContext * result = malloc(sizeof(*result));
+	memset(result, 0, sizeof(*result));
+	return result;
+}
+
+DefineLambdaEvaluationContext * AllocateDefineLambdaEvaluationContext() {
+	DefineLambdaEvaluationContext * result = malloc(sizeof(*result));
+	memset(result, 0, sizeof(*result));
+	return result;
+}
+
+EvaluationContextBase * AcquireDefineEvaluationContext(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments) {
+	DefineEvaluationContext * result = AllocateDefineEvaluationContext();
+	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DefineChildEvaluated, (EvaluatePtr) DefineEvaluate);	
+	result->arguments = arguments;
+	return (EvaluationContextBase *) result;
+}
+
+EvaluationContextBase * AcquireDefineLambdaEvaluationContext(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments) {
+	DefineLambdaEvaluationContext * result = AllocateDefineLambdaEvaluationContext();
+	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DefineLambdaChildEvaluated, (EvaluatePtr) DefineLambdaEvaluate);	
+	result->arguments = arguments;
+	return (EvaluationContextBase *) result;
+}

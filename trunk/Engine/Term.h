@@ -21,10 +21,24 @@ typedef struct structTerm Term;
 typedef struct structPair Pair, *List;
 typedef struct structContextBindings ContextBindings;
 typedef struct structLambda Lambda;
+typedef struct structLazy Lazy;
 typedef struct structParserContext ParserContext;
+typedef struct structEvaluationContextBase EvaluationContextBase;
 typedef Term * (*FunctionPtr)(List arguments);
 typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
 typedef Term * (*CreateConstantPtr)();
+
+typedef EvaluationContextBase * (*AcquireLazyEvaluationContextPtr)(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments);
+typedef EvaluationContextBase * (*ChildEvaluatedPtr)(EvaluationContextBase * evaluationContext, Term * childResult);
+typedef EvaluationContextBase * (*EvaluatePtr)(EvaluationContextBase * evaluationContext);
+
+struct structEvaluationContextBase {
+	EvaluationContextBase * parent;
+	Term * result;
+	ChildEvaluatedPtr childEvaluated;
+	EvaluatePtr evaluate;
+	ContextBindings * contextBindings;
+};
 
 struct structParserContext {
 	List redex;
@@ -42,6 +56,11 @@ struct structLambda {
 	ContextBindings * context;
 };
 
+struct structLazy {
+	LazyFunctionPtr function;
+	AcquireLazyEvaluationContextPtr acquireEvaluationContext;
+};
+
 struct structTerm {
 	int tag;
 	union {
@@ -52,7 +71,7 @@ struct structTerm {
 		List redex;
 		LimitedStr constantString;
 		LimitedStr symbol;
-		LazyFunctionPtr lazyFunction;
+		Lazy lazy;
 		Lambda lambda;
 		int boolean;
 		Chr character;
@@ -76,4 +95,4 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 
 #define CheckTermType(term, terTag) if (terTag != term->tag) return InvalidArgumentType()
 #define CheckErrorTerm(term) if (terError == term->tag) return term
-#define EvalTermAndCheckError(variable, expression, bindings) if (terError == (variable = Eval((expression), (bindings)))->tag) return variable
+#define EvalTermAndCheckError(variable, expression, bindings) if (terError == (variable = EvalRecursive((expression), (bindings)))->tag) return variable

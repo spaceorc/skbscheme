@@ -2,6 +2,6 @@
 
 #include "Term.h"
 
-Term * Eval(Term * term, ContextBindings * contextBindings);
+Term * EvalRecursive(Term * term, ContextBindings * contextBindings);
 Term * EvalList(List list, ContextBindings * contextBindings);
 Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol);

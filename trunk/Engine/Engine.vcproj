@@ -234,7 +234,19 @@
 				Name="Evaluation"
 				>
 				<File
+					RelativePath=".\BooleanEvaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\DefineEvaluation.c"
+					>
+				</File>
+				<File
 					RelativePath=".\Evaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\LetEvaluation.c"
 					>
 				</File>
 				<File
@@ -245,6 +257,10 @@
 					RelativePath=".\TermEvaluation.c"
 					>
 				</File>
+				<File
+					RelativePath=".\TermListEvaluation.c"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -252,10 +268,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Constructors.h"
-				>
-			</File>
 			<File
 				RelativePath=".\Dictionary.h"
 				>
@@ -296,6 +308,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Constructors.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Definitions.h"
 					>
 				</File>
@@ -324,7 +340,19 @@
 				Name="Evaluation"
 				>
 				<File
+					RelativePath=".\BooleanEvaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DefineEvaluation.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Evaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\LetEvaluation.h"
 					>
 				</File>
 				<File
@@ -333,6 +361,10 @@
 				</File>
 				<File
 					RelativePath=".\TermEvaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TermListEvaluation.h"
 					>
 				</File>
 			</Filter>

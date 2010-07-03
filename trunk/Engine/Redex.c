@@ -21,7 +21,7 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 	Term * i = 0;
 	while(i = IterateList(arguments)) {
 		Pair * next = AllocatePair();
-		next->first = Eval(i, contextBindings);
+		next->first = EvalRecursive(i, contextBindings);
 		if (terError == next->first->tag) {
 			*error = next->first;
 			return 0;
@@ -49,7 +49,7 @@ Term * EvalList(List list, ContextBindings * contextBindings) {
 	return result;
 }
 
-Term * EvalLambda(Lambda lambda, List arguments, ContextBindings * contextBindings) {
+static Term * EvalLambda(Lambda lambda, List arguments) {
 	Term * formalArgument = 0, * argument = 0;
 	ContextBindings * childContextBindings = AllocateContextBindings(lambda.context);
 	while(formalArgument = IterateList(&lambda.formalArguments)) {
@@ -68,29 +68,29 @@ Term * InternalApply(List arguments, ContextBindings * contextBindings) {
 	Term * function = IterateList(&arguments), * error;
 	if (0 == function)
 		return InvalidArgumentCount();
-	function = Eval(function, contextBindings);
+	function = EvalRecursive(function, contextBindings);
 	switch(function->tag) {
 		case terFunction:
 			if (!EvalArguments(&arguments, contextBindings, &error))
 				return error;
 			return function->function(arguments);
 		case terLazyFunction:
-			return function->lazyFunction(arguments, contextBindings);
+			return function->lazy.function(arguments, contextBindings);
 		case terLambda:
 			if (!EvalArguments(&arguments, contextBindings, &error))
 				return error;
-			return EvalLambda(function->lambda, arguments, contextBindings);
+			return EvalLambda(function->lambda, arguments);
 		default:
 			return InvalidArgumentType();
 	}
 }
 
-Term * Eval(Term * term, ContextBindings * contextBindings) {
+Term * EvalRecursive(Term * term, ContextBindings * contextBindings) {
 	switch (term->tag) {
 		case terRedex:
 			return InternalApply(term->redex, contextBindings);
 		case terSymbol:
-			return Eval(Resolve(contextBindings, term->symbol), contextBindings);
+			return EvalRecursive(Resolve(contextBindings, term->symbol), contextBindings);
 		default:
 			return term;
 	}

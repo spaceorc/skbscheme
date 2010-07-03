@@ -1,4 +1,6 @@
 #include "Test.h"
+#include <memory.h>
+#include <malloc.h>
 
 TEST(GeneralEvalNotAFunction) {
 	Term * a = AllocateTerm(terRedex);
@@ -36,15 +38,39 @@ TEST(EvalRedexUnresolvedSymbols) {
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
 
-Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
+static Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
 	AssertTag(terRedex, IterateList(&arguments));
 	AssertThat(0 == IterateList(&arguments));
 	return Number(5);
 }
 
+static EvaluationContextBase * MockChildEvaluated1(EvaluationContextBase * evaluationContext, Term * childResult) {
+	assert(0);
+	return 0;
+}
+
+struct MockLazyEvaluationContext {
+	EvaluationContextBase base;
+	List arguments;
+};
+
+static EvaluationContextBase * MockEvaluate1(MockLazyEvaluationContext * evaluationContext) {
+	AssertTag(terRedex, IterateList(&evaluationContext->arguments));
+	AssertThat(0 == IterateList(&evaluationContext->arguments));
+	THIS_CONTEXT->result = Number(5);
+	return THIS_CONTEXT;
+}
+
+static EvaluationContextBase * MockAcquireLazyEvaluationContext(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments) {
+	MockLazyEvaluationContext * result = (MockLazyEvaluationContext *) malloc(sizeof(*result));
+	FillEvaluationContextBase((EvaluationContextBase *) result, parent, contextBindings, MockChildEvaluated1, (EvaluatePtr) MockEvaluate1);
+	result->arguments = arguments;
+	return (EvaluationContextBase *) result;
+}
+
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction));
+	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
 	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
 	Term * b = Redex(MakeList(2, SymbolFromConstantStr(STR("lalala")), a));
 	AssertEq(Number(5), Eval(b, contextBindings));

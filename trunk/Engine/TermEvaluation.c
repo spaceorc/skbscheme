@@ -1,4 +1,5 @@
 #include "TermEvaluation.h"
+#include "RedexEvaluation.h"
 #include "Redex.h"
 #include <malloc.h>
 #include <memory.h>
@@ -12,13 +13,13 @@ static EvaluationContextBase * DoChildEvaluated(TermEvaluationContext * evaluati
 static EvaluationContextBase * DoEvaluate(TermEvaluationContext * evaluationContext) {
 	switch (evaluationContext->input->tag) {
 		case terRedex:
-			return AcquireReductionContext(evaluationContext->base.parent, evaluationContext->base.contextBindings, evaluationContext->input->redex);
+			return AcquireReductionContext(THIS_CONTEXT->parent, THIS_CONTEXT->contextBindings, evaluationContext->input->redex);
 		case terSymbol:
-			evaluationContext->input = Resolve(evaluationContext->base.contextBindings, evaluationContext->input->symbol);
-			return (EvaluationContextBase *) evaluationContext;
+			evaluationContext->input = Resolve(THIS_CONTEXT->contextBindings, evaluationContext->input->symbol);
+			return THIS_CONTEXT;
 		default:
-			evaluationContext->base.result = evaluationContext->input;
-			return (EvaluationContextBase *) evaluationContext;
+			THIS_CONTEXT->result = evaluationContext->input;
+			return THIS_CONTEXT;
 	}
 }
 

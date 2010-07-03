@@ -7,7 +7,6 @@ typedef struct structReductionContext ReductionContext;
 struct structReductionContext {
 	EvaluationContextBase base;
 	List redex;
-	List iterator;
 	List arguments;
 	Term * function;
 };

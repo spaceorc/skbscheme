@@ -1,43 +1,71 @@
 #include "TermEvaluation.h"
+#include "TermListEvaluation.h"
 #include "RedexEvaluation.h"
+#include "Pair.h"
+#include "Dictionary.h"
 #include "Error.h"
 #include <memory.h>
 #include <malloc.h>
 #include <assert.h>
 
 static EvaluationContextBase * DoChildEvaluated(ReductionContext * evaluationContext, Term * childResult) {
-	assert(0);
-	return 0;
+	if (!evaluationContext->function)
+		evaluationContext->function = childResult;
+	else 	
+		evaluationContext->arguments = InternalAppend(evaluationContext->arguments, childResult);
+	return THIS_CONTEXT;
+}
+
+static EvaluationContextBase * EvalLambda(ReductionContext * evaluationContext) {
+	Term * formalArgument = 0, * argument = 0;
+	Lambda lambda;
+	List arguments = evaluationContext->arguments;
+	ContextBindings * childContextBindings = 0;
+	assert(terLambda == evaluationContext->function->tag);
+	lambda = evaluationContext->function->lambda;
+	childContextBindings = AllocateContextBindings(lambda.context);
+	while(formalArgument = IterateList(&lambda.formalArguments)) {
+		argument = IterateList(&arguments);
+		if (!argument) {
+			THIS_CONTEXT->result = InvalidArgumentCount();
+			return THIS_CONTEXT;
+		}
+		if (terSymbol != formalArgument->tag) {
+			THIS_CONTEXT->result = InvalidArgumentType();
+			return THIS_CONTEXT;
+		}
+		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
+	}
+	if (IterateList(&arguments)) {
+		THIS_CONTEXT->result = InvalidArgumentCount();
+		return THIS_CONTEXT;
+	}
+	return AcquireTermListEvaluationContext(THIS_CONTEXT->parent, childContextBindings, lambda.body);
 }
 
 static EvaluationContextBase * DoEvaluate(ReductionContext * evaluationContext) {
 	Term * function = evaluationContext->function, *term = 0;
-	if (0 != function) {
-		switch(function->tag) {
-			case terError:
-				evaluationContext->base.result = function;
-				return (EvaluationContextBase *) evaluationContext;
-			case terFunction:
-				if (term = IterateList(&evaluationContext->iterator))
-					return AcquireTermEvaluationContext((EvaluationContextBase *) evaluationContext, evaluationContext->base.contextBindings, term);
-				else {
-					evaluationContext->base.result = function->function(evaluationContext->arguments);
-					return (EvaluationContextBase *) evaluationContext;
-				}
-			//case terLazyFunction:
-			//	return function->lazyFunction(arguments, contextBindings);
-			//case terLambda:
-			//	if (!EvalArguments(&arguments, contextBindings, &error))
-			//		return error;
-			//	return EvalLambda(function->lambda, arguments, contextBindings);
-			default:
-				evaluationContext->base.result = InvalidArgumentType();
-				return (EvaluationContextBase *) evaluationContext;
-		}
+	if (!function) {
+		if (term = IterateList(&evaluationContext->redex))
+			return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
+		THIS_CONTEXT->result = InvalidArgumentCount();
+		return THIS_CONTEXT;
 	}
-	else {
-		assert(0);
-		return 0;
+	switch(function->tag) {
+		case terFunction:
+			if (term = IterateList(&evaluationContext->redex))
+				return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
+			THIS_CONTEXT->result = function->function(evaluationContext->arguments);
+			return THIS_CONTEXT;
+		case terLazyFunction:
+			return function->lazy.acquireEvaluationContext(THIS_CONTEXT->parent, THIS_CONTEXT->contextBindings, evaluationContext->redex);
+		case terLambda:
+			if (term = IterateList(&evaluationContext->redex))
+				return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
+			return EvalLambda(evaluationContext);
+		default:
+			THIS_CONTEXT->result = InvalidArgumentType();
+			return THIS_CONTEXT;
 	}
 }
 
@@ -52,7 +80,6 @@ EvaluationContextBase * AcquireReductionContext(EvaluationContextBase * parent, 
 	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DoChildEvaluated, (EvaluatePtr) DoEvaluate);	
 	result->redex = redex;
 	result->function = 0;
-	result->iterator = 0;
 	result->arguments = 0;
 	return (EvaluationContextBase *) result;
 }

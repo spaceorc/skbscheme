@@ -88,9 +88,10 @@ Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str) {
 	return Symbol(LimitedStrFromConstantLimitedStr(str));
 }
 
-Term * LazyFunction(LazyFunctionPtr lazyFunction) {
+Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext) {
 	Term * result = AllocateTerm(terLazyFunction);
-	result->lazyFunction = lazyFunction;
+	result->lazy.function = lazyFunction;
+	result->lazy.acquireEvaluationContext = acquireLazyEvaluationContext;
 	return result;
 }
 
