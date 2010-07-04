@@ -10,13 +10,16 @@
 #include "Dictionary.h"
 #include "LetEvaluation.h"
 #include "DefineEvaluation.h"
-#include "BooleanEvaluation.h"
+#include "AndEvaluation.h"
+#include "OrEvaluation.h"
+#include "IfEvaluation.h"
+#include "CondEvaluation.h"
 
 ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term"};
 FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
-AcquireLazyEvaluationContextPtr globalAcquireLazyEvaluationContextPointers [] = {AcquireLetEvaluationContext, AcquireDefineEvaluationContext, AcquireDefineLambdaEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext, AcquireEmptyLazyEvaluationContext};
+AcquireLazyEvaluationContextPtr globalAcquireLazyEvaluationContextPointers [] = {AcquireLetEvaluationContext, AcquireDefineEvaluationContext, AcquireDefineLambdaEvaluationContext, AcquireAndEvaluationContext, AcquireOrEvaluationContext, AcquireIfEvaluationContext, AcquireCondEvaluationContext};
 ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "posix-stdin", "posix-stdout", "posix-stderr"};
 CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True, StdIn, StdOut, StdErr};
 
