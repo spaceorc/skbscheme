@@ -30,6 +30,10 @@ TEST(EvalOfOperatorNumberEq) {
 
 TEST(And) {
 	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(True(), Eval(ParseSingle("(and)"), contextBindings));
+	AssertEq(False(), Eval(ParseSingle("(and #f)"), contextBindings));
+	AssertEq(Number(1), Eval(ParseSingle("(and 1)"), contextBindings));
+	AssertEq(Number(3), Eval(ParseSingle("(and 1 2 3)"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(and #t 1)"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(and #t (+ 0 1))"), contextBindings));
 	AssertEq(False(), Eval(ParseSingle("(and #f #t)"), contextBindings));
@@ -43,6 +47,9 @@ TEST(AndErrorIn1stArgument) {
 
 TEST(Or) {
 	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(False(), Eval(ParseSingle("(or)"), contextBindings));
+	AssertEq(Number(1), Eval(ParseSingle("(or 1)"), contextBindings));
+	AssertEq(Number(2), Eval(ParseSingle("(or #f #f 2)"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(or #f 1)"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(or #f (+ 0 1))"), contextBindings));
 	AssertEq(True(), Eval(ParseSingle("(or #t #f)"), contextBindings));
