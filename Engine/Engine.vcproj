@@ -234,7 +234,11 @@
 				Name="Evaluation"
 				>
 				<File
-					RelativePath=".\BooleanEvaluation.c"
+					RelativePath=".\AndEvaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\CondEvaluation.c"
 					>
 				</File>
 				<File
@@ -246,7 +250,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\IfEvaluation.c"
+					>
+				</File>
+				<File
 					RelativePath=".\LetEvaluation.c"
+					>
+				</File>
+				<File
+					RelativePath=".\OrEvaluation.c"
 					>
 				</File>
 				<File
@@ -340,7 +352,11 @@
 				Name="Evaluation"
 				>
 				<File
-					RelativePath=".\BooleanEvaluation.h"
+					RelativePath=".\AndEvaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CondEvaluation.h"
 					>
 				</File>
 				<File
@@ -352,7 +368,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\IfEvaluation.h"
+					>
+				</File>
+				<File
 					RelativePath=".\LetEvaluation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\OrEvaluation.h"
 					>
 				</File>
 				<File
