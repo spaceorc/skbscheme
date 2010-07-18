@@ -6,7 +6,7 @@
 #include <memory.h>
 
 static EvaluationContextBase * DoChildEvaluated(IfEvaluationContext * evaluationContext, Term * childResult) {
-	Term * args[] = {0, 0}, * error = 0, * condition;
+	Term * args[] = {0, 0}, * error = 0;
 	if (TakeSeveralArguments(evaluationContext->arguments, args, &error) < 0) {
 		THIS_CONTEXT->result = error;	
 		return THIS_CONTEXT;

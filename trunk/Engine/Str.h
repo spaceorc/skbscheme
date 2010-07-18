@@ -32,3 +32,26 @@ LimitedStr AllocateLimitedStr(unsigned int size);
 LimitedStr LimitedStrFromConstantStr(ConstantStr str);
 LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str);
 LimitedStr DeepCopy(LimitedStr str);
+
+struct structStringBuffer;
+typedef struct structStringBuffer StringBuffer;
+
+struct structStringBuffer {
+	Chr * buffer;
+	unsigned int size;
+	unsigned int offset;
+};
+
+struct structStringBuilder;
+typedef struct structStringBuilder StringBuilder;
+
+struct structStringBuilder {
+	StringBuffer stringBuffer;
+	StringBuilder * next;
+};
+
+StringBuilder * AppendLimitedStr(StringBuilder * stringBuilder, LimitedStr str);
+StringBuilder * AppendConstantStr(StringBuilder * stringBuilder, ConstantStr str);
+StringBuilder * AppendConstantLimitedStr(StringBuilder * stringBuilder, ConstantLimitedStr str);
+StringBuilder * AppendChr(StringBuilder * stringBuilder, Chr chr);
+LimitedStr BuildString(StringBuilder * stringBuilder);

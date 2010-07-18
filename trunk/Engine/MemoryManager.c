@@ -37,3 +37,18 @@ ParserContext * AllocateParserContext(ParserContext * previous) {
 	result->previous = previous;
 	return result;
 }
+
+StringBuilder * AllocateStringBuilder(StringBuilder * next, unsigned int size) {
+	StringBuilder * result = malloc(sizeof(StringBuilder));
+	result->next = next;
+	result->stringBuffer.size = size;
+	result->stringBuffer.offset = 0;
+	result->stringBuffer.buffer = AllocateString(size);
+	return result;
+}
+
+EvaluationContextBase * AllocateEvaluationContext(unsigned int size) {
+	void * result = malloc(size);
+	memset(result, 0, size);
+	return result;
+}

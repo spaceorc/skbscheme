@@ -20,4 +20,5 @@ extern "C" {
 #include "RedexEvaluation.h"
 #include "LetEvaluation.h"
 #include "DefineEvaluation.h"
+#include "Evaluation.h"
 }
