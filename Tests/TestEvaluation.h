@@ -1,7 +1,4 @@
 #include "Test.h"
-#include "Evaluation.h"
-#include <memory.h>
-#include <malloc.h>
 
 int expectedEvaluateCallCount = 0;
 Term * expectedEvaluateResult = 0;
@@ -23,8 +20,7 @@ EvaluationContextBase * MockChildEvaluated(EvaluationContextBase * evaluationCon
 static EvaluationContextBase * MockContext() {
 	expectedEvaluateCallCount = 0;
 	expectedEvaluateResult = 0;
-	EvaluationContextBase * result = (EvaluationContextBase*) malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	EvaluationContextBase * result = AllocateEvaluationContext(sizeof(*result));
 	result->evaluate = MockEvaluate;
 	result->childEvaluated = MockChildEvaluated;
 	return result;

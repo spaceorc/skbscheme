@@ -92,3 +92,43 @@ LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 LimitedStr DeepCopy(LimitedStr str) {
 	return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
 }
+
+StringBuilder * AppendLimitedStr(StringBuilder * stringBuilder, LimitedStr str) {
+	return AppendConstantLimitedStr(stringBuilder, ConstLimitedStr(str));
+}
+
+StringBuilder * AppendConstantStr(StringBuilder * stringBuilder, ConstantStr str) {
+	return AppendConstantLimitedStr(stringBuilder, LimitConstantStr(str));
+}
+
+StringBuilder * AppendConstantLimitedStr(StringBuilder * stringBuilder, ConstantLimitedStr str) {
+	StringBuilder * result = AllocateStringBuilder(stringBuilder, str.size);
+	StringBuffer buffer = result->stringBuffer;
+	Chr current;
+	while (current = IterateChrConstantLimitedStr(&str))
+		buffer.buffer[buffer.offset++] = current;
+	return result;
+}
+
+StringBuilder * AppendChr(StringBuilder * stringBuilder, Chr chr) {
+	StringBuilder * result = stringBuilder;
+	StringBuffer * buffer = result ? &(result->stringBuffer) : 0;
+	if (buffer && buffer->offset + 1 >= buffer->size) {
+		result = AllocateStringBuilder(result, 100);
+		buffer = &(result->stringBuffer);
+	}
+	buffer->buffer[buffer->offset++] = chr;
+	return result;
+}
+
+LimitedStr BuildString(StringBuilder * stringBuilder) {
+	unsigned int size = 0;
+	StringBuilder * current = stringBuilder;
+	LimitedStr result;
+	while (current) {
+		size += current->stringBuffer.offset;
+		current = current->next;
+	}
+	result = AllocateLimitedStr(size);
+	return result;
+}
