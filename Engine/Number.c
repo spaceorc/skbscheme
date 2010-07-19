@@ -54,6 +54,15 @@ Term * OperatorNumberEq(List arguments) {
 	return allEquals ? True() : False();
 }
 
+Term * FunctionIsNumber(List arguments) {
+	Term * arg, * error = 0;
+	if (TakeSingleArgument(arguments, &arg, &error) < 0)
+		return error;
+	if (terNumber == arg->tag)
+		return True();
+	return False();
+}
+
 Term * ParseNumber(LimitedStr symbol) {
 	int n = 0;
 	Chr c;

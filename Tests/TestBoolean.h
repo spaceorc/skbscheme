@@ -23,11 +23,6 @@ TEST(AnythingExceptFalseIsTrue) {
 	AssertThat(0 == IsFalse(Number(0)));
 }
 
-TEST(EvalOfOperatorNumberEq) {
-	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(False(), Eval(ParseSingle("(= 1 2)"), contextBindings));
-}
-
 TEST(And) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(True(), Eval(ParseSingle("(and)"), contextBindings));
