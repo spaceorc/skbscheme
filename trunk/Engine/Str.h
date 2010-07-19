@@ -28,11 +28,10 @@ ConstantLimitedStr ConstLimitedStr(LimitedStr str);
 Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
 Chr IterateChr(LimitedStr * str);
 void UnwindChr(LimitedStr * str);
-Chr CurrentChr(LimitedStr * str);
 LimitedStr AllocateLimitedStr(unsigned int size);
 LimitedStr LimitedStrFromConstantStr(ConstantStr str);
 LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str);
-LimitedStr DeepCopy(LimitedStr str);
+LimitedStr ZeroStr(LimitedStr str);
 
 struct structStringBuffer;
 typedef struct structStringBuffer StringBuffer;

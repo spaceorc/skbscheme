@@ -14,7 +14,7 @@ typedef struct structToken Token;
 
 struct structToken {
 	int tag;
-	LimitedStr range;
+	LimitedStr text;
 };
 
 Token GetToken(LimitedStr * input);

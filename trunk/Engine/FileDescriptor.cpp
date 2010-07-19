@@ -28,7 +28,7 @@ Term * FunctionOpen(List arguments) {
 		return InvalidArgumentType();
 	if (terNumber != args[2]->tag)
 		return InvalidArgumentType();
-	filename = DeepCopy(args[0]->constantString);
+	filename = ZeroStr(args[0]->constantString);
 	fd = open(filename.str, args[1]->number, args[2]->number);
 	if (fd < 0)
 		return RaisePosixError(errno);
@@ -65,7 +65,7 @@ Term * FunctionRead(List arguments) {
 }
 
 Term * InternalWrite(int fildes, LimitedStr str) {
-	LimitedStr zeroStr = DeepCopy(str);
+	LimitedStr zeroStr = ZeroStr(str);
 	int size = write(fildes, zeroStr.str, zeroStr.size);
 	if (size < 0)
 		return RaisePosixError(errno);

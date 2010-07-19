@@ -61,12 +61,6 @@ Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str) {
 	return IterateChrConstantStr(&(str->str), &(str->size));
 }
 
-Chr CurrentChr(LimitedStr * str) {
-	if (str->size < 1)
-		return 0;
-	return *(str->str);
-}
-
 Chr IterateChr(LimitedStr * str) {
 	return IterateChrConstantStr(&(str->str), &(str->size));
 }
@@ -96,7 +90,7 @@ LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 	return result;
 }
 
-LimitedStr DeepCopy(LimitedStr str) {
+LimitedStr ZeroStr(LimitedStr str) {
 	return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
 }
 

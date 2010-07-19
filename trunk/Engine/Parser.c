@@ -19,8 +19,8 @@ Term * Parse(Token token, ParserContext ** context) {
 	Term * term = 0;
 	switch(token.tag) {
 		case tokSymbol:
-			assert(token.range.size > 0);
-			term = ParseTerm(token.range);
+			assert(token.text.size > 0);
+			term = ParseTerm(token.text);
 			if (term->tag == terError)
 				break;
 			assert(term->tag != terRedex);
@@ -30,7 +30,7 @@ Term * Parse(Token token, ParserContext ** context) {
 			term = 0;
 			break;
 		case tokQuotedString:
-			term = ConstantString(token.range);
+			term = ConstantString(token.text);
 			if (0 == *context)
 				break;
 			(*context)->redex = InternalAppend((*context)->redex, term);
@@ -52,7 +52,7 @@ Term * Parse(Token token, ParserContext ** context) {
 			break;
 		case tokError:
 			term = AllocateTerm(terError);
-			term->message = token.range;
+			term->message = token.text;
 			break;
 		default:
 			assert(0);
