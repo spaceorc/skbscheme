@@ -50,6 +50,10 @@ Term * Parse(Token token, ParserContext ** context) {
 			(*context)->redex = InternalAppend((*context)->redex, term);
 			term = 0;
 			break;
+		case tokError:
+			term = AllocateTerm(terError);
+			term->message = token.range;
+			break;
 		default:
 			assert(0);
 	}
