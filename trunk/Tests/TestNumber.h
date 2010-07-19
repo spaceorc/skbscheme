@@ -67,3 +67,8 @@ TEST(NumberEqWith1Argument) {
 TEST(NumberEqWithNotANumber) {
 	AssertEq(InvalidArgumentType(), OperatorNumberEq(MakeList(3, Number(1), Number(2), Nil())));
 }
+
+TEST(EvalOfOperatorNumberEq) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(False(), Eval(ParseSingle("(= 1 2)"), contextBindings));
+}

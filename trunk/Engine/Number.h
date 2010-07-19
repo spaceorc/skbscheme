@@ -7,3 +7,4 @@ Term * OperatorMinus(List arguments);
 Term * OperatorNumberEq(List arguments);
 Term * ParseNumber(LimitedStr symbol);
 int IsNumber(LimitedStr symbol);
+Term * FunctionIsNumber(List arguments);
