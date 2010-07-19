@@ -22,13 +22,13 @@ Term * FunctionOpen(List arguments) {
 	int fd;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	if (terConstantString != args[0]->tag)
+	if (terString != args[0]->tag)
 		return InvalidArgumentType();
 	if (terNumber != args[1]->tag)
 		return InvalidArgumentType();
 	if (terNumber != args[2]->tag)
 		return InvalidArgumentType();
-	filename = ZeroStr(args[0]->constantString);
+	filename = ZeroStr(args[0]->string);
 	fd = open(filename.str, args[1]->number, args[2]->number);
 	if (fd < 0)
 		return RaisePosixError(errno);
@@ -96,8 +96,8 @@ Term * InternalWriteTerm(int fildes, Term * term) {
 		case terSymbol:
 			sprintf_s(buffer, 1024, "%.*s\n", term->symbol.size, term->symbol.str);
 			break;
-		case terConstantString:
-			sprintf_s(buffer, 1024, "\"%.*s\"\n", term->constantString.size, term->constantString.str);
+		case terString:
+			sprintf_s(buffer, 1024, "\"%.*s\"\n", term->string.size, term->string.str);
 			break;
 		case terEmpty:
 			return Empty();
@@ -139,9 +139,9 @@ Term * FunctionWrite(List arguments) {
 		return error;
 	if (terFileDescriptor != args[0]->tag)
 		return InvalidArgumentType();
-	if (terConstantString != args[1]->tag)
+	if (terString != args[1]->tag)
 		return InvalidArgumentType();
-	return InternalWrite(args[0]->fildes, args[1]->constantString);
+	return InternalWrite(args[0]->fildes, args[1]->string);
 }
 
 Term * FunctionWriteTerm(List arguments) {

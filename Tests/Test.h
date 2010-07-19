@@ -115,8 +115,8 @@ const char * DumpTag(int tag) {
 			return "Nil";
 		case terRedex:
 			return "Redex";
-		case terConstantString:
-			return "Constant string";
+		case terString:
+			return "String";
 		case terSymbol:
 			return "Symbol";
 		case terLazyFunction:
@@ -204,9 +204,14 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
 			break;
 		case terSymbol:
-		case terConstantString:
-			if (Compare(expected->constantString, was->constantString)) {
-				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->constantString.size, expected->constantString.str, was->constantString.size, was->constantString.str);
+			if (Compare(expected->symbol, was->symbol)) {
+				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->symbol.size, expected->symbol.str, was->symbol.size, was->symbol.str);
+				AssertCondition(message, false, function, file, line);
+			}
+			break;
+		case terString:
+			if (Compare(expected->string, was->string)) {
+				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->string.size, expected->string.str, was->string.size, was->string.str);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
