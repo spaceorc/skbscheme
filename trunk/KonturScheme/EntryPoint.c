@@ -15,9 +15,9 @@ int main() {
 		if (CanFinishParsing(context))
 			printf("\n> ");
 		str = FunctionRead(MakeList(2, StdIn(), Number(1024)));
-		if (terConstantString != str->tag)
+		if (terString != str->tag)
 			return 0;
-		while (tokEnd != (token = GetToken(&(str->constantString))).tag) {
+		while (tokEnd != (token = GetToken(&(str->string))).tag) {
 			Term * term = Parse(token, &context);
 			if (0 != term) {
 				Term * fileDescriptor = StdOut();

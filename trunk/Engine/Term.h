@@ -8,7 +8,7 @@
 #define terError 3
 #define terNil 4
 #define terRedex 5
-#define terConstantString 6
+#define terString 6
 #define terSymbol 7
 #define terLazyFunction 8
 #define terLambda 9
@@ -69,7 +69,7 @@ struct structTerm {
 		Pair * pair;
 		LimitedStr message;
 		List redex;
-		LimitedStr constantString;
+		LimitedStr string;
 		LimitedStr symbol;
 		Lazy lazy;
 		Lambda lambda;

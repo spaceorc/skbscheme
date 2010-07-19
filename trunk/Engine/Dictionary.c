@@ -10,9 +10,9 @@ Term * InternalFindConstantLimitedStr(List dictionary, ConstantLimitedStr key) {
 	while(keyValuePair = IterateList(&dictionary)) {
 		if (terPair != keyValuePair->tag)
 			return InvalidArgumentType();
-		if (terConstantString != keyValuePair->pair->first->tag)
+		if (terString != keyValuePair->pair->first->tag)
 			return InvalidArgumentType();
-		if (0 == CompareConstantLimitedStr(ConstLimitedStr(keyValuePair->pair->first->constantString), key))
+		if (0 == CompareConstantLimitedStr(ConstLimitedStr(keyValuePair->pair->first->string), key))
 			return keyValuePair->pair->second;
 	}
 	return 0;

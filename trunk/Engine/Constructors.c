@@ -69,8 +69,8 @@ Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str) {
 }
 
 Term * ConstantString(LimitedStr str) {
-	Term * result = AllocateTerm(terConstantString);
-	result->constantString = str;
+	Term * result = AllocateTerm(terString);
+	result->string = str;
 	return result;
 }
 

@@ -26,9 +26,9 @@ Term * FunctionError(List arguments) {
 	Term * message = 0, * error = 0;
 	if (TakeSingleArgument(arguments, &message, &error) < 0)
 		return error;
-	if (terConstantString != message->tag)
+	if (terString != message->tag)
 		return InvalidArgumentType();
-	return Error(message->constantString);
+	return Error(message->string);
 }
 
 // warning C4996: '__sys_errlist': This function or variable may be unsafe. Consider using strerror instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.	c:\Source\skbscheme\Engine\Error.c	35	Engine
