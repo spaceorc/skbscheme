@@ -242,29 +242,29 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 #define AssertQuotedString(expected, was) AssertQuotedStringCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
 #define AssertBracket(expectedTag, expectedRange, was) AssertBracketCondition(expectedTag, expectedRange, was, __FUNCTION__, __FILE__, __LINE__)
 
-void AssertSymbolCondition(ConstantStr expected, Token was, const char * function, const char * file, int line) {
+void AssertSymbolCondition(ConstantStr expectedText, Token was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTokCondition(tokSymbol, was, function, file, line);
-	if (0 != CompareConstantLimitedStr(LimitConstantStr(expected), ConstLimitedStr(was.range))) {
-		sprintf_s(message, "expected symbol '%s', but was symbol '%.*s'", expected, was.range.size, was.range.str);
+	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedText), ConstLimitedStr(was.text))) {
+		sprintf_s(message, "expected symbol '%s', but was symbol '%.*s'", expectedText, was.text.size, was.text.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }
 
-void AssertQuotedStringCondition(ConstantStr expected, Token was, const char * function, const char * file, int line) {
+void AssertQuotedStringCondition(ConstantStr expectedText, Token was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTokCondition(tokQuotedString, was, function, file, line);
-	if (0 != CompareConstantLimitedStr(LimitConstantStr(expected), ConstLimitedStr(was.range))) {
-		sprintf_s(message, "expected quoted string '%s', but was quoted string '%.*s'", expected, was.range.size, was.range.str);
+	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedText), ConstLimitedStr(was.text))) {
+		sprintf_s(message, "expected quoted string '%s', but was quoted string '%.*s'", expectedText, was.text.size, was.text.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }
 
-void AssertBracketCondition(int expectedTag, ConstantStr expectedRange, Token was, const char * function, const char * file, int line) {
+void AssertBracketCondition(int expectedTag, ConstantStr expectedText, Token was, const char * function, const char * file, int line) {
 	char message[1024];
 	AssertTokCondition(expectedTag, was, function, file, line);
-	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedRange), ConstLimitedStr(was.range))) {
-		sprintf_s(message, "expected bracket '%s', but was bracket '%.*s'", expectedRange, was.range.size, was.range.str);
+	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedText), ConstLimitedStr(was.text))) {
+		sprintf_s(message, "expected bracket '%s', but was bracket '%.*s'", expectedText, was.text.size, was.text.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }

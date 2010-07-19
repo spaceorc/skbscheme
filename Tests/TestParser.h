@@ -3,7 +3,7 @@
 Token BuildToken(int tag, ConstantStr range) {
 	Token result;
 	result.tag = tag;
-	result.range = LimitedStrFromConstantStr(range);
+	result.text = LimitedStrFromConstantStr(range);
 	return result;
 }
 

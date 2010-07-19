@@ -92,7 +92,7 @@ Token GetToken(LimitedStr * input) {
 		result.tag = tokError;
 	if (state == FinishAndUnwindState)
 		UnwindChr(input);
-	result.range = BuildString(stringBuilder);
+	result.text = BuildString(stringBuilder);
 	return result;
 
 }
