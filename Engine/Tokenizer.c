@@ -2,84 +2,97 @@
 
 #include "Tokenizer.h"
 
-int IsEnd(LimitedStr * input) {
-	return 0 == CurrentChr(input);
+typedef void * (*TokenizerState)(Chr chr, StringBuilder ** stringBuilder, int * tag);
+
+void * FinishState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	assert(0);
+	return 0;
 }
 
-int IsOpeningBracket(LimitedStr * input) {
-	return '(' == CurrentChr(input);
+void * FinishAndUnwindState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	assert(0);
+	return 0;
 }
 
-int IsEscape(LimitedStr * input) {
-	return '\'' == CurrentChr(input);
+void * ErrorState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	assert(0);
+	return 0;
 }
 
-int IsQuote(LimitedStr * input) {
-	return '\"' == CurrentChr(input);
+void * StringState(Chr chr, StringBuilder ** stringBuilder, int * tag);
+
+void * QuoteState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	if (chr < 32)
+		return ErrorState;
+	*stringBuilder = AppendChr(*stringBuilder, chr);	
+	return StringState;
 }
 
-int IsClosingBracket(LimitedStr * input) {
-	return ')' == CurrentChr(input);
+void * SymbolState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	switch(chr) {
+		case '(':
+		case ')':
+		case '"':
+			return FinishAndUnwindState;
+		default:
+			if (chr <= 32)
+				return FinishState;
+			*stringBuilder = AppendChr(*stringBuilder, chr);
+			return SymbolState;
+	}
 }
 
-int IsWhitespace(LimitedStr * input) {
-	return CurrentChr(input) <= 32;
+void * StringState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	switch(chr) {
+		case 0:
+			return ErrorState;
+		case '\\':
+			return QuoteState;
+		case '"':
+			return FinishState;
+		default:
+			*stringBuilder = AppendChr(*stringBuilder, chr);	
+			return StringState;
+	}
 }
 
-void SkipWhitespaces(LimitedStr * input) {
-	while (!IsEnd(input) && IsWhitespace(input))
-		IterateChr(input);
-}
-
-void SkipSymbol(LimitedStr * input) {
-	while (!IsEnd(input) && !IsOpeningBracket(input) && !IsClosingBracket(input) && !IsWhitespace(input))
-		IterateChr(input);
-}
-
-void SkipQuotedString(LimitedStr * input) {
-	while (!IsEnd(input) && !IsQuote(input))
-		IterateChr(input);
+void * BeginState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+	switch(chr) {
+		case 0:
+			return FinishState;
+		case '(':
+			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*tag = tokOpeningBracket;
+			return FinishState;
+		case ')':
+			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*tag = tokClosingBracket;
+			return FinishState;
+		case '"':
+			*tag = tokQuotedString;
+			return StringState;
+		default:
+			if (chr <= 32)
+				return BeginState;
+			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*tag = tokSymbol;
+			return SymbolState;
+	}
+	return 0;
 }
 
 Token GetToken(LimitedStr * input) {
 	Token result;
-	unsigned int delta = 0, offset = 0;
+	StringBuilder * stringBuilder = 0;
+	TokenizerState state = BeginState;
 	result.tag = tokEnd;
-	result.range.str = 0;
-	result.range.size = 0;
-	SkipWhitespaces(input);
-	if (!IsEnd(input)) {
-		result.range.str = input->str;
-		if (IsOpeningBracket(input)) {
-			result.tag = tokOpeningBracket;
-			IterateChr(input);
-		}
-		else if (IsClosingBracket(input))	{
-			result.tag = tokClosingBracket;
-			IterateChr(input);
-		}
-		else if (IsEscape(input))	{
-			result.tag = tokEscape;
-			IterateChr(input);
-		}
-		else if (IsQuote(input))	{
-			result.tag = tokQuotedString;
-			IterateChr(input);
-			SkipQuotedString(input);
-			if (IsQuote(input)) {
-				IterateChr(input);
-				delta = 1;
-				offset = 1;
-			}
-			else
-				result.tag = tokError;
-		}
-		else {
-			result.tag = tokSymbol;
-			SkipSymbol(input);
-		}
-		result.range.str = result.range.str + offset;
-		result.range.size = input->str - result.range.str - delta;
-	}
+	while (state != FinishState && state != ErrorState && state != FinishAndUnwindState)
+		state = state(IterateChr(input), &stringBuilder, &(result.tag));
+	if (state == ErrorState)
+		result.tag = tokError;
+	if (state == FinishAndUnwindState)
+		UnwindChr(input);
+	result.range = BuildString(stringBuilder);
 	return result;
+
 }

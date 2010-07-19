@@ -23,7 +23,7 @@ LimitedStr Concatenate(LimitedStr first, LimitedStr second) {
 }
 
 LimitedStr ConcatenateConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second) {
-	LimitedStr result = AllocateLimitedStr(first.size + second.size - 1);
+	LimitedStr result = AllocateLimitedStr(first.size + second.size + 1);
 	Chr * to = result.str, from;
 	while(from = IterateChrConstantLimitedStr(&first))
 		*(to++) = from;
@@ -69,6 +69,11 @@ Chr CurrentChr(LimitedStr * str) {
 
 Chr IterateChr(LimitedStr * str) {
 	return IterateChrConstantStr(&(str->str), &(str->size));
+}
+
+void UnwindChr(LimitedStr * str) {
+	str->size++;
+	str->str--;
 }
 
 LimitedStr AllocateLimitedStr(unsigned int size) {

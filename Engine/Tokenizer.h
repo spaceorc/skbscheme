@@ -6,9 +6,8 @@
 #define tokClosingBracket 1
 #define tokSymbol 2
 #define tokEnd 3
-#define tokEscape 4
-#define tokQuotedString 5
-#define tokError 6
+#define tokQuotedString 4
+#define tokError 5
 
 struct structToken;
 typedef struct structToken Token;

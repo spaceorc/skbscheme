@@ -160,8 +160,6 @@ const char * DumpTok(int tag) {
 			return "ClosingBracket";
 		case tokSymbol:
 			return "Symbol";
-		case tokEscape:
-			return "Escape";
 		case tokQuotedString:
 			return "Quoted string";
 		case tokEnd:

@@ -27,6 +27,7 @@ ConstantLimitedStr LimitConstantStr(ConstantStr str);
 ConstantLimitedStr ConstLimitedStr(LimitedStr str);
 Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
 Chr IterateChr(LimitedStr * str);
+void UnwindChr(LimitedStr * str);
 Chr CurrentChr(LimitedStr * str);
 LimitedStr AllocateLimitedStr(unsigned int size);
 LimitedStr LimitedStrFromConstantStr(ConstantStr str);

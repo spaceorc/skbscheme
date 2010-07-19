@@ -40,13 +40,6 @@ TEST(GetTokenStepByStep) {
 	AssertTok(tokEnd, GetToken(&str));
 }
 
-TEST(GetTokenSymbolAfterEscape) {
-	LimitedStr str = LimitedStrFromConstantStr(STR("  'lalala  "));
-	AssertTok(tokEscape, GetToken(&str));
-	AssertSymbol(STR("lalala"), GetToken(&str));
-	AssertTok(tokEnd, GetToken(&str));
-}
-
 TEST(GetTokenBetweenQuotes) {
 	LimitedStr str = LimitedStrFromConstantStr(STR("  \"lalala\"  "));
 	AssertQuotedString(STR("lalala"), GetToken(&str));
