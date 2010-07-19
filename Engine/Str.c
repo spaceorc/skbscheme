@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "Str.h"
 #include "MemoryManager.h"
 
@@ -103,17 +105,18 @@ StringBuilder * AppendConstantStr(StringBuilder * stringBuilder, ConstantStr str
 
 StringBuilder * AppendConstantLimitedStr(StringBuilder * stringBuilder, ConstantLimitedStr str) {
 	StringBuilder * result = AllocateStringBuilder(stringBuilder, str.size);
-	StringBuffer buffer = result->stringBuffer;
+	StringBuffer * buffer = &(result->stringBuffer);
 	Chr current;
 	while (current = IterateChrConstantLimitedStr(&str))
-		buffer.buffer[buffer.offset++] = current;
+		buffer->buffer[buffer->offset++] = current;
+	buffer->size = buffer->offset;
 	return result;
 }
 
 StringBuilder * AppendChr(StringBuilder * stringBuilder, Chr chr) {
 	StringBuilder * result = stringBuilder;
 	StringBuffer * buffer = result ? &(result->stringBuffer) : 0;
-	if (buffer && buffer->offset + 1 >= buffer->size) {
+	if (!buffer || buffer->offset >= buffer->size) {
 		result = AllocateStringBuilder(result, 100);
 		buffer = &(result->stringBuffer);
 	}
@@ -121,14 +124,29 @@ StringBuilder * AppendChr(StringBuilder * stringBuilder, Chr chr) {
 	return result;
 }
 
-LimitedStr BuildString(StringBuilder * stringBuilder) {
+unsigned int CalculateStringLength(StringBuilder * stringBuilder) {
 	unsigned int size = 0;
-	StringBuilder * current = stringBuilder;
-	LimitedStr result;
-	while (current) {
-		size += current->stringBuffer.offset;
-		current = current->next;
+	while (stringBuilder) {
+		size += stringBuilder->stringBuffer.offset;
+		stringBuilder = stringBuilder->next;
 	}
-	result = AllocateLimitedStr(size);
+	return size;
+}
+
+LimitedStr BuildString(StringBuilder * stringBuilder) {
+	unsigned int size = CalculateStringLength(stringBuilder);
+	LimitedStr result = AllocateLimitedStr(size + 1);
+	Chr * current = result.str + size;
+	*current = 0;
+	while (stringBuilder) {
+		StringBuffer buffer = stringBuilder->stringBuffer;
+		Chr * from = buffer.buffer;
+		Chr * to = current - buffer.offset;
+		current = to;
+		while (buffer.offset--)
+			*(to++) = *(from++);
+		stringBuilder = stringBuilder->next;
+	}
+	assert(current == result.str);
 	return result;
 }
