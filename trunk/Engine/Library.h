@@ -4,6 +4,6 @@
 #include "Redex.h"
 #include "Evaluation.h"
 
-#define Eval EvalIterative
+#define Eval EvalRecursive
 
 ContextBindings * AcquireContextBindings();

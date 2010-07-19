@@ -24,23 +24,27 @@ int IsFalse(Term * term) {
 }
 
 Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0}, * error = 0, * first;
-	if (TakeSeveralArguments(arguments, args, &error) < 0)
-		return error;
-	first = EvalRecursive(args[0], contextBindings);
-	if (terError == first->tag || IsFalse(first))
-		return first;
-	return EvalRecursive(args[1], contextBindings);
+	Term * arg, * term = 0;
+	while (arg = IterateList(&arguments)) {
+		term = EvalRecursive(arg, contextBindings);
+		if (terError == term->tag || IsFalse(term))
+			return term;
+	}
+	if (term)
+		return term;
+	return True();
 }
 
 Term * LazyFunctionOr(List arguments, ContextBindings * contextBindings) {
-	Term * args[] = {0, 0}, * error = 0, * first;
-	if (TakeSeveralArguments(arguments, args, &error) < 0)
-		return error;
-	first = EvalRecursive(args[0], contextBindings);
-	if (terError == first->tag || IsTrue(first))
-		return first;
-	return EvalRecursive(args[1], contextBindings);
+	Term * arg, * term = 0;
+	while (arg = IterateList(&arguments)) {
+		term = EvalRecursive(arg, contextBindings);
+		if (terError == term->tag || IsTrue(term))
+			return term;
+	}
+	if (term)
+		return term;
+	return False();
 }
 
 Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
