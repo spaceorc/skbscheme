@@ -12,6 +12,10 @@ TEST(CompareNotEqualStrings) {
 	AssertThat(0 != CompareConstantLimitedStr(LimitConstantStr(STR("bububu")), LimitConstantStr(STR("lalala"))));
 }
 
+TEST(Concatenate) {
+	AssertThat(0 == Compare(ConcatenateConstantLimitedStr(LimitConstantStr(STR("lalala")), LimitConstantStr(STR("bububu"))), LimitedStrFromConstantStr(STR("lalalabububu"))));
+}
+
 TEST(BuildStrings) {
 	StringBuilder * stringBuilder = 0;
 	stringBuilder = AppendLimitedStr(stringBuilder, LimitedStrFromConstantStr(STR("lalala1")));
@@ -23,6 +27,6 @@ TEST(BuildStrings) {
 	stringBuilder = AppendChr(stringBuilder, 'a');
 	stringBuilder = AppendChr(stringBuilder, 'l');
 	stringBuilder = AppendChr(stringBuilder, 'a');
-	stringBuilder = AppendChr(stringBuilder, '3');
-	AssertThat(0 == Compare(LimitedStrFromConstantStr(STR("lalala1lalala2lalala3")), BuildString(stringBuilder)));
+	stringBuilder = AppendChr(stringBuilder, '4');
+	AssertThat(0 == Compare(LimitedStrFromConstantStr(STR("lalala1lalala2lalala3lalala4")), BuildString(stringBuilder)));
 }
