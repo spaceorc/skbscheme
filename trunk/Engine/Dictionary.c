@@ -1,11 +1,15 @@
 #include "Dictionary.h"
 #include "Error.h"
 
-Term * InternalFindConstantStr(List dictionary, ConstantStr key) {
+Dictionary AllocateDictionary() {
+	return 0;
+}
+
+Term * InternalFindConstantStr(Dictionary dictionary, ConstantStr key) {
 	return InternalFindConstantLimitedStr(dictionary, LimitConstantStr(key));
 }
 
-Term * InternalFindConstantLimitedStr(List dictionary, ConstantLimitedStr key) {
+Term * InternalFindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
 	Term * keyValuePair = 0;
 	while(keyValuePair = IterateList(&dictionary)) {
 		if (terPair != keyValuePair->tag)
@@ -18,18 +22,18 @@ Term * InternalFindConstantLimitedStr(List dictionary, ConstantLimitedStr key) {
 	return 0;
 }
 
-Term * InternalFind(List dictionary, LimitedStr key) {
+Term * InternalFind(Dictionary dictionary, LimitedStr key) {
 	return InternalFindConstantLimitedStr(dictionary, ConstLimitedStr(key));
 }
 
-List InternalSet(List dictionary, LimitedStr key, Term * value) {
+List InternalSet(Dictionary dictionary, LimitedStr key, Term * value) {
 	return InternalAppend(dictionary, InternalCons(ConstantString(key), value));
 }
 
-List InternalSetConstantStr(List dictionary, ConstantStr key, Term * value) {
+Dictionary InternalSetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
 	return InternalAppend(dictionary, InternalCons(ConstantStringFromConstantStr(key), value));
 }
 
-List InternalSetConstantLimitedStr(List dictionary, ConstantLimitedStr key, Term * value) {
+Dictionary InternalSetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
 	return InternalAppend(dictionary, InternalCons(ConstantStringFromConstantLimitedStr(key), value));
 }
