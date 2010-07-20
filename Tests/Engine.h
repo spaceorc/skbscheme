@@ -11,6 +11,8 @@ extern "C" {
 #include "Redex.h"
 #include "Parser.h"
 #include "Definitions.h"
+#include "Character.h"
+#include "String.h"
 #include "Boolean.h"
 #include "Error.h"
 #include "Library.h"

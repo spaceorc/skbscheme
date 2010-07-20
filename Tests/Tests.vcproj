@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestCharacter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestDefinitions.h"
 				>
 			</File>
@@ -230,6 +234,10 @@
 			</File>
 			<File
 				RelativePath=".\TestStr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestString.h"
 				>
 			</File>
 			<File

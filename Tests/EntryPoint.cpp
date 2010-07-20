@@ -8,6 +8,8 @@
 #include "TestDefinitions.h"
 #include "TestBoolean.h"
 #include "TestEvaluation.h"
+#include "TestCharacter.h"
+#include "TestString.h"
 #include <stdio.h>
 
 void main() {
