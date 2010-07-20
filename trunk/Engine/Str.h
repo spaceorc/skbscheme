@@ -19,19 +19,27 @@ struct structLimitedStr {
 	unsigned int size;
 };
 
-int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second);
 int Compare(LimitedStr first, LimitedStr second);
+int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second);
+
 LimitedStr Concatenate(LimitedStr first, LimitedStr second);
 LimitedStr ConcatenateConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second);
+
 ConstantLimitedStr LimitConstantStr(ConstantStr str);
 ConstantLimitedStr ConstLimitedStr(LimitedStr str);
-Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
-Chr IterateChr(LimitedStr * str);
-void UnwindChr(LimitedStr * str);
-LimitedStr AllocateLimitedStr(unsigned int size);
 LimitedStr LimitedStrFromConstantStr(ConstantStr str);
 LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str);
+
+Chr IterateChr(LimitedStr * str);
+Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
+
+void UnwindChr(LimitedStr * str);
+
+LimitedStr AllocateLimitedStr(unsigned int size);
+
 LimitedStr ZeroStr(LimitedStr str);
+
+unsigned int Length(LimitedStr str);
 
 struct structStringBuffer;
 typedef struct structStringBuffer StringBuffer;

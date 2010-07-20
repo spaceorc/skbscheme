@@ -94,6 +94,14 @@ LimitedStr ZeroStr(LimitedStr str) {
 	return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
 }
 
+unsigned int Length(LimitedStr str) {
+	Chr * current = str.str;
+	unsigned int result = 0;
+	while (str.size-- && *(str.str++))
+		result++;
+	return result;
+}
+
 StringBuilder * AppendLimitedStr(StringBuilder * stringBuilder, LimitedStr str) {
 	return AppendConstantLimitedStr(stringBuilder, ConstLimitedStr(str));
 }

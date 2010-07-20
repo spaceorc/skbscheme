@@ -9,6 +9,7 @@
 #include "Definitions.h"
 #include "Boolean.h"
 #include "Dictionary.h"
+#include "String.h"
 #include "LetEvaluation.h"
 #include "DefineEvaluation.h"
 #include "AndEvaluation.h"
@@ -16,8 +17,8 @@
 #include "IfEvaluation.h"
 #include "CondEvaluation.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term", "number?", "char?", "char?="};
-FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm, FunctionIsNumber, FunctionIsCharacter, OperatorCharacterEq};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term", "number?", "char?", "char?=", "string?", "make-string", "string-length"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm, FunctionIsNumber, FunctionIsCharacter, FunctionCharacterEq, FunctionIsString, FunctionMakeString, FunctionStringLength};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
 AcquireLazyEvaluationContextPtr globalAcquireLazyEvaluationContextPointers [] = {AcquireLetEvaluationContext, AcquireDefineEvaluationContext, AcquireDefineLambdaEvaluationContext, AcquireAndEvaluationContext, AcquireOrEvaluationContext, AcquireIfEvaluationContext, AcquireCondEvaluationContext};
