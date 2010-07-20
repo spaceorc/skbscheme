@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 extern "C" {
 #include "Str.h"
@@ -12,6 +13,7 @@ extern "C" {
 #include "Parser.h"
 #include "Definitions.h"
 #include "Character.h"
+#include "Dictionary.h"
 #include "String.h"
 #include "Boolean.h"
 #include "Error.h"

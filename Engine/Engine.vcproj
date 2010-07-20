@@ -167,6 +167,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dictionary.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Library.c"
 				>
 			</File>
@@ -203,10 +207,6 @@
 				</File>
 				<File
 					RelativePath=".\Definitions.c"
-					>
-				</File>
-				<File
-					RelativePath=".\Dictionary.c"
 					>
 				</File>
 				<File

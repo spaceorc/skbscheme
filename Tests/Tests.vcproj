@@ -213,6 +213,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestDictionary.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestEvaluation.h"
 				>
 			</File>

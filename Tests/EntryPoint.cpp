@@ -10,6 +10,7 @@
 #include "TestEvaluation.h"
 #include "TestCharacter.h"
 #include "TestString.h"
+#include "TestDictionary.h"
 #include <stdio.h>
 
 void main() {
