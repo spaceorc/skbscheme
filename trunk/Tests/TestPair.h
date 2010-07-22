@@ -1,20 +1,18 @@
 #include "Test.h"
 
 TEST(PairCons) {
-	Term * z = FunctionCons(MakeList(2, Number(1), Number(2)));
-    AssertTag(terPair, z);
-	AssertEq(Number(1), z->pair->first);
-	AssertEq(Number(2), z->pair->second);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Cons(Number(1), Number(2)), Eval(ParseSingle("(cons 1 2)"), contextBindings));
 }
 
 TEST(PairConsWithOneArgument) {
-	Term * z = FunctionCons(MakeList(1, Number(1)));
-    AssertTag(terError, z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(cons 1)"), contextBindings));
 }
 
 TEST(PairConsWithThreeArguments) {
-	Term * z = FunctionCons(MakeList(3, Number(1), Number(2), Number(3)));
-    AssertTag(terError, z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(cons 1 2 3)"), contextBindings));
 }
 
 TEST(PairConsWithErrorInside) {
@@ -23,21 +21,21 @@ TEST(PairConsWithErrorInside) {
 }
 
 TEST(PairCar) {
-	Term * z = FunctionCar(MakeList(1, FunctionCons(MakeList(2, Number(1), Number(2)))));
-	AssertEq(Number(1), z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(1), Eval(ParseSingle("(car (cons 1 2))"), contextBindings));
 }
 
 TEST(PairCarEmptyList) {
-	Term * z = FunctionCar(MakeList(1, Nil()));
-	AssertTag(terError, z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(ContractError(), Eval(ParseSingle("(car null)"), contextBindings));
 }
 
 TEST(PairCdr) {
-	Term * z = FunctionCdr(MakeList(1, FunctionCons(MakeList(2, Number(1), Number(2)))));
-	AssertEq(Number(2), z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(2), Eval(ParseSingle("(cdr (cons 1 2))"), contextBindings));
 }
 
 TEST(PairCdrEmptyList) {
-	Term * z = FunctionCdr(MakeList(1, Nil()));
-	AssertTag(terError, z);
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(ContractError(), Eval(ParseSingle("(cdr null)"), contextBindings));
 }
