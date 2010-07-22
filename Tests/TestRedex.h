@@ -70,7 +70,7 @@ static EvaluationContextBase * MockAcquireLazyEvaluationContext(EvaluationContex
 
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	SetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
+	contextBindings->dictionary = SetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
 	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
 	Term * b = Redex(MakeList(2, SymbolFromConstantStr(STR("lalala")), a));
 	AssertEq(Number(5), Eval(b, contextBindings));
