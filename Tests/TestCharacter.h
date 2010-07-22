@@ -8,16 +8,19 @@ TEST(IsCharacter) {
 
 
 TEST(CharacterEq) {
-	AssertEq(True(), FunctionCharacterEq(MakeList(3, Character('a'), Character('a'), Character('a'))));
-	AssertEq(False(), FunctionCharacterEq(MakeList(3, Character('a'), Character('a'), Character('b'))));
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(True(), Eval(ParseSingle("(char?= #\\a #\\a #\\a)"), contextBindings));
+	AssertEq(False(), Eval(ParseSingle("(char?= #\\a #\\a #\\b)"), contextBindings));
 }
 
 TEST(CharacterEqWith1Argument) {
-	AssertEq(InvalidArgumentCount(), FunctionCharacterEq(MakeList(1, Character('a'))));
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(char?= #\\a)"), contextBindings));
 }
 
 TEST(CharacterEqWithNotACharacter) {
-	AssertEq(InvalidArgumentType(), FunctionCharacterEq(MakeList(3, Character('a'), Character('b'), Nil())));
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(char?= 1 #\\a)"), contextBindings));
 }
 
 TEST(EvalOfOperatorCharacterEq) {
