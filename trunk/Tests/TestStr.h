@@ -24,7 +24,7 @@ TEST(Concatenate) {
 }
 
 TEST(Length) {
-	LimitedStr a = AllocateLimitedStr(6);
+	LimitedStr a = CreateLimitedStr(6);
 	a.str[0] = 'l';
 	a.str[1] = 'a';
 	a.str[2] = 'l';

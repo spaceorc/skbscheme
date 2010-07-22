@@ -8,7 +8,7 @@ Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
 	Term * result = 0;
 	if (0 == contextBindings)
 		return InvalidSymbol(symbol);
-	result = InternalFind(contextBindings->dictionary, symbol);
+	result = Find(contextBindings->dictionary, symbol);
 	if (0 == result)
 		return Resolve(contextBindings->previous, symbol);
 	return result;
@@ -56,7 +56,7 @@ static Term * EvalLambda(Lambda lambda, List arguments) {
 		if (!argument)
 			return InvalidArgumentCount();
 		CheckTermType(formalArgument, terSymbol);
-		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->symbol, argument);
 	}
 	if (IterateList(&arguments))
 		return InvalidArgumentCount();

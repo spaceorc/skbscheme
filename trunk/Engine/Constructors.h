@@ -4,7 +4,7 @@
 
 Term * Number(int number);
 Term * Function(FunctionPtr function);
-Term * InternalCons(Term * first, Term * second);
+Term * Cons(Term * first, Term * second);
 Term * Error(LimitedStr str);
 Term * Nil();
 List MakeListFromArray(unsigned int count, Term * terms[]);

@@ -9,13 +9,13 @@ Term * MockFunction(List arguments) {
 
 TEST(LetSingle) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
+	SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
 	Term * a = ParseSingle("((bububu 1))");
 	Term * b = ParseSingle("(lalala bububu)");
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionLet, AcquireLetEvaluationContext), a, b));
 	AssertEq(Number(2), Eval(z, contextBindings));
-	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("bububu")));
-	AssertEq(Function(MockFunction), InternalFindConstantStr(contextBindings->dictionary, STR("lalala")));
+	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("bububu")));
+	AssertEq(Function(MockFunction), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
 TEST(LetMultipleExpressions) {
@@ -38,14 +38,14 @@ TEST(LetInvalid) {
 
 TEST(LetMultiple) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
+	SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
 	Term * a = ParseSingle("((bububu 10) (kukuku (lalala 2)))");
 	Term * b = ParseSingle("(+ bububu (lalala kukuku))");
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionLet, AcquireLetEvaluationContext), a, b));
 	AssertEq(Number(14), Eval(z, contextBindings));
-	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("bububu")));
-	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("kukuku")));
-	AssertEq(Function(MockFunction), InternalFindConstantStr(contextBindings->dictionary, STR("lalala")));
+	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("bububu")));
+	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("kukuku")));
+	AssertEq(Function(MockFunction), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
 TEST(LetEvalsVariablesFirst) {
@@ -57,21 +57,21 @@ TEST(DefineVariable) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), SymbolFromConstantStr(STR("lalala")), Number(10)));
 	AssertEq(Empty(), Eval(z, contextBindings));
-	AssertEq(Number(10), InternalFindConstantStr(contextBindings->dictionary, STR("lalala")));
+	AssertEq(Number(10), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
 TEST(DefineVariableEvaluatesValue) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), SymbolFromConstantStr(STR("lalala")), Redex(MakeList(3, Function(OperatorPlus), Number(10), Number(20)))));
 	AssertEq(Empty(), Eval(z, contextBindings));
-	AssertEq(Number(30), InternalFindConstantStr(contextBindings->dictionary, STR("lalala")));
+	AssertEq(Number(30), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
 TEST(DefineFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), ParseSingle("(func p1 p2)"), ParseSingle("(+ p1 p2)")));
 	AssertEq(Empty(), Eval(z, contextBindings));
-    Term * func = InternalFindConstantStr(contextBindings->dictionary, STR("func"));
+    Term * func = FindConstantStr(contextBindings->dictionary, STR("func"));
 	AssertTag(terLambda, func);
 	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->lambda.body));
 	AssertThat(0 == IterateList(&func->lambda.body));

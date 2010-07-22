@@ -7,7 +7,7 @@ Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
-	return InternalCons(args[0], args[1]);
+	return Cons(args[0], args[1]);
 }
 
 Term * FunctionCar(List arguments) {

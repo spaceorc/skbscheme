@@ -22,7 +22,7 @@ Term * FunctionMakeString(List arguments) {
 	if (terCharacter != args[1]->tag)
 		return InvalidArgumentType();
 	size = args[0]->number;
-	result = AllocateLimitedStr(size + 1);
+	result = CreateLimitedStr(size + 1);
 	chr = result.str;
 	while (size--)
 		*(chr++) = args[1]->character;

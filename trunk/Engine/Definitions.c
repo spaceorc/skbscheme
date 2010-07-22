@@ -20,7 +20,7 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 			return error;
 		CheckTermType(let[0], terSymbol);
 		EvalTermAndCheckError(value, let[1], contextBindings);
-		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, let[0]->symbol, value);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, let[0]->symbol, value);
 	}
 	return EvalList(arguments, childContextBindings);
 }
@@ -31,7 +31,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terSymbol);
-	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
+	contextBindings->dictionary = Set(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
 	return Empty();
 }
 
@@ -47,7 +47,7 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 			if (IterateList(&arguments))
 				return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
 			EvalTermAndCheckError(value, value, contextBindings);
-			contextBindings->dictionary = InternalSet(contextBindings->dictionary, prototype->symbol, value);
+			contextBindings->dictionary = Set(contextBindings->dictionary, prototype->symbol, value);
 			return Empty();
 		case terRedex:
 			return InternalDefineFunction(prototype->redex, arguments, contextBindings);
