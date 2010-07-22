@@ -31,10 +31,14 @@ Term * FunctionError(List arguments) {
 	return Error(message->string);
 }
 
+Term * ContractError() {
+	return Error(LimitedStrFromConstantStr("Contract violation"));
+}
+
 // warning C4996: '__sys_errlist': This function or variable may be unsafe. Consider using strerror instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.	c:\Source\skbscheme\Engine\Error.c	35	Engine
 #pragma warning(disable:4996)
 
-Term * RaisePosixError(int errorNumber) {
+Term * PosixError(int errorNumber) {
 	return Error(LimitedStrFromConstantStr(_sys_errlist[errorNumber]));
 }
 

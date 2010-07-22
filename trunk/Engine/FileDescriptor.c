@@ -30,7 +30,7 @@ Term * FunctionOpen(List arguments) {
 	filename = ZeroStr(args[0]->string);
 	fd = open(filename.str, args[1]->number, args[2]->number);
 	if (fd < 0)
-		return RaisePosixError(errno);
+		return PosixError(errno);
 	return FileDescriptor(fd);
 }
 
@@ -41,7 +41,7 @@ Term * FunctionClose(List arguments) {
 	if (terFileDescriptor != arg->tag)
 		return InvalidArgumentType();
 	if (close(arg->fildes))
-		return RaisePosixError(errno);
+		return PosixError(errno);
 	return Empty();
 }
 
@@ -58,7 +58,7 @@ Term * FunctionRead(List arguments) {
 	str = CreateLimitedStr(args[1]->number);
 	size = read(args[0]->fildes, str.str, str.size);
 	if (size < 0)
-		return RaisePosixError(errno);
+		return PosixError(errno);
 	str.size = size;
 	return ConstantString(str);
 }
@@ -67,7 +67,7 @@ Term * InternalWrite(int fildes, LimitedStr str) {
 	LimitedStr zeroStr = ZeroStr(str);
 	int size = write(fildes, zeroStr.str, zeroStr.size);
 	if (size < 0)
-		return RaisePosixError(errno);
+		return PosixError(errno);
 	return Number(size);
 }
 

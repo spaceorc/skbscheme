@@ -91,7 +91,9 @@ LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 }
 
 LimitedStr ZeroStr(LimitedStr str) {
-	return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
+	if (str.str[str.size - 1])
+		return ConcatenateConstantLimitedStr(ConstLimitedStr(str), LimitConstantStr(""));
+	return str;
 }
 
 unsigned int Length(LimitedStr str) {
