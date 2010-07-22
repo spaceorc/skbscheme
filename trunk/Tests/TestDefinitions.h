@@ -9,7 +9,7 @@ Term * MockFunction(List arguments) {
 
 TEST(LetSingle) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
+	contextBindings->dictionary = SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
 	Term * a = ParseSingle("((bububu 1))");
 	Term * b = ParseSingle("(lalala bububu)");
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionLet, AcquireLetEvaluationContext), a, b));
@@ -38,7 +38,7 @@ TEST(LetInvalid) {
 
 TEST(LetMultiple) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
+	contextBindings->dictionary = SetConstantStr(contextBindings->dictionary, STR("lalala"), Function(MockFunction));
 	Term * a = ParseSingle("((bububu 10) (kukuku (lalala 2)))");
 	Term * b = ParseSingle("(+ bububu (lalala kukuku))");
 	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionLet, AcquireLetEvaluationContext), a, b));
