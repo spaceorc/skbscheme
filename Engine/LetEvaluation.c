@@ -1,11 +1,11 @@
-#include "LetEvaluation.h"
-#include "TermEvaluation.h"
-#include "TermListEvaluation.h"
-#include "Error.h"
-#include "Dictionary.h"
 #include <malloc.h>
 #include <memory.h>
 #include <assert.h>
+
+#include "LetEvaluation.h"
+#include "TermEvaluation.h"
+#include "TermListEvaluation.h"
+#include "Dictionary.h"
 
 static EvaluationContextBase * DoChildEvaluated(LetEvaluationContext * evaluationContext, Term * childResult) {
 	evaluationContext->childContextBindings->dictionary = InternalSet(evaluationContext->childContextBindings->dictionary, evaluationContext->currentLetSymbol, childResult);

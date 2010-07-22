@@ -1,7 +1,8 @@
+#include <memory.h>
+
 #include "Evaluation.h"
 #include "TermEvaluation.h"
 #include "Library.h"
-#include <memory.h>
 
 void FillEvaluationContextBase(EvaluationContextBase * base, EvaluationContextBase * parent, ContextBindings * contextBindings, ChildEvaluatedPtr childEvaluated, EvaluatePtr evaluate) {
 	memset(base, 0, sizeof(*base));

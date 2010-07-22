@@ -5,8 +5,7 @@
 #include <stdlib.h>
 
 #include "FileDescriptor.h"
-#include "Constructors.h"
-#include "Error.h"
+#include "List.h"
 
 // todo functional tests required
 
@@ -78,55 +77,67 @@ Term * InternalWriteConstantStr(int fildes, ConstantStr str) {
 	return InternalWrite(fildes, LimitedStrFromConstantStr(str));
 }
 
-Term * InternalWritePair(int fildes, Pair * term);
+unsigned int DumpPair(Chr * buffer, unsigned int size, Pair * pair) {
+	unsigned int offset = sprintf_s(buffer, size, "(");
+	offset += DumpTerm(buffer + offset, size - offset, pair->first);
+	while (pair) {
+		switch(pair->second->tag) {
+			case terPair:
+				pair = pair->second->pair;
+				break;
+			case terNil:
+				pair = 0;
+				break;
+			default:
+				offset += DumpTerm(buffer + offset, size - offset, pair->second);
+				pair = 0;
+				break;
+		}	}
+	return offset + sprintf_s(buffer + offset, size - offset, ")\n");
+}
+
+unsigned int DumpTerm(Chr * buffer, unsigned int size, Term * term) {
+	switch(term->tag) {
+		case terNumber:
+			return sprintf_s(buffer, size, "%d\n", term->number);
+		case terFileDescriptor:
+			return sprintf_s(buffer, size, "fildes %d\n", term->fildes);
+		case terCharacter:
+			return sprintf_s(buffer, size, "#\\%c\n", (int)term->character);
+		case terSymbol:
+			return sprintf_s(buffer, size, "%.*s\n", term->symbol.size, term->symbol.str);
+		case terString:
+			return sprintf_s(buffer, size, "\"%.*s\"\n", term->string.size, term->string.str);
+		case terEmpty:
+			return 0;
+		case terNil:
+			return sprintf_s(buffer, size, "()\n");
+		case terError:
+			return sprintf_s(buffer, size, "error \"%.*s\"\n", term->message.size, term->message.str);
+		case terFunction:
+			return sprintf_s(buffer, size, "built-in function\n");
+		case terLazyFunction:
+			return sprintf_s(buffer, size, "lazy function\n");
+		case terLambda:
+			return sprintf_s(buffer, size, "function\n");
+		case terBoolean:
+			if (term->boolean)
+				return sprintf_s(buffer, size, "#t\n");
+			else
+				return sprintf_s(buffer, size, "#f\n");
+		case terPair:
+			return DumpPair(buffer, size, term->pair);
+		default:
+			assert(0);
+			return 0;
+	}
+}
+
 
 Term * InternalWriteTerm(int fildes, Term * term) {
 	Chr buffer[1024] = "";
 	Term * result = 0;
-	switch(term->tag) {
-		case terNumber:
-			sprintf_s(buffer, 1024, "%d\n", term->number);
-			break;
-		case terFileDescriptor:
-			sprintf_s(buffer, 1024, "fildes %d\n", term->fildes);
-			break;
-		case terCharacter:
-			sprintf_s(buffer, 1024, "#\\%c\n", (int)term->character);
-			break;
-		case terSymbol:
-			sprintf_s(buffer, 1024, "%.*s\n", term->symbol.size, term->symbol.str);
-			break;
-		case terString:
-			sprintf_s(buffer, 1024, "\"%.*s\"\n", term->string.size, term->string.str);
-			break;
-		case terEmpty:
-			return Empty();
-		case terNil:
-			sprintf_s(buffer, 1024, "()\n");
-			break;
-		case terError:
-			sprintf_s(buffer, 1024, "error \"%.*s\"\n", term->message.size, term->message.str);
-			break;
-		case terFunction:
-			sprintf_s(buffer, 1024, "built-in function\n");
-			break;
-		case terLazyFunction:
-			sprintf_s(buffer, 1024, "lazy function\n");
-			break;
-		case terLambda:
-			sprintf_s(buffer, 1024, "function\n");
-			break;
-		case terBoolean:
-			if (term->boolean)
-				sprintf_s(buffer, 1024, "#t\n");
-			else
-				sprintf_s(buffer, 1024, "#f\n");
-			break;
-		case terPair:
-			return InternalWritePair(fildes, term->pair);
-		default:
-			assert(0);
-	}
+
 	term = InternalWriteConstantStr(fildes, buffer);
 	if (terError == term->tag)
 		return term;
@@ -163,34 +174,4 @@ Term * StdOut() {
 
 Term * StdErr() {
 	return FileDescriptor(2);
-}
-
-Term * InternalWritePair(int fildes, Pair * pair) {
-	Term * term = InternalWriteConstantStr(fildes, "(");
-	if (terError == term->tag)
-		return term;
-	while(pair) {
-		term = InternalWriteTerm(fildes, pair->first);
-		if (terError == term->tag)
-			return term;
-		switch(pair->second->tag) {
-			case terPair:
-				pair = pair->second->pair;
-				break;
-			case terNil:
-				pair = 0;
-				break;
-			default:
-				term = InternalWriteConstantStr(fildes, " . ");
-				if (terError == term->tag)
-					return term;
-				InternalWriteTerm(fildes, pair->second);
-				pair = 0;
-				break;
-		}
-	}
-	term = InternalWriteConstantStr(fildes, ")\n");
-	if (terError == term->tag)
-		return term;
-	return Empty();
 }

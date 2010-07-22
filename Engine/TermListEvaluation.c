@@ -1,9 +1,9 @@
-#include "TermListEvaluation.h"
-#include "TermEvaluation.h"
-#include "Error.h"
 #include <malloc.h>
 #include <memory.h>
 #include <assert.h>
+
+#include "TermListEvaluation.h"
+#include "TermEvaluation.h"
 
 static EvaluationContextBase * DoChildEvaluated(TermListEvaluationContext * evaluationContext, Term * childResult) {
 	evaluationContext->currentResult = childResult;

@@ -140,14 +140,17 @@ const char * DumpTag(int tag) {
 #define AssertTag(expected, term) AssertTagCondition(expected, term, __FUNCTION__, __FILE__, __LINE__)
 #define AssertTok(expected, token) AssertTokCondition(expected, token, __FUNCTION__, __FILE__, __LINE__)
 
-void AssertTagCondition(int expected, Term * term, const char * function, const char * file, int line) {
-	char message[1024];
-	if (term == 0) {
-		sprintf_s(message, "expected term with tag %s, but was null pointer", DumpTag(expected));
+void AssertTagCondition(int expectedTag, Term * was, const char * function, const char * file, int line) {
+	const unsigned int size = 1024;
+	char message[size];
+	unsigned int offset = 0;
+	if (was == 0) {
+		sprintf_s(message, "expected term with tag %s, but was null pointer", DumpTag(expectedTag));
 		AssertCondition(message, false, function, file, line);
 	}
-	if (expected != term->tag) {
-		sprintf_s(message, "expected term with tag %s, but was term with tag %s", DumpTag(expected), DumpTag(term->tag));
+	if (expectedTag != was->tag) {
+		offset = sprintf_s(message, "expected term with tag %s, but was ", DumpTag(expectedTag));
+		DumpTerm((Chr *)(message + offset), size - offset, was);
 		AssertCondition(message, false, function, file, line);
 	}
 }

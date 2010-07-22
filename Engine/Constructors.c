@@ -39,7 +39,7 @@ List MakeListFromArray(unsigned int count, Term * terms[]) {
 	Pair * iterator = 0;
 	unsigned int i = 0;
 	while (i < count)
-		result = AppendList(result, &iterator, terms[i++]);
+		result = AppendListUsingIterator(result, &iterator, terms[i++]);
 	return result;
 }
 
@@ -50,7 +50,7 @@ List MakeList(unsigned int count, ...) {
 	va_list listPointer;
 	va_start(listPointer, count);
 	while(i++ < count)
-		result = AppendList(result, &iterator, va_arg(listPointer, Term *));
+		result = AppendListUsingIterator(result, &iterator, va_arg(listPointer, Term *));
 	return result;
 }
 

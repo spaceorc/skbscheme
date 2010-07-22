@@ -85,10 +85,8 @@ struct structPair {
 };
 
 #include "Constructors.h"
-
-Term * IterateList(List * iterator);
-List AppendList(List list, Pair ** iterator, Term * term);
-int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error);
+#include "List.h"
+#include "Error.h"
 
 #define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
 #define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)

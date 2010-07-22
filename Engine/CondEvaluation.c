@@ -1,10 +1,10 @@
+#include <malloc.h>
+#include <memory.h>
+
 #include "CondEvaluation.h"
 #include "TermEvaluation.h"
 #include "TermListEvaluation.h"
 #include "Boolean.h"
-#include "Error.h"
-#include <malloc.h>
-#include <memory.h>
 
 static EvaluationContextBase * DoChildEvaluated(CondEvaluationContext * evaluationContext, Term * childResult) {
 	if (IsTrue(childResult)) {

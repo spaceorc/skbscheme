@@ -1,9 +1,10 @@
-#include "TermEvaluation.h"
-#include "RedexEvaluation.h"
-#include "Redex.h"
 #include <malloc.h>
 #include <memory.h>
 #include <assert.h>
+
+#include "TermEvaluation.h"
+#include "RedexEvaluation.h"
+#include "Redex.h"
 
 static EvaluationContextBase * DoChildEvaluated(TermEvaluationContext * evaluationContext, Term * childResult) {
 	assert(0);
