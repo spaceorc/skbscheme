@@ -9,4 +9,5 @@ Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
 Term * FunctionError(List arguments);
 Term * BadSyntax();
-Term * RaisePosixError(int errorNumber);
+Term * PosixError(int errorNumber);
+Term * ContractError();

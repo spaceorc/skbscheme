@@ -40,7 +40,20 @@ Term * FunctionStringLength(List arguments) {
 }
 
 Term * FunctionStringRef(List arguments) {
-	return Nil();
+	Term * args [] = {0, 0}, * error  = 0;
+	unsigned int pos = 0;
+	LimitedStr str;
+	if (TakeSeveralArguments(arguments, args, &error) < 0)
+		return error;
+	if (terString != args[0]->tag)
+		return InvalidArgumentType();
+	if (terNumber != args[1]->tag)
+		return InvalidArgumentType();
+	str = args[0]->string;
+	pos = args[1]->number;
+	if (pos < 0 || pos >= str.size - 1)
+		return ContractError();
+	return Character(str.str[pos]);
 }
 
 Term * FunctionStringSet(List arguments) {
