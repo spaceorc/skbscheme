@@ -25,7 +25,7 @@ void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag);
 void * QuoteState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	if (chr < 32)
 		return ErrorState;
-	*stringBuilder = InternalAppendChr(*stringBuilder, chr);	
+	*stringBuilder = AppendChr(*stringBuilder, chr);	
 	return StringState;
 }
 
@@ -38,7 +38,7 @@ void * SymbolState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 		default:
 			if (chr <= 32)
 				return FinishState;
-			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
+			*stringBuilder = AppendChr(*stringBuilder, chr);
 			return SymbolState;
 	}
 }
@@ -52,7 +52,7 @@ void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 		case '"':
 			return FinishState;
 		default:
-			*stringBuilder = InternalAppendChr(*stringBuilder, chr);	
+			*stringBuilder = AppendChr(*stringBuilder, chr);	
 			return StringState;
 	}
 }
@@ -62,11 +62,11 @@ void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 		case 0:
 			return FinishState;
 		case '(':
-			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
+			*stringBuilder = AppendChr(*stringBuilder, chr);
 			*tag = tokOpeningBracket;
 			return FinishState;
 		case ')':
-			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
+			*stringBuilder = AppendChr(*stringBuilder, chr);
 			*tag = tokClosingBracket;
 			return FinishState;
 		case '"':
@@ -75,7 +75,7 @@ void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 		default:
 			if (chr <= 32)
 				return BeginState;
-			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
+			*stringBuilder = AppendChr(*stringBuilder, chr);
 			*tag = tokSymbol;
 			return SymbolState;
 	}
@@ -93,7 +93,7 @@ Token GetToken(LimitedStr * input) {
 		result.tag = tokError;
 	if (state == FinishAndUnwindState)
 		UnwindChr(input);
-	result.text = InternalBuildString(stringBuilder);
+	result.text = BuildString(stringBuilder);
 	return result;
 
 }

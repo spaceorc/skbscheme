@@ -35,7 +35,7 @@ Chr IterateChrConstantLimitedStr(ConstantLimitedStr * str);
 
 void UnwindChr(LimitedStr * str);
 
-LimitedStr AllocateLimitedStr(unsigned int size);
+LimitedStr CreateLimitedStr(unsigned int size);
 
 LimitedStr ZeroStr(LimitedStr str);
 

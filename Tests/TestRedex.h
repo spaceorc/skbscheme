@@ -8,7 +8,7 @@ TEST(GeneralEvalNotAFunction) {
 	AssertTag(terError, Eval(a, 0));
 }
 
-TEST(GeneralInternalApplyWith0Arguments) {
+TEST(GeneralEvalWith0Arguments) {
 	Term * a = AllocateTerm(terRedex);
 	a->redex = MakeList(0);
 	AssertTag(terError, Eval(a, 0));
@@ -70,7 +70,7 @@ static EvaluationContextBase * MockAcquireLazyEvaluationContext(EvaluationContex
 
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	InternalSetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
+	SetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
 	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
 	Term * b = Redex(MakeList(2, SymbolFromConstantStr(STR("lalala")), a));
 	AssertEq(Number(5), Eval(b, contextBindings));
@@ -81,8 +81,8 @@ TEST(EvalRedexStartingWithDefinedFunction) {
 	Term * z = ParseSingle("(define (lalala p1 p2) (+ p1 p2))");
 	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
-	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("a")));
-	AssertThat(0 == InternalFindConstantStr(contextBindings->dictionary, STR("b")));
+	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("a")));
+	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("b")));
 }
 
 TEST(EvalDefinedFunctionInsufficientAgruments) {
@@ -124,7 +124,7 @@ TEST(EvalDefinesNestedDefineInsideOuterDefineScope) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
-	AssertThat(0 == InternalFind(contextBindings->dictionary, LimitedStrFromConstantStr(STR("bububu"))));
+	AssertThat(0 == Find(contextBindings->dictionary, LimitedStrFromConstantStr(STR("bububu"))));
 }
 
 TEST(EvalResolvedSymbolsUsingOutermostRelevantScope) {

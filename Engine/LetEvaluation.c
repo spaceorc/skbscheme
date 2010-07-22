@@ -8,7 +8,7 @@
 #include "Dictionary.h"
 
 static EvaluationContextBase * DoChildEvaluated(LetEvaluationContext * evaluationContext, Term * childResult) {
-	evaluationContext->childContextBindings->dictionary = InternalSet(evaluationContext->childContextBindings->dictionary, evaluationContext->currentLetSymbol, childResult);
+	evaluationContext->childContextBindings->dictionary = Set(evaluationContext->childContextBindings->dictionary, evaluationContext->currentLetSymbol, childResult);
 	return THIS_CONTEXT;
 }
 

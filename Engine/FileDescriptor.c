@@ -55,7 +55,7 @@ Term * FunctionRead(List arguments) {
 		return InvalidArgumentType();
 	if (terNumber != args[1]->tag)
 		return InvalidArgumentType();
-	str = AllocateLimitedStr(args[1]->number);
+	str = CreateLimitedStr(args[1]->number);
 	size = read(args[0]->fildes, str.str, str.size);
 	if (size < 0)
 		return RaisePosixError(errno);

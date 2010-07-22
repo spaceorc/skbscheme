@@ -34,7 +34,7 @@ static EvaluationContextBase * EvalLambda(ReductionContext * evaluationContext) 
 			THIS_CONTEXT->result = InvalidArgumentType();
 			return THIS_CONTEXT;
 		}
-		childContextBindings->dictionary = InternalSet(childContextBindings->dictionary, formalArgument->symbol, argument);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->symbol, argument);
 	}
 	if (IterateList(&arguments)) {
 		THIS_CONTEXT->result = InvalidArgumentCount();

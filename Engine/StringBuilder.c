@@ -6,7 +6,7 @@ StringBuilder AllocateStringBuilder() {
 	return 0;
 }
 
-StringBuilder InternalAppendChr(StringBuilder stringBuilder, Chr chr) {
+StringBuilder AppendChr(StringBuilder stringBuilder, Chr chr) {
 	return PushList(stringBuilder, Character(chr));
 }
 
@@ -17,8 +17,8 @@ unsigned int CalculateStringLength(StringBuilder stringBuilder) {
 	return result;
 }
 
-LimitedStr InternalBuildString(StringBuilder stringBuilder) {
-	LimitedStr result = AllocateLimitedStr(CalculateStringLength(stringBuilder) + 1);
+LimitedStr BuildString(StringBuilder stringBuilder) {
+	LimitedStr result = CreateLimitedStr(CalculateStringLength(stringBuilder) + 1);
 	Chr * current = result.str + result.size;
 	Term * character = 0;
 	*(--current) = 0;

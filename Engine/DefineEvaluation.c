@@ -7,7 +7,7 @@
 #include "Dictionary.h"
 
 static EvaluationContextBase * DefineChildEvaluated(DefineEvaluationContext * evaluationContext, Term * childResult) {
-	THIS_CONTEXT->contextBindings->dictionary = InternalSet(THIS_CONTEXT->contextBindings->dictionary, evaluationContext->name, childResult);
+	THIS_CONTEXT->contextBindings->dictionary = Set(THIS_CONTEXT->contextBindings->dictionary, evaluationContext->name, childResult);
 	THIS_CONTEXT->result = Empty();
 	return THIS_CONTEXT;
 }
@@ -23,7 +23,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terSymbol);
-	contextBindings->dictionary = InternalSet(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
+	contextBindings->dictionary = Set(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
 	return Empty();
 }
 

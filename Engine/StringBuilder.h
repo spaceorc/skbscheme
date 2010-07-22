@@ -3,5 +3,5 @@
 typedef List StringBuilder;
 
 StringBuilder AllocateStringBuilder();
-StringBuilder InternalAppendChr(StringBuilder stringBuilder, Chr chr);
-LimitedStr InternalBuildString(StringBuilder stringBuilder);
+StringBuilder AppendChr(StringBuilder stringBuilder, Chr chr);
+LimitedStr BuildString(StringBuilder stringBuilder);

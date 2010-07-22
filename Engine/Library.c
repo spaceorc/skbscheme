@@ -32,13 +32,13 @@ ContextBindings * AcquireContextBindings() {
 	int lenConstants = sizeof(globalConstantNames)/sizeof(globalConstantNames[0]);
 	assert((sizeof(globalFunctionPointers)/sizeof(globalFunctionPointers[0])) == lenFunctions);
 	while (lenFunctions-- > 0)
-		result->dictionary = InternalSetConstantStr(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
+		result->dictionary = SetConstantStr(result->dictionary, globalFunctionNames[lenFunctions], Function(globalFunctionPointers[lenFunctions]));
 	assert((sizeof(globalLazyFunctionPointers)/sizeof(globalLazyFunctionPointers[0])) == lenLazyFunctions);
 	assert((sizeof(globalAcquireLazyEvaluationContextPointers)/sizeof(globalAcquireLazyEvaluationContextPointers[0])) == lenLazyFunctions);
 	while (lenLazyFunctions-- > 0)
-		result->dictionary = InternalSetConstantStr(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions], globalAcquireLazyEvaluationContextPointers[lenLazyFunctions]));	
+		result->dictionary = SetConstantStr(result->dictionary, globalLazyFunctionNames[lenLazyFunctions], LazyFunction(globalLazyFunctionPointers[lenLazyFunctions], globalAcquireLazyEvaluationContextPointers[lenLazyFunctions]));	
 	assert((sizeof(globalConstantFunctionPointers)/sizeof(globalConstantFunctionPointers[0])) == lenConstants);
 	while (lenConstants-- > 0)
-		result->dictionary = InternalSetConstantStr(result->dictionary, globalConstantNames[lenConstants], (globalConstantFunctionPointers[lenConstants])());
+		result->dictionary = SetConstantStr(result->dictionary, globalConstantNames[lenConstants], (globalConstantFunctionPointers[lenConstants])());
 	return result;
 }

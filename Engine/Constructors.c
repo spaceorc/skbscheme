@@ -15,7 +15,7 @@ Term * Function(FunctionPtr function) {
 	return result;
 }
 
-Term * InternalCons(Term * first, Term * second) {
+Term * Cons(Term * first, Term * second) {
 	Term * result = 0;
 	result = AllocateTerm(terPair);	
 	result->pair = AllocatePair();

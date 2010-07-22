@@ -1,14 +1,14 @@
 #include "Dictionary.h"
 
-Dictionary AllocateDictionary() {
+Dictionary CreateDictionary() {
 	return 0;
 }
 
-Term * InternalFindConstantStr(Dictionary dictionary, ConstantStr key) {
-	return InternalFindConstantLimitedStr(dictionary, LimitConstantStr(key));
+Term * FindConstantStr(Dictionary dictionary, ConstantStr key) {
+	return FindConstantLimitedStr(dictionary, LimitConstantStr(key));
 }
 
-Term * InternalFindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
+Term * FindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
 	Term * keyValuePair = 0;
 	while(keyValuePair = IterateList(&dictionary)) {
 		if (terPair != keyValuePair->tag)
@@ -21,18 +21,18 @@ Term * InternalFindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr 
 	return 0;
 }
 
-Term * InternalFind(Dictionary dictionary, LimitedStr key) {
-	return InternalFindConstantLimitedStr(dictionary, ConstLimitedStr(key));
+Term * Find(Dictionary dictionary, LimitedStr key) {
+	return FindConstantLimitedStr(dictionary, ConstLimitedStr(key));
 }
 
-List InternalSet(Dictionary dictionary, LimitedStr key, Term * value) {
-	return PushList(dictionary, InternalCons(ConstantString(key), value));
+List Set(Dictionary dictionary, LimitedStr key, Term * value) {
+	return PushList(dictionary, Cons(ConstantString(key), value));
 }
 
-Dictionary InternalSetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
-	return PushList(dictionary, InternalCons(ConstantStringFromConstantStr(key), value));
+Dictionary SetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
+	return PushList(dictionary, Cons(ConstantStringFromConstantStr(key), value));
 }
 
-Dictionary InternalSetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
-	return PushList(dictionary, InternalCons(ConstantStringFromConstantLimitedStr(key), value));
+Dictionary SetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
+	return PushList(dictionary, Cons(ConstantStringFromConstantLimitedStr(key), value));
 }
