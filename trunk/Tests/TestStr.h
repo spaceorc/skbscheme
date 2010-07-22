@@ -32,18 +32,3 @@ TEST(Length) {
 	AssertThat(6 == Length(LimitedStrFromConstantStr(STR("lalala"))));
 	AssertThat(3 == Length(a));
 }
-
-TEST(BuildStrings) {
-	StringBuilder * stringBuilder = 0;
-	stringBuilder = AppendLimitedStr(stringBuilder, LimitedStrFromConstantStr(STR("lalala1")));
-	stringBuilder = AppendConstantStr(stringBuilder, STR("lalala2"));
-	stringBuilder = AppendConstantLimitedStr(stringBuilder, ConstLimitedStr(LimitedStrFromConstantStr(STR("lalala3"))));
-	stringBuilder = AppendChr(stringBuilder, 'l');
-	stringBuilder = AppendChr(stringBuilder, 'a');
-	stringBuilder = AppendChr(stringBuilder, 'l');
-	stringBuilder = AppendChr(stringBuilder, 'a');
-	stringBuilder = AppendChr(stringBuilder, 'l');
-	stringBuilder = AppendChr(stringBuilder, 'a');
-	stringBuilder = AppendChr(stringBuilder, '4');
-	AssertThat(0 == Compare(LimitedStrFromConstantStr(STR("lalala1lalala2lalala3lalala4")), BuildString(stringBuilder)));
-}

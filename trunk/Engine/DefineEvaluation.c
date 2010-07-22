@@ -1,10 +1,10 @@
-#include "DefineEvaluation.h"
-#include "TermEvaluation.h"
-#include "Error.h"
-#include "Dictionary.h"
 #include <malloc.h>
 #include <memory.h>
 #include <assert.h>
+
+#include "DefineEvaluation.h"
+#include "TermEvaluation.h"
+#include "Dictionary.h"
 
 static EvaluationContextBase * DefineChildEvaluated(DefineEvaluationContext * evaluationContext, Term * childResult) {
 	THIS_CONTEXT->contextBindings->dictionary = InternalSet(THIS_CONTEXT->contextBindings->dictionary, evaluationContext->name, childResult);

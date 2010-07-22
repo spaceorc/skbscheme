@@ -2,7 +2,6 @@
 
 #include "Pair.h"
 #include "MemoryManager.h"
-#include "Error.h"
 
 Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;
@@ -27,25 +26,4 @@ Term * FunctionCdr(List arguments) {
 	if (arg->tag != terPair)
 		return InvalidArgumentType();
 	return arg->pair->second;
-}
-
-List InternalAppend(List list, Term * term) {
-	// todo ??? maybe term->tag(error) cannot be added?
-	List result = list;
-	Pair * current, * last;
-	if (0 == result)
-		current = result = AllocatePair();
-	else {
-		last = list;
-		while (terNil != last->second->tag) {
-			assert(terPair == last->second->tag);
-			last = last->second->pair;
-		}
-		current = AllocatePair();
-		last->second->tag = terPair;
-		last->second->pair = current;
-	}
-	current->first = term;
-	current->second = Nil();
-	return result;
 }

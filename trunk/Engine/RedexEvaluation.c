@@ -1,18 +1,18 @@
+#include <memory.h>
+#include <malloc.h>
+#include <assert.h>
+
 #include "TermEvaluation.h"
 #include "TermListEvaluation.h"
 #include "RedexEvaluation.h"
 #include "Pair.h"
 #include "Dictionary.h"
-#include "Error.h"
-#include <memory.h>
-#include <malloc.h>
-#include <assert.h>
 
 static EvaluationContextBase * DoChildEvaluated(ReductionContext * evaluationContext, Term * childResult) {
 	if (!evaluationContext->function)
 		evaluationContext->function = childResult;
 	else 	
-		evaluationContext->arguments = InternalAppend(evaluationContext->arguments, childResult);
+		evaluationContext->arguments = AppendList(evaluationContext->arguments, childResult);
 	return THIS_CONTEXT;
 }
 

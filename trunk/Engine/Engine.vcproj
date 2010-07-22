@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\List.c"
+				>
+			</File>
+			<File
 				RelativePath=".\MemoryManager.c"
 				>
 			</File>
@@ -187,7 +191,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Term.c"
+				RelativePath=".\StringBuilder.c"
 				>
 			</File>
 			<File
@@ -214,7 +218,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\FileDescriptor.cpp"
+					RelativePath=".\FileDescriptor.c"
 					>
 				</File>
 				<File
@@ -293,6 +297,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\List.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MemoryManager.h"
 				>
 			</File>
@@ -302,6 +310,10 @@
 			</File>
 			<File
 				RelativePath=".\Str.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StringBuilder.h"
 				>
 			</File>
 			<File

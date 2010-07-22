@@ -5,7 +5,6 @@
 #include "Character.h"
 #include "Dictionary.h"
 #include "MemoryManager.h"
-#include "Error.h"
 
 Term * ParseTerm(LimitedStr symbol) {
 	if (IsNumber(symbol))
@@ -26,14 +25,14 @@ Term * Parse(Token token, ParserContext ** context) {
 			assert(term->tag != terRedex);
 			if (0 == *context)
 				break;
-			(*context)->redex = InternalAppend((*context)->redex, term);
+			(*context)->redex = AppendList((*context)->redex, term);
 			term = 0;
 			break;
 		case tokQuotedString:
 			term = ConstantString(token.text);
 			if (0 == *context)
 				break;
-			(*context)->redex = InternalAppend((*context)->redex, term);
+			(*context)->redex = AppendList((*context)->redex, term);
 			term = 0;
 			break;
 		case tokOpeningBracket:
@@ -47,7 +46,7 @@ Term * Parse(Token token, ParserContext ** context) {
 			*context = (*context)->previous;
 			if (0 == *context)
 				break;
-			(*context)->redex = InternalAppend((*context)->redex, term);
+			(*context)->redex = AppendList((*context)->redex, term);
 			term = 0;
 			break;
 		case tokError:

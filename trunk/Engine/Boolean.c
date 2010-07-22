@@ -1,7 +1,6 @@
 #include "Boolean.h"
 #include "MemoryManager.h"
 #include "Redex.h"
-#include "Error.h"
 
 Term * True() {
 	Term * result = AllocateTerm(terBoolean);

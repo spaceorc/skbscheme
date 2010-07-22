@@ -1,5 +1,4 @@
 #include "Dictionary.h"
-#include "Error.h"
 
 Dictionary AllocateDictionary() {
 	return 0;
@@ -27,13 +26,13 @@ Term * InternalFind(Dictionary dictionary, LimitedStr key) {
 }
 
 List InternalSet(Dictionary dictionary, LimitedStr key, Term * value) {
-	return InternalAppend(dictionary, InternalCons(ConstantString(key), value));
+	return PushList(dictionary, InternalCons(ConstantString(key), value));
 }
 
 Dictionary InternalSetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
-	return InternalAppend(dictionary, InternalCons(ConstantStringFromConstantStr(key), value));
+	return PushList(dictionary, InternalCons(ConstantStringFromConstantStr(key), value));
 }
 
 Dictionary InternalSetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
-	return InternalAppend(dictionary, InternalCons(ConstantStringFromConstantLimitedStr(key), value));
+	return PushList(dictionary, InternalCons(ConstantStringFromConstantLimitedStr(key), value));
 }

@@ -1,5 +1,4 @@
 #include "Boolean.h"
-#include "Error.h"
 #include "Character.h"
 
 Term * ParseCharacter(LimitedStr symbol) {

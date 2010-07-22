@@ -2,7 +2,6 @@
 
 #include "Redex.h"
 #include "MemoryManager.h"
-#include "Error.h"
 #include "Dictionary.h"
 
 Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {

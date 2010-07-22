@@ -1,34 +1,35 @@
 #include <assert.h>
 
+#include "StringBuilder.h"
 #include "Tokenizer.h"
 
-typedef void * (*TokenizerState)(Chr chr, StringBuilder ** stringBuilder, int * tag);
+typedef void * (*TokenizerState)(Chr chr, StringBuilder * stringBuilder, int * tag);
 
-void * FinishState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * FinishState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	assert(0);
 	return 0;
 }
 
-void * FinishAndUnwindState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * FinishAndUnwindState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	assert(0);
 	return 0;
 }
 
-void * ErrorState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * ErrorState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	assert(0);
 	return 0;
 }
 
-void * StringState(Chr chr, StringBuilder ** stringBuilder, int * tag);
+void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag);
 
-void * QuoteState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * QuoteState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	if (chr < 32)
 		return ErrorState;
-	*stringBuilder = AppendChr(*stringBuilder, chr);	
+	*stringBuilder = InternalAppendChr(*stringBuilder, chr);	
 	return StringState;
 }
 
-void * SymbolState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * SymbolState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
 		case '(':
 		case ')':
@@ -37,12 +38,12 @@ void * SymbolState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
 		default:
 			if (chr <= 32)
 				return FinishState;
-			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
 			return SymbolState;
 	}
 }
 
-void * StringState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
 		case 0:
 			return ErrorState;
@@ -51,21 +52,21 @@ void * StringState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
 		case '"':
 			return FinishState;
 		default:
-			*stringBuilder = AppendChr(*stringBuilder, chr);	
+			*stringBuilder = InternalAppendChr(*stringBuilder, chr);	
 			return StringState;
 	}
 }
 
-void * BeginState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
+void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
 		case 0:
 			return FinishState;
 		case '(':
-			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
 			*tag = tokOpeningBracket;
 			return FinishState;
 		case ')':
-			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
 			*tag = tokClosingBracket;
 			return FinishState;
 		case '"':
@@ -74,7 +75,7 @@ void * BeginState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
 		default:
 			if (chr <= 32)
 				return BeginState;
-			*stringBuilder = AppendChr(*stringBuilder, chr);
+			*stringBuilder = InternalAppendChr(*stringBuilder, chr);
 			*tag = tokSymbol;
 			return SymbolState;
 	}
@@ -83,7 +84,7 @@ void * BeginState(Chr chr, StringBuilder ** stringBuilder, int * tag) {
 
 Token GetToken(LimitedStr * input) {
 	Token result;
-	StringBuilder * stringBuilder = 0;
+	StringBuilder stringBuilder = AllocateStringBuilder();
 	TokenizerState state = BeginState;
 	result.tag = tokEnd;
 	while (state != FinishState && state != ErrorState && state != FinishAndUnwindState)
@@ -92,7 +93,7 @@ Token GetToken(LimitedStr * input) {
 		result.tag = tokError;
 	if (state == FinishAndUnwindState)
 		UnwindChr(input);
-	result.text = BuildString(stringBuilder);
+	result.text = InternalBuildString(stringBuilder);
 	return result;
 
 }
