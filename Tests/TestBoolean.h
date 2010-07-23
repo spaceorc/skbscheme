@@ -73,7 +73,7 @@ TEST(Cond) {
 	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 1))"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(cond (#t 2 1))"), contextBindings));
 	AssertEq(Number(2), Eval(ParseSingle("(cond (#f 1) (#t 2))"), contextBindings));
-	AssertEq(Empty(), Eval(ParseSingle("(cond (#f 1) (#f 2))"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(cond (#f 1) (#f 2))"), contextBindings));
 	AssertEq(Number(1), Eval(ParseSingle("(cond (1))"), contextBindings));
 }
 

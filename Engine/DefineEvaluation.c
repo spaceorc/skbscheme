@@ -8,7 +8,7 @@
 
 static EvaluationContextBase * DefineChildEvaluated(DefineEvaluationContext * evaluationContext, Term * childResult) {
 	THIS_CONTEXT->contextBindings->dictionary = Set(THIS_CONTEXT->contextBindings->dictionary, evaluationContext->name, childResult);
-	THIS_CONTEXT->result = Empty();
+	THIS_CONTEXT->result = Void();
 	return THIS_CONTEXT;
 }
 
@@ -24,7 +24,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terVariable);
 	contextBindings->dictionary = Set(contextBindings->dictionary, name->variable, MakeLambda(definition, body, contextBindings));
-	return Empty();
+	return Void();
 }
 
 static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContext * evaluationContext) {

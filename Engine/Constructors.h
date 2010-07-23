@@ -18,6 +18,6 @@ Term * VariableFromConstantStr(ConstantStr str);
 Term * VariableFromConstantLimitedStr(ConstantLimitedStr str);
 Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext);
 Term * MakeLambda(List formalArguments, List body, ContextBindings * context);
-Term * Empty();
+Term * Void();
 Term * Character(Chr character);
 Term * FileDescriptor(int fildes);

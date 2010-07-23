@@ -23,7 +23,7 @@ int main() {
 				Term * fileDescriptor = StdOut();
 				if (terError == term->tag)
 					fileDescriptor = StdErr();
-				if (terEmpty != FunctionWriteTerm(MakeList(2, fileDescriptor, Eval(term, contextBindings)))->tag)
+				if (terVoid != FunctionWriteTerm(MakeList(2, fileDescriptor, Eval(term, contextBindings)))->tag)
 					return 0;			
 			}
 		}

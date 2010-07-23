@@ -74,5 +74,5 @@ Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
 		if (IsTrue(condition))
 			return condItemArguments ? EvalList(condItemArguments, contextBindings) : condition;
 	}
-	return Empty();
+	return Void();
 }

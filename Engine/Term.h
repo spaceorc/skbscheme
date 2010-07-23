@@ -12,7 +12,7 @@
 #define terVariable 7
 #define terLazyFunction 8
 #define terLambda 9
-#define terEmpty 10
+#define terVoid 10
 #define terBoolean 11
 #define terCharacter 12
 #define terFileDescriptor 13
