@@ -57,9 +57,54 @@ Term * FunctionStringRef(List arguments) {
 }
 
 Term * FunctionStringSet(List arguments) {
-	return Nil();
+	Term * args [] = {0, 0, 0}, * error  = 0;
+	unsigned int pos = 0;
+	LimitedStr str;
+	Chr chr;
+	if (TakeSeveralArguments(arguments, args, &error) < 0)
+		return error;
+	if (terString != args[0]->tag)
+		return InvalidArgumentType();
+	if (terNumber != args[1]->tag)
+		return InvalidArgumentType();
+	if (terCharacter != args[2]->tag)
+		return InvalidArgumentType();
+	str = args[0]->string;
+	pos = args[1]->number;
+	chr = args[2]->character;
+	if (pos < 0 || pos >= str.size - 1)
+		return ContractError();
+	str.str[pos] = chr;
+	return Empty();
 }
 
 Term * FunctionSubstring(List arguments) {
-	return Nil();
+	Term * args [] = {0, 0, 0}, * error  = 0;
+	unsigned int from = 0, to = 0;
+	LimitedStr str;
+	if (TakeArguments(arguments, args, 2, 3, &error) < 0)
+		return error;
+	if (terString != args[0]->tag)
+		return InvalidArgumentType();
+	if (terNumber != args[1]->tag)
+		return InvalidArgumentType();
+	str = args[0]->string;
+	from = args[1]->number;
+	if (!args[2]) {
+		to = str.size - 1;
+		if (!str.str[to])
+			to--;
+	}
+	else if (terNumber != args[2]->tag)
+		return InvalidArgumentType();
+	else {
+		to = args[2]->number;
+		if (to < 0 || to >= str.size - 1 || !str.str[to])
+			return ContractError();
+	}
+	if (from < 0 || from > to)
+		return ContractError();
+	str.str += from;
+	str.size = to - from + 1;
+	return ConstantString(str);
 }
