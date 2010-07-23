@@ -237,6 +237,10 @@
 					RelativePath=".\String.c"
 					>
 				</File>
+				<File
+					RelativePath=".\Void.c"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Evaluation"
@@ -365,6 +369,10 @@
 				</File>
 				<File
 					RelativePath=".\String.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Void.h"
 					>
 				</File>
 			</Filter>
