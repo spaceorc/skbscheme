@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "Boolean.h"
 #include "Pair.h"
 #include "MemoryManager.h"
 
@@ -26,4 +27,22 @@ Term * FunctionCdr(List arguments) {
 	if (arg->tag != terPair)
 		return InvalidArgumentType();
 	return arg->pair->second;
+}
+
+Term * FunctionIsNull(List arguments) {
+	Term * arg, * error = 0;
+	if (TakeSingleArgument(arguments, &arg, &error) < 0)
+		return error;
+	if (terNil == arg->tag)
+		return True();
+	return False();
+}
+
+Term * FunctionIsPair(List arguments) {
+	Term * arg, * error = 0;
+	if (TakeSingleArgument(arguments, &arg, &error) < 0)
+		return error;
+	if (terPair == arg->tag)
+		return True();
+	return False();
 }
