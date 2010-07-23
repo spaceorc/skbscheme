@@ -4,7 +4,7 @@
 
 #define tokOpeningBracket 0
 #define tokClosingBracket 1
-#define tokSymbol 2
+#define tokVariable 2
 #define tokEnd 3
 #define tokQuotedString 4
 #define tokError 5

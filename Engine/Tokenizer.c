@@ -29,7 +29,7 @@ void * QuoteState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	return StringState;
 }
 
-void * SymbolState(Chr chr, StringBuilder * stringBuilder, int * tag) {
+void * VariableState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
 		case '(':
 		case ')':
@@ -39,7 +39,7 @@ void * SymbolState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 			if (chr <= 32)
 				return FinishState;
 			*stringBuilder = AppendChr(*stringBuilder, chr);
-			return SymbolState;
+			return VariableState;
 	}
 }
 
@@ -76,8 +76,8 @@ void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 			if (chr <= 32)
 				return BeginState;
 			*stringBuilder = AppendChr(*stringBuilder, chr);
-			*tag = tokSymbol;
-			return SymbolState;
+			*tag = tokVariable;
+			return VariableState;
 	}
 	return 0;
 }

@@ -9,7 +9,7 @@
 #define terNil 4
 #define terRedex 5
 #define terString 6
-#define terSymbol 7
+#define terVariable 7
 #define terLazyFunction 8
 #define terLambda 9
 #define terEmpty 10
@@ -70,7 +70,7 @@ struct structTerm {
 		LimitedStr message;
 		List redex;
 		LimitedStr string;
-		LimitedStr symbol;
+		LimitedStr variable;
 		Lazy lazy;
 		Lambda lambda;
 		int boolean;

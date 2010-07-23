@@ -8,7 +8,7 @@ struct structLetEvaluationContext {
 	EvaluationContextBase base;
 	List arguments;
 	List letsList;
-	LimitedStr currentLetSymbol;
+	LimitedStr currentLetVariable;
 	ContextBindings * childContextBindings;
 };
 

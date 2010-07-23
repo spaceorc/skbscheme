@@ -32,9 +32,9 @@ TEST(EvalRecursiveRedex) {
 	AssertEq(Number(-2), Eval(b, 0));
 }
 
-TEST(EvalRedexUnresolvedSymbols) {
+TEST(EvalRedexUnresolvedVariables) {
 	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, SymbolFromConstantStr(STR("+")), Number(1), Number(2));
+	a->redex = MakeList(3, VariableFromConstantStr(STR("+")), Number(1), Number(2));
 	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
 }
 
@@ -72,7 +72,7 @@ TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	contextBindings->dictionary = SetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
 	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
-	Term * b = Redex(MakeList(2, SymbolFromConstantStr(STR("lalala")), a));
+	Term * b = Redex(MakeList(2, VariableFromConstantStr(STR("lalala")), a));
 	AssertEq(Number(5), Eval(b, contextBindings));
 }
 
@@ -127,7 +127,7 @@ TEST(EvalDefinesNestedDefineInsideOuterDefineScope) {
 	AssertThat(0 == Find(contextBindings->dictionary, LimitedStrFromConstantStr(STR("bububu"))));
 }
 
-TEST(EvalResolvedSymbolsUsingOutermostRelevantScope) {
+TEST(EvalResolvedVariablesUsingOutermostRelevantScope) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (let((p1 10)) (bububu p2)))"), contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));

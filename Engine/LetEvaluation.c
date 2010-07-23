@@ -8,7 +8,7 @@
 #include "Dictionary.h"
 
 static EvaluationContextBase * DoChildEvaluated(LetEvaluationContext * evaluationContext, Term * childResult) {
-	evaluationContext->childContextBindings->dictionary = Set(evaluationContext->childContextBindings->dictionary, evaluationContext->currentLetSymbol, childResult);
+	evaluationContext->childContextBindings->dictionary = Set(evaluationContext->childContextBindings->dictionary, evaluationContext->currentLetVariable, childResult);
 	return THIS_CONTEXT;
 }
 
@@ -37,12 +37,12 @@ static EvaluationContextBase * DoEvaluate(LetEvaluationContext * evaluationConte
 		THIS_CONTEXT->result = error;
 		return THIS_CONTEXT;
 	}
-	if (terSymbol != let[0]->tag) {
+	if (terVariable != let[0]->tag) {
 		THIS_CONTEXT->result = InvalidArgumentType();
 		return THIS_CONTEXT;
 	}
 	
-	evaluationContext->currentLetSymbol = let[0]->symbol;
+	evaluationContext->currentLetVariable = let[0]->variable;
 	return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, let[1]);
 }
 

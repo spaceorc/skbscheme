@@ -60,7 +60,7 @@ Term * FunctionRead(List arguments) {
 	if (size < 0)
 		return PosixError(errno);
 	str.size = size;
-	return ConstantString(str);
+	return String(str);
 }
 
 Term * InternalWrite(int fildes, LimitedStr str) {
@@ -104,8 +104,8 @@ unsigned int DumpTerm(Chr * buffer, unsigned int size, Term * term) {
 			return sprintf_s(buffer, size, "fildes %d\n", term->fildes);
 		case terCharacter:
 			return sprintf_s(buffer, size, "#\\%c\n", (int)term->character);
-		case terSymbol:
-			return sprintf_s(buffer, size, "%.*s\n", term->symbol.size, term->symbol.str);
+		case terVariable:
+			return sprintf_s(buffer, size, "%.*s\n", term->variable.size, term->variable.str);
 		case terString:
 			return sprintf_s(buffer, size, "\"%.*s\"\n", term->string.size, term->string.str);
 		case terEmpty:

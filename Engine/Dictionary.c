@@ -26,13 +26,13 @@ Term * Find(Dictionary dictionary, LimitedStr key) {
 }
 
 List Set(Dictionary dictionary, LimitedStr key, Term * value) {
-	return PushList(dictionary, Cons(ConstantString(key), value));
+	return PushList(dictionary, Cons(String(key), value));
 }
 
 Dictionary SetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
-	return PushList(dictionary, Cons(ConstantStringFromConstantStr(key), value));
+	return PushList(dictionary, Cons(StringFromConstantStr(key), value));
 }
 
 Dictionary SetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
-	return PushList(dictionary, Cons(ConstantStringFromConstantLimitedStr(key), value));
+	return PushList(dictionary, Cons(StringFromConstantLimitedStr(key), value));
 }

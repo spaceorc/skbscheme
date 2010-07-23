@@ -15,14 +15,14 @@ TEST(GetTokenClosingBracket) {
 	AssertBracket(tokClosingBracket, STR(")"), GetToken(&str));
 }
 
-TEST(GetTokenSymbol) {
+TEST(GetTokenVariable) {
 	LimitedStr str = LimitedStrFromConstantStr(STR("lalala"));
-	AssertSymbol(STR("lalala"), GetToken(&str));
+	AssertVariable(STR("lalala"), GetToken(&str));
 }
 
 TEST(GetTokenSkipsWhitespaces) {
 	LimitedStr str = LimitedStrFromConstantStr(STR("   bubu"));
-	AssertSymbol(STR("bubu"), GetToken(&str));
+	AssertVariable(STR("bubu"), GetToken(&str));
 }
 
 TEST(GetTokenSkipsWhitespacesBeforeBracket) {
@@ -33,9 +33,9 @@ TEST(GetTokenSkipsWhitespacesBeforeBracket) {
 TEST(GetTokenStepByStep) {
 	LimitedStr str = LimitedStrFromConstantStr(STR("  (  +  a  b  )  "));
 	AssertTok(tokOpeningBracket, GetToken(&str));
-	AssertSymbol(STR("+"), GetToken(&str));
-	AssertSymbol(STR("a"), GetToken(&str));
-	AssertSymbol(STR("b"), GetToken(&str));
+	AssertVariable(STR("+"), GetToken(&str));
+	AssertVariable(STR("a"), GetToken(&str));
+	AssertVariable(STR("b"), GetToken(&str));
 	AssertTok(tokClosingBracket, GetToken(&str));
 	AssertTok(tokEnd, GetToken(&str));
 }

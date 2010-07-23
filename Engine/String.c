@@ -27,7 +27,7 @@ Term * FunctionMakeString(List arguments) {
 	while (size--)
 		*(chr++) = args[1]->character;
 	*chr = 0;
-	return ConstantString(result);
+	return String(result);
 }
 
 Term * FunctionStringLength(List arguments) {
@@ -106,5 +106,5 @@ Term * FunctionSubstring(List arguments) {
 		return ContractError();
 	str.str += from;
 	str.size = to - from + 1;
-	return ConstantString(str);
+	return String(str);
 }

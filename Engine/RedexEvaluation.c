@@ -30,11 +30,11 @@ static EvaluationContextBase * EvalLambda(ReductionContext * evaluationContext) 
 			THIS_CONTEXT->result = InvalidArgumentCount();
 			return THIS_CONTEXT;
 		}
-		if (terSymbol != formalArgument->tag) {
+		if (terVariable != formalArgument->tag) {
 			THIS_CONTEXT->result = InvalidArgumentType();
 			return THIS_CONTEXT;
 		}
-		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->symbol, argument);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->variable, argument);
 	}
 	if (IterateList(&arguments)) {
 		THIS_CONTEXT->result = InvalidArgumentCount();

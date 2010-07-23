@@ -55,14 +55,14 @@ TEST(LetEvalsVariablesFirst) {
 
 TEST(DefineVariable) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), SymbolFromConstantStr(STR("lalala")), Number(10)));
+	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), VariableFromConstantStr(STR("lalala")), Number(10)));
 	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(Number(10), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
 
 TEST(DefineVariableEvaluatesValue) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), SymbolFromConstantStr(STR("lalala")), Redex(MakeList(3, Function(OperatorPlus), Number(10), Number(20)))));
+	Term * z = Redex(MakeList(3, LazyFunction(LazyFunctionDefine, AcquireDefineEvaluationContext), VariableFromConstantStr(STR("lalala")), Redex(MakeList(3, Function(OperatorPlus), Number(10), Number(20)))));
 	AssertEq(Empty(), Eval(z, contextBindings));
 	AssertEq(Number(30), FindConstantStr(contextBindings->dictionary, STR("lalala")));
 }
@@ -75,8 +75,8 @@ TEST(DefineFunction) {
 	AssertTag(terLambda, func);
 	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->lambda.body));
 	AssertThat(0 == IterateList(&func->lambda.body));
-	AssertEq(SymbolFromConstantStr(STR("p1")), IterateList(&func->lambda.formalArguments));
-	AssertEq(SymbolFromConstantStr(STR("p2")), IterateList(&func->lambda.formalArguments));
+	AssertEq(VariableFromConstantStr(STR("p1")), IterateList(&func->lambda.formalArguments));
+	AssertEq(VariableFromConstantStr(STR("p2")), IterateList(&func->lambda.formalArguments));
 	AssertThat(0 == IterateList(&func->lambda.formalArguments));
 }
 
