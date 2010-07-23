@@ -18,9 +18,9 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 		CheckTermType(current, terRedex);
 		if (TakeSeveralArguments(current->redex, let, &error) < 0)
 			return error;
-		CheckTermType(let[0], terSymbol);
+		CheckTermType(let[0], terVariable);
 		EvalTermAndCheckError(value, let[1], contextBindings);
-		childContextBindings->dictionary = Set(childContextBindings->dictionary, let[0]->symbol, value);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, let[0]->variable, value);
 	}
 	return EvalList(arguments, childContextBindings);
 }
@@ -30,8 +30,8 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 	Term * second = 0;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
-	CheckTermType(name, terSymbol);
-	contextBindings->dictionary = Set(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
+	CheckTermType(name, terVariable);
+	contextBindings->dictionary = Set(contextBindings->dictionary, name->variable, MakeLambda(definition, body, contextBindings));
 	return Empty();
 }
 
@@ -40,14 +40,14 @@ Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
 	if (!(prototype = IterateList(&arguments)))
 		return InvalidArgumentCount();
 	switch(prototype->tag) {
-		case terSymbol:
+		case terVariable:
 			value = IterateList(&arguments);
 			if (!value)
 				return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (missing expression after identifier)"
 			if (IterateList(&arguments))
 				return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
 			EvalTermAndCheckError(value, value, contextBindings);
-			contextBindings->dictionary = Set(contextBindings->dictionary, prototype->symbol, value);
+			contextBindings->dictionary = Set(contextBindings->dictionary, prototype->variable, value);
 			return Empty();
 		case terRedex:
 			return InternalDefineFunction(prototype->redex, arguments, contextBindings);

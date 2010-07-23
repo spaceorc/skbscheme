@@ -2,7 +2,7 @@
 
 #include "Term.h"
 
-Term * ParseCharacter(LimitedStr symbol);
-int IsCharacter(LimitedStr symbol);
+Term * ParseCharacter(LimitedStr variable);
+int IsCharacter(LimitedStr variable);
 Term * FunctionIsCharacter(List arguments);
 Term * FunctionCharacterEq(List arguments);

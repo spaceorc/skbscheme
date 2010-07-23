@@ -60,32 +60,32 @@ Term * Redex(List redex) {
 	return result;
 }
 
-Term * ConstantStringFromConstantStr(ConstantStr str) {
-	return ConstantStringFromConstantLimitedStr(LimitConstantStr(str));
+Term * StringFromConstantStr(ConstantStr str) {
+	return StringFromConstantLimitedStr(LimitConstantStr(str));
 }
 
-Term * ConstantStringFromConstantLimitedStr(ConstantLimitedStr str) {
-	return ConstantString(LimitedStrFromConstantLimitedStr(str));
+Term * StringFromConstantLimitedStr(ConstantLimitedStr str) {
+	return String(LimitedStrFromConstantLimitedStr(str));
 }
 
-Term * ConstantString(LimitedStr str) {
+Term * String(LimitedStr str) {
 	Term * result = AllocateTerm(terString);
 	result->string = str;
 	return result;
 }
 
-Term * Symbol(LimitedStr str) {
-	Term * result = AllocateTerm(terSymbol);
-	result->symbol = str;
+Term * Variable(LimitedStr str) {
+	Term * result = AllocateTerm(terVariable);
+	result->variable = str;
 	return result;
 }
 
-Term * SymbolFromConstantStr(ConstantStr str) {
-	return SymbolFromConstantLimitedStr(LimitConstantStr(str));
+Term * VariableFromConstantStr(ConstantStr str) {
+	return VariableFromConstantLimitedStr(LimitConstantStr(str));
 }
 
-Term * SymbolFromConstantLimitedStr(ConstantLimitedStr str) {
-	return Symbol(LimitedStrFromConstantLimitedStr(str));
+Term * VariableFromConstantLimitedStr(ConstantLimitedStr str) {
+	return Variable(LimitedStrFromConstantLimitedStr(str));
 }
 
 Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext) {

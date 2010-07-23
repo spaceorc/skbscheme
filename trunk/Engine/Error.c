@@ -2,8 +2,8 @@
 
 #include "Error.h"
 
-Term * InvalidSymbol(LimitedStr symbol) {
-	return Error(ConcatenateConstantLimitedStr(LimitConstantStr("invalid symbol "), ConstLimitedStr(symbol)));
+Term * InvalidVariable(LimitedStr variable) {
+	return Error(ConcatenateConstantLimitedStr(LimitConstantStr("invalid variable "), ConstLimitedStr(variable)));
 }
 
 Term * InvalidClosingBracket() {

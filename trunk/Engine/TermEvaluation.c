@@ -15,8 +15,8 @@ static EvaluationContextBase * DoEvaluate(TermEvaluationContext * evaluationCont
 	switch (evaluationContext->input->tag) {
 		case terRedex:
 			return AcquireReductionContext(THIS_CONTEXT->parent, THIS_CONTEXT->contextBindings, evaluationContext->input->redex);
-		case terSymbol:
-			evaluationContext->input = Resolve(THIS_CONTEXT->contextBindings, evaluationContext->input->symbol);
+		case terVariable:
+			evaluationContext->input = Resolve(THIS_CONTEXT->contextBindings, evaluationContext->input->variable);
 			return THIS_CONTEXT;
 		default:
 			THIS_CONTEXT->result = evaluationContext->input;

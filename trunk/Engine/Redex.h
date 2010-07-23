@@ -4,4 +4,4 @@
 
 Term * EvalRecursive(Term * term, ContextBindings * contextBindings);
 Term * EvalList(List list, ContextBindings * contextBindings);
-Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol);
+Term * Resolve(ContextBindings * contextBindings, LimitedStr variable);

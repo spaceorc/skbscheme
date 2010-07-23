@@ -117,8 +117,8 @@ const char * DumpTag(int tag) {
 			return "Redex";
 		case terString:
 			return "String";
-		case terSymbol:
-			return "Symbol";
+		case terVariable:
+			return "Variable";
 		case terLazyFunction:
 			return "Lazy function";
 		case terLambda:
@@ -161,8 +161,8 @@ const char * DumpTok(int tag) {
 			return "OpeningBracket";
 		case tokClosingBracket:
 			return "ClosingBracket";
-		case tokSymbol:
-			return "Symbol";
+		case tokVariable:
+			return "Variable";
 		case tokQuotedString:
 			return "Quoted string";
 		case tokEnd:
@@ -206,15 +206,15 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 			AssertEqCondition(expected->pair->first, was->pair->first, function, file, line);
 			AssertEqCondition(expected->pair->second, was->pair->second, function, file, line);
 			break;
-		case terSymbol:
-			if (Compare(expected->symbol, was->symbol)) {
-				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->symbol.size, expected->symbol.str, was->symbol.size, was->symbol.str);
+		case terVariable:
+			if (Compare(expected->variable, was->variable)) {
+				sprintf_s(message, "expected variable '%.*s', but was variable '%.*s'", expected->variable.size, expected->variable.str, was->variable.size, was->variable.str);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
 		case terString:
 			if (Compare(expected->string, was->string)) {
-				sprintf_s(message, "expected const string '%.*s', but was const string '%.*s'", expected->string.size, expected->string.str, was->string.size, was->string.str);
+				sprintf_s(message, "expected string '%.*s', but was string '%.*s'", expected->string.size, expected->string.str, was->string.size, was->string.str);
 				AssertCondition(message, false, function, file, line);
 			}
 			break;
@@ -246,15 +246,15 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 	}
 }
 
-#define AssertSymbol(expected, was) AssertSymbolCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
+#define AssertVariable(expected, was) AssertVariableCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
 #define AssertQuotedString(expected, was) AssertQuotedStringCondition(expected, was, __FUNCTION__, __FILE__, __LINE__)
 #define AssertBracket(expectedTag, expectedRange, was) AssertBracketCondition(expectedTag, expectedRange, was, __FUNCTION__, __FILE__, __LINE__)
 
-void AssertSymbolCondition(ConstantStr expectedText, Token was, const char * function, const char * file, int line) {
+void AssertVariableCondition(ConstantStr expectedText, Token was, const char * function, const char * file, int line) {
 	char message[1024];
-	AssertTokCondition(tokSymbol, was, function, file, line);
+	AssertTokCondition(tokVariable, was, function, file, line);
 	if (0 != CompareConstantLimitedStr(LimitConstantStr(expectedText), ConstLimitedStr(was.text))) {
-		sprintf_s(message, "expected symbol '%s', but was symbol '%.*s'", expectedText, was.text.size, was.text.str);
+		sprintf_s(message, "expected variable '%s', but was variable '%.*s'", expectedText, was.text.size, was.text.str);
 		AssertCondition(message, false, function, file, line);
 	}
 }

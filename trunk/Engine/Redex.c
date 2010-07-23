@@ -4,13 +4,13 @@
 #include "MemoryManager.h"
 #include "Dictionary.h"
 
-Term * Resolve(ContextBindings * contextBindings, LimitedStr symbol) {
+Term * Resolve(ContextBindings * contextBindings, LimitedStr variable) {
 	Term * result = 0;
 	if (0 == contextBindings)
-		return InvalidSymbol(symbol);
-	result = Find(contextBindings->dictionary, symbol);
+		return InvalidVariable(variable);
+	result = Find(contextBindings->dictionary, variable);
 	if (0 == result)
-		return Resolve(contextBindings->previous, symbol);
+		return Resolve(contextBindings->previous, variable);
 	return result;
 }
 
@@ -55,8 +55,8 @@ static Term * EvalLambda(Lambda lambda, List arguments) {
 		argument = IterateList(&arguments);
 		if (!argument)
 			return InvalidArgumentCount();
-		CheckTermType(formalArgument, terSymbol);
-		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->symbol, argument);
+		CheckTermType(formalArgument, terVariable);
+		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->variable, argument);
 	}
 	if (IterateList(&arguments))
 		return InvalidArgumentCount();
@@ -88,8 +88,8 @@ Term * EvalRecursive(Term * term, ContextBindings * contextBindings) {
 	switch (term->tag) {
 		case terRedex:
 			return InternalApply(term->redex, contextBindings);
-		case terSymbol:
-			return EvalRecursive(Resolve(contextBindings, term->symbol), contextBindings);
+		case terVariable:
+			return EvalRecursive(Resolve(contextBindings, term->variable), contextBindings);
 		default:
 			return term;
 	}

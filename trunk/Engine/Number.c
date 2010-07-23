@@ -62,17 +62,17 @@ Term * FunctionIsNumber(List arguments) {
 	return False();
 }
 
-Term * ParseNumber(LimitedStr symbol) {
+Term * ParseNumber(LimitedStr variable) {
 	int n = 0;
 	Chr c;
-	while (c = IterateChr(&symbol))
+	while (c = IterateChr(&variable))
 		n = n * 10 + (c - '0');
 	return Number(n);
 }
 
-int IsNumber(LimitedStr symbol) {
+int IsNumber(LimitedStr variable) {
 	Chr c;
-	while (c = IterateChr(&symbol)) {
+	while (c = IterateChr(&variable)) {
 		if (c < '0')
 			return 0;
 		if (c > '9')

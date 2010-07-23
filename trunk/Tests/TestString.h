@@ -11,7 +11,7 @@ TEST(MakeString) {
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(make-string 5)"), contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(make-string #t #\\c)"), contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(make-string 5 #t)"), contextBindings));
-	AssertEq(ConstantStringFromConstantStr(STR("ccccc")), Eval(ParseSingle("(make-string 5 #\\c)"), contextBindings));
+	AssertEq(StringFromConstantStr(STR("ccccc")), Eval(ParseSingle("(make-string 5 #\\c)"), contextBindings));
 }
 
 TEST(StringLength) {
@@ -33,7 +33,7 @@ TEST(StringRef) {
 TEST(StringSet) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(Empty(), Eval(ParseSingle("(define (lalala str k char) (string-set! str k char) str)"), contextBindings));
-	AssertEq(ConstantStringFromConstantStr(STR("abZdef")), Eval(ParseSingle("(lalala \"abcdef\" 2 #\\Z)"), contextBindings));
+	AssertEq(StringFromConstantStr(STR("abZdef")), Eval(ParseSingle("(lalala \"abcdef\" 2 #\\Z)"), contextBindings));
 	AssertEq(Empty(), Eval(ParseSingle("(string-set! \"abcdef\" 2 #\\Z)"), contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(string-set! \"abcdef\" 2)"), contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(string-set! 2 \"abcdef\" #\\Z)"), contextBindings));
@@ -51,6 +51,6 @@ TEST(Substring) {
 	AssertEq(ContractError(), Eval(ParseSingle("(substring \"abcdef\" 2 (- 1))"), contextBindings));
 	AssertEq(ContractError(), Eval(ParseSingle("(substring \"abcdef\" 2 1)"), contextBindings));
 	AssertEq(ContractError(), Eval(ParseSingle("(substring \"abcdef\" 2 6)"), contextBindings));
-	AssertEq(ConstantStringFromConstantStr(STR("cdef")), Eval(ParseSingle("(substring \"abcdef\" 2)"), contextBindings));
-	AssertEq(ConstantStringFromConstantStr(STR("cde")), Eval(ParseSingle("(substring \"abcdef\" 2 4)"), contextBindings));
+	AssertEq(StringFromConstantStr(STR("cdef")), Eval(ParseSingle("(substring \"abcdef\" 2)"), contextBindings));
+	AssertEq(StringFromConstantStr(STR("cde")), Eval(ParseSingle("(substring \"abcdef\" 2 4)"), contextBindings));
 }

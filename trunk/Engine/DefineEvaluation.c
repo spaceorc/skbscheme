@@ -22,8 +22,8 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 	Term * second = 0;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
-	CheckTermType(name, terSymbol);
-	contextBindings->dictionary = Set(contextBindings->dictionary, name->symbol, MakeLambda(definition, body, contextBindings));
+	CheckTermType(name, terVariable);
+	contextBindings->dictionary = Set(contextBindings->dictionary, name->variable, MakeLambda(definition, body, contextBindings));
 	return Empty();
 }
 
@@ -54,7 +54,7 @@ static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluati
 		return THIS_CONTEXT;
 	}
 	switch(prototype->tag) {
-		case terSymbol:
+		case terVariable:
 			value = IterateList(&arguments);
 			if (!value) {
 				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (missing expression after identifier)"
@@ -64,7 +64,7 @@ static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluati
 				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
 				return THIS_CONTEXT;
 			}
-			evaluationContext->name = prototype->symbol;
+			evaluationContext->name = prototype->variable;
 			return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, value);
 		case terRedex:
 			THIS_CONTEXT->result = InternalDefineFunction(prototype->redex, arguments, THIS_CONTEXT->contextBindings);

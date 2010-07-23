@@ -6,18 +6,18 @@
 #include "Dictionary.h"
 #include "MemoryManager.h"
 
-Term * ParseTerm(LimitedStr symbol) {
-	if (IsNumber(symbol))
-		return ParseNumber(symbol);
-	if (IsCharacter(symbol))
-		return ParseCharacter(symbol);
-	return Symbol(symbol);
+Term * ParseTerm(LimitedStr variable) {
+	if (IsNumber(variable))
+		return ParseNumber(variable);
+	if (IsCharacter(variable))
+		return ParseCharacter(variable);
+	return Variable(variable);
 }
 
 Term * Parse(Token token, ParserContext ** context) {
 	Term * term = 0;
 	switch(token.tag) {
-		case tokSymbol:
+		case tokVariable:
 			assert(token.text.size > 0);
 			term = ParseTerm(token.text);
 			if (term->tag == terError)
@@ -29,7 +29,7 @@ Term * Parse(Token token, ParserContext ** context) {
 			term = 0;
 			break;
 		case tokQuotedString:
-			term = ConstantString(token.text);
+			term = String(token.text);
 			if (0 == *context)
 				break;
 			(*context)->redex = AppendList((*context)->redex, term);

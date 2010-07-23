@@ -1,12 +1,12 @@
 #include "Boolean.h"
 #include "Character.h"
 
-Term * ParseCharacter(LimitedStr symbol) {
-	return Character(symbol.str[2]);
+Term * ParseCharacter(LimitedStr variable) {
+	return Character(variable.str[2]);
 }
 
-int IsCharacter(LimitedStr symbol) {
-	return symbol.size >= 4 && '#' == symbol.str[0] && '\\' == symbol.str[1] && 0 != symbol.str[2] && 0 == symbol.str[3];
+int IsCharacter(LimitedStr variable) {
+	return variable.size >= 4 && '#' == variable.str[0] && '\\' == variable.str[1] && 0 != variable.str[2] && 0 == variable.str[3];
 }
 
 Term * FunctionIsCharacter(List arguments) {

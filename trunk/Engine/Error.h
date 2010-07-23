@@ -3,7 +3,7 @@
 #include "Term.h"
 #include "MemoryManager.h"
 
-Term * InvalidSymbol(LimitedStr symbol);
+Term * InvalidVariable(LimitedStr variable);
 Term * InvalidClosingBracket();
 Term * InvalidArgumentCount();
 Term * InvalidArgumentType();
