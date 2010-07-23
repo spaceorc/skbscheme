@@ -39,3 +39,15 @@ TEST(PairCdrEmptyList) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(ContractError(), Eval(ParseSingle("(cdr null)"), contextBindings));
 }
+
+TEST(IsNull) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(True(), Eval(ParseSingle("(null? null)"), contextBindings));
+	AssertEq(False(), Eval(ParseSingle("(null? #t)"), contextBindings));
+}
+
+TEST(IsPair) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(True(), Eval(ParseSingle("(pair? (cons 1 2))"), contextBindings));
+	AssertEq(False(), Eval(ParseSingle("(pair? #t)"), contextBindings));
+}

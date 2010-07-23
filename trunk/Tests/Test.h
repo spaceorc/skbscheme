@@ -145,11 +145,11 @@ void AssertTagCondition(int expectedTag, Term * was, const char * function, cons
 	char message[size];
 	unsigned int offset = 0;
 	if (was == 0) {
-		sprintf_s(message, "expected term with tag %s, but was null pointer", DumpTag(expectedTag));
+		sprintf_s(message, "expected %s term, but was null pointer", DumpTag(expectedTag));
 		AssertCondition(message, false, function, file, line);
 	}
 	if (expectedTag != was->tag) {
-		offset = sprintf_s(message, "expected term with tag %s, but was ", DumpTag(expectedTag));
+		offset = sprintf_s(message, "expected %s term, but was ", DumpTag(expectedTag));
 		DumpTerm((Chr *)(message + offset), size - offset, was);
 		AssertCondition(message, false, function, file, line);
 	}
