@@ -79,7 +79,7 @@ TEST(EvalRedexStartingWithLazyFunction) {
 TEST(EvalRedexStartingWithDefinedFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(define (lalala p1 p2) (+ p1 p2))");
-	AssertEq(Empty(), Eval(z, contextBindings));
+	AssertEq(Void(), Eval(z, contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
 	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("a")));
 	AssertThat(0 == FindConstantStr(contextBindings->dictionary, STR("b")));
@@ -88,47 +88,47 @@ TEST(EvalRedexStartingWithDefinedFunction) {
 TEST(EvalDefinedFunctionInsufficientAgruments) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(define (lalala p1 p2) (+ p1 p2))");
-	AssertEq(Empty(), Eval(z, contextBindings));
+	AssertEq(Void(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(lalala 10)"), contextBindings));
 }
 
 TEST(EvalDefinedFunctionTooManyAgruments) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(define (lalala p1 p2) (+ p1 p2))");
-	AssertEq(Empty(), Eval(z, contextBindings));
+	AssertEq(Void(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(lalala 10 20 30)"), contextBindings));
 }
 
 TEST(EvalDefinedFunctionBadArgumentsList) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(define (lalala p1 (p2 p3)) (+ p1 p2))");
-	AssertEq(Empty(), Eval(z, contextBindings));
+	AssertEq(Void(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(lalala 10 20 30)"), contextBindings));
 }
 
 TEST(EvalDefinedFunctionEvaluatesArgumentsFirst) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	Term * z = ParseSingle("(define (lalala p1 p2 p3) (+ p1 p2))");
-	AssertEq(Empty(), Eval(z, contextBindings));
+	AssertEq(Void(), Eval(z, contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(lalala 1 2 (+ 1))"), contextBindings));
 }
 
 TEST(EvalDefinedFunctionClosedToItsContext) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(Empty(), Eval(ParseSingle("(define (lalala a b) (+ a b c))"), contextBindings));
-	AssertEq(Empty(), Eval(ParseSingle("(define c 10)"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(define (lalala a b) (+ a b c))"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(define c 10)"), contextBindings));
 	AssertEq(Number(13), Eval(ParseSingle("(let ((c 100)) (lalala 1 2))"), contextBindings));
 }
 
 TEST(EvalDefinesNestedDefineInsideOuterDefineScope) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (bububu p2))"), contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
 	AssertThat(0 == Find(contextBindings->dictionary, LimitedStrFromConstantStr(STR("bububu"))));
 }
 
 TEST(EvalResolvedVariablesUsingOutermostRelevantScope) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(Empty(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (let((p1 10)) (bububu p2)))"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(define (lalala p1 p2) (define (bububu p3) (+ p1 p3)) (let((p1 10)) (bububu p2)))"), contextBindings));
 	AssertEq(Number(3), Eval(ParseSingle("(lalala 1 2)"), contextBindings));
 }

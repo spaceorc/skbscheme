@@ -123,8 +123,8 @@ const char * DumpTag(int tag) {
 			return "Lazy function";
 		case terLambda:
 			return "Lambda";
-		case terEmpty:
-			return "Empty";
+		case terVoid:
+			return "Void";
 		case terBoolean:
 			return "Boolean";
 		case terCharacter:
@@ -225,7 +225,7 @@ void AssertEqCondition(Term * expected, Term * was, const char * function, const
 			}
 			break;
 		case terNil:
-		case terEmpty:
+		case terVoid:
 		case terError:
 			break;
 		case terFunction:

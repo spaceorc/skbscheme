@@ -21,7 +21,7 @@ static EvaluationContextBase * DoEvaluate(CondEvaluationContext * evaluationCont
 	List condItemArguments = 0;
 	condItem = IterateList(&evaluationContext->arguments);
 	if (!condItem) {
-		THIS_CONTEXT->result = Empty();
+		THIS_CONTEXT->result = Void();
 		return THIS_CONTEXT;
 	}
 	if (terRedex != condItem->tag) {

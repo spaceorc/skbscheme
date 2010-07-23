@@ -32,9 +32,9 @@ TEST(StringRef) {
 
 TEST(StringSet) {
 	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(Empty(), Eval(ParseSingle("(define (lalala str k char) (string-set! str k char) str)"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(define (lalala str k char) (string-set! str k char) str)"), contextBindings));
 	AssertEq(StringFromConstantStr(STR("abZdef")), Eval(ParseSingle("(lalala \"abcdef\" 2 #\\Z)"), contextBindings));
-	AssertEq(Empty(), Eval(ParseSingle("(string-set! \"abcdef\" 2 #\\Z)"), contextBindings));
+	AssertEq(Void(), Eval(ParseSingle("(string-set! \"abcdef\" 2 #\\Z)"), contextBindings));
 	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(string-set! \"abcdef\" 2)"), contextBindings));
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(string-set! 2 \"abcdef\" #\\Z)"), contextBindings));
 	AssertEq(ContractError(), Eval(ParseSingle("(string-set! \"abcdef\" (- 1) \\Z)"), contextBindings));

@@ -42,7 +42,7 @@ Term * FunctionClose(List arguments) {
 		return InvalidArgumentType();
 	if (close(arg->fildes))
 		return PosixError(errno);
-	return Empty();
+	return Void();
 }
 
 Term * FunctionRead(List arguments) {
@@ -108,7 +108,7 @@ unsigned int DumpTerm(Chr * buffer, unsigned int size, Term * term) {
 			return sprintf_s(buffer, size, "%.*s\n", term->variable.size, term->variable.str);
 		case terString:
 			return sprintf_s(buffer, size, "\"%.*s\"\n", term->string.size, term->string.str);
-		case terEmpty:
+		case terVoid:
 			return 0;
 		case terNil:
 			return sprintf_s(buffer, size, "()\n");
@@ -141,7 +141,7 @@ Term * InternalWriteTerm(int fildes, Term * term) {
 	term = InternalWriteConstantStr(fildes, buffer);
 	if (terError == term->tag)
 		return term;
-	return Empty();
+	return Void();
 }
 
 Term * FunctionWrite(List arguments) {

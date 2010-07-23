@@ -103,8 +103,8 @@ Term * MakeLambda(List formalArguments, List body, ContextBindings * context) {
 	return result;
 }
 
-Term * Empty() {
-	return AllocateTerm(terEmpty);
+Term * Void() {
+	return AllocateTerm(terVoid);
 }
 
 Term * Character(Chr character) {

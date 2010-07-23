@@ -75,7 +75,7 @@ Term * FunctionStringSet(List arguments) {
 	if (pos < 0 || pos >= str.size - 1)
 		return ContractError();
 	str.str[pos] = chr;
-	return Empty();
+	return Void();
 }
 
 Term * FunctionSubstring(List arguments) {
