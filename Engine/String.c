@@ -108,3 +108,21 @@ Term * FunctionSubstring(List arguments) {
 	str.size = to - from + 1;
 	return String(str);
 }
+
+Term * FunctionStringEq(List arguments) {
+	Term * current = 0, * first = 0;
+	int argLen = 0, allEquals = 1;
+	while (current = IterateList(&arguments))
+	{
+		argLen++;
+		if (current->tag != terString)
+			return InvalidArgumentType();
+		if (!first)
+			first = current;
+		else if (Compare(first->string, current->string))
+			allEquals = 0;
+	}
+	if (argLen < 2)
+		return InvalidArgumentCount();
+	return allEquals ? True() : False();
+}

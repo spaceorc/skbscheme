@@ -6,7 +6,6 @@ TEST(IsCharacter) {
 	AssertEq(False(), Eval(ParseSingle("(char? #t)"), contextBindings));
 }
 
-
 TEST(CharacterEq) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(True(), Eval(ParseSingle("(char?= #\\a #\\a #\\a)"), contextBindings));
@@ -21,9 +20,4 @@ TEST(CharacterEqWith1Argument) {
 TEST(CharacterEqWithNotACharacter) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(char?= 1 #\\a)"), contextBindings));
-}
-
-TEST(EvalOfOperatorCharacterEq) {
-	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(False(), Eval(ParseSingle("(char?= #\\c #\\d)"), contextBindings));
 }
