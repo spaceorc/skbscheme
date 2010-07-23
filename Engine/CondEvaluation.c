@@ -19,7 +19,7 @@ static EvaluationContextBase * DoChildEvaluated(CondEvaluationContext * evaluati
 static EvaluationContextBase * DoEvaluate(CondEvaluationContext * evaluationContext) {
 	Term * condItem = 0, * condition = 0;
 	List condItemArguments = 0;
-	condItem = IterateList(&evaluationContext->arguments);
+	condItem = Iterate(&evaluationContext->arguments);
 	if (!condItem) {
 		THIS_CONTEXT->result = Void();
 		return THIS_CONTEXT;
@@ -29,7 +29,7 @@ static EvaluationContextBase * DoEvaluate(CondEvaluationContext * evaluationCont
 		return THIS_CONTEXT;
 	}
 	condItemArguments = condItem->redex;
-	condition = IterateList(&condItemArguments);
+	condition = Iterate(&condItemArguments);
 	if (!condition) {
 		THIS_CONTEXT->result = BadSyntax();
 		return THIS_CONTEXT;

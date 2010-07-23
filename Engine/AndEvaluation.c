@@ -15,7 +15,7 @@ static EvaluationContextBase * DoChildEvaluated(AndEvaluationContext * evaluatio
 
 static EvaluationContextBase * DoEvaluate(AndEvaluationContext * evaluationContext) {
 	Term * arg = 0;	
-	arg = IterateList(&evaluationContext->arguments);
+	arg = Iterate(&evaluationContext->arguments);
 	if (!arg) {
 		THIS_CONTEXT->result = evaluationContext->currentResult;
 		return THIS_CONTEXT;

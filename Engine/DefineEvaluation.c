@@ -18,7 +18,7 @@ static EvaluationContextBase * DefineLambdaChildEvaluated(DefineLambdaEvaluation
 }
 
 static Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
-	Term * name = IterateList(&definition);
+	Term * name = Iterate(&definition);
 	Term * second = 0;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
@@ -30,7 +30,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContext * evaluationContext) {
 	Term * prototype = 0;
 	List arguments = evaluationContext->arguments;
-	if (!(prototype = IterateList(&arguments))) {
+	if (!(prototype = Iterate(&arguments))) {
 		THIS_CONTEXT->result = InvalidArgumentCount();
 		return THIS_CONTEXT;
 	}
@@ -49,18 +49,18 @@ static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContex
 static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluationContext) {
 	Term * prototype = 0, * value = 0;
 	List arguments = evaluationContext->arguments;
-	if (!(prototype = IterateList(&arguments))) {
+	if (!(prototype = Iterate(&arguments))) {
 		THIS_CONTEXT->result = InvalidArgumentCount();
 		return THIS_CONTEXT;
 	}
 	switch(prototype->tag) {
 		case terVariable:
-			value = IterateList(&arguments);
+			value = Iterate(&arguments);
 			if (!value) {
 				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (missing expression after identifier)"
 				return THIS_CONTEXT;
 			} 
-			if (IterateList(&arguments)) {
+			if (Iterate(&arguments)) {
 				THIS_CONTEXT->result = InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (multiple expressions after identifier)"
 				return THIS_CONTEXT;
 			}

@@ -15,7 +15,7 @@ static EvaluationContextBase * DoChildEvaluated(LetEvaluationContext * evaluatio
 static EvaluationContextBase * DoEvaluate(LetEvaluationContext * evaluationContext) {
 	Term * lets = 0, * current = 0, * let[] = {0, 0}, * error;
 	if (!evaluationContext->childContextBindings) {
-		if (!(lets = IterateList(&evaluationContext->arguments))) {
+		if (!(lets = Iterate(&evaluationContext->arguments))) {
 			THIS_CONTEXT->result = InvalidArgumentCount();
 			return THIS_CONTEXT;
 		}
@@ -26,7 +26,7 @@ static EvaluationContextBase * DoEvaluate(LetEvaluationContext * evaluationConte
 		evaluationContext->letsList = lets->redex;
 		evaluationContext->childContextBindings = AllocateContextBindings(THIS_CONTEXT->contextBindings);
 	}
-	if (!(current = IterateList(&evaluationContext->letsList)))
+	if (!(current = Iterate(&evaluationContext->letsList)))
 		return AcquireTermListEvaluationContext(THIS_CONTEXT->parent, evaluationContext->childContextBindings, evaluationContext->arguments);
 
 	if (terRedex != current->tag) {

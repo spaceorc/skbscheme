@@ -17,7 +17,7 @@ static EvaluationContextBase * DoChildEvaluated(IfEvaluationContext * evaluation
 }
 
 static EvaluationContextBase * DoEvaluate(IfEvaluationContext * evaluationContext) {
-	Term * condition = IterateList(&evaluationContext->arguments);
+	Term * condition = Iterate(&evaluationContext->arguments);
 	if (!condition) {
 		THIS_CONTEXT->result = InvalidArgumentCount();
 		return THIS_CONTEXT;

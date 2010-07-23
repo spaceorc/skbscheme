@@ -12,7 +12,7 @@ static EvaluationContextBase * DoChildEvaluated(TermListEvaluationContext * eval
 
 static EvaluationContextBase * DoEvaluate(TermListEvaluationContext * evaluationContext) {
 	Term * term = 0;
-	if (term = IterateList(&evaluationContext->input))
+	if (term = Iterate(&evaluationContext->input))
 		return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
 	if (evaluationContext->currentResult)
 		THIS_CONTEXT->result = evaluationContext->currentResult;

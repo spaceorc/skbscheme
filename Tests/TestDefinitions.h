@@ -73,11 +73,11 @@ TEST(DefineFunction) {
 	AssertEq(Void(), Eval(z, contextBindings));
     Term * func = FindConstantStr(contextBindings->dictionary, STR("func"));
 	AssertTag(terLambda, func);
-	AssertEq(ParseSingle("(+ p1 p2)"), IterateList(&func->lambda.body));
-	AssertThat(0 == IterateList(&func->lambda.body));
-	AssertEq(VariableFromConstantStr(STR("p1")), IterateList(&func->lambda.formalArguments));
-	AssertEq(VariableFromConstantStr(STR("p2")), IterateList(&func->lambda.formalArguments));
-	AssertThat(0 == IterateList(&func->lambda.formalArguments));
+	AssertEq(ParseSingle("(+ p1 p2)"), Iterate(&func->lambda.body));
+	AssertThat(0 == Iterate(&func->lambda.body));
+	AssertEq(VariableFromConstantStr(STR("p1")), Iterate(&func->lambda.formalArguments));
+	AssertEq(VariableFromConstantStr(STR("p2")), Iterate(&func->lambda.formalArguments));
+	AssertThat(0 == Iterate(&func->lambda.formalArguments));
 }
 
 TEST(DefineWithZeroArguments) {

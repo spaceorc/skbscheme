@@ -24,7 +24,7 @@ int IsFalse(Term * term) {
 
 Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings) {
 	Term * arg, * term = 0;
-	while (arg = IterateList(&arguments)) {
+	while (arg = Iterate(&arguments)) {
 		term = EvalRecursive(arg, contextBindings);
 		if (terError == term->tag || IsFalse(term))
 			return term;
@@ -36,7 +36,7 @@ Term * LazyFunctionAnd(List arguments, ContextBindings * contextBindings) {
 
 Term * LazyFunctionOr(List arguments, ContextBindings * contextBindings) {
 	Term * arg, * term = 0;
-	while (arg = IterateList(&arguments)) {
+	while (arg = Iterate(&arguments)) {
 		term = EvalRecursive(arg, contextBindings);
 		if (terError == term->tag || IsTrue(term))
 			return term;
@@ -61,11 +61,11 @@ Term * LazyFunctionIf(List arguments, ContextBindings * contextBindings) {
 Term * LazyFunctionCond(List arguments, ContextBindings * contextBindings) {
 	Term * condItem = 0, * condition = 0;
 	List condItemArguments = 0;
-	while (condItem = IterateList(&arguments)) {
+	while (condItem = Iterate(&arguments)) {
 		if (terRedex != condItem->tag)
 			return BadSyntax();
 		condItemArguments = condItem->redex;
-		condition = IterateList(&condItemArguments);
+		condition = Iterate(&condItemArguments);
 		if (!condition)
 			return BadSyntax();
 		condition = EvalRecursive(condition, contextBindings);

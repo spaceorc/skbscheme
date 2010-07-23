@@ -6,7 +6,7 @@
 Term * OperatorPlus(List arguments) {
 	Term * current = 0;
 	int n = 0, argLen = 0;
-	while (current = IterateList(&arguments))
+	while (current = Iterate(&arguments))
 	{
 		argLen++;
 		if (current->tag != terNumber)
@@ -21,7 +21,7 @@ Term * OperatorPlus(List arguments) {
 Term * OperatorMinus(List arguments) {
 	Term * current = 0;
 	int n = 0, argLen = 0;
-	while (current = IterateList(&arguments)) {
+	while (current = Iterate(&arguments)) {
 		argLen++;
 		if (argLen == 2)
 			n = -n;
@@ -37,7 +37,7 @@ Term * OperatorMinus(List arguments) {
 Term * OperatorNumberEq(List arguments) {
 	Term * current = 0, * first = 0;
 	int argLen = 0, allEquals = 1;
-	while (current = IterateList(&arguments))
+	while (current = Iterate(&arguments))
 	{
 		argLen++;
 		if (current->tag != terNumber)

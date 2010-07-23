@@ -13,7 +13,7 @@ static EvaluationContextBase * DoChildEvaluated(OrEvaluationContext * evaluation
 
 static EvaluationContextBase * DoEvaluate(OrEvaluationContext * evaluationContext) {
 	Term * arg = 0;	
-	arg = IterateList(&evaluationContext->arguments);
+	arg = Iterate(&evaluationContext->arguments);
 	if (!arg) {
 		THIS_CONTEXT->result = False();
 		return THIS_CONTEXT;

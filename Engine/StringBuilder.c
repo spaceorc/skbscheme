@@ -7,12 +7,12 @@ StringBuilder AllocateStringBuilder() {
 }
 
 StringBuilder AppendChr(StringBuilder stringBuilder, Chr chr) {
-	return PushList(stringBuilder, Character(chr));
+	return Push(stringBuilder, Character(chr));
 }
 
 unsigned int CalculateStringLength(StringBuilder stringBuilder) {
 	unsigned int result = 0;
-	while (IterateList(&stringBuilder))
+	while (Iterate(&stringBuilder))
 		result++;
 	return result;
 }
@@ -22,7 +22,7 @@ LimitedStr BuildString(StringBuilder stringBuilder) {
 	Chr * current = result.str + result.size;
 	Term * character = 0;
 	*(--current) = 0;
-	while (character = IterateList(&stringBuilder)) {
+	while (character = Iterate(&stringBuilder)) {
 		assert(terCharacter == character->tag);
 		*(--current) = character->character;
 	}
