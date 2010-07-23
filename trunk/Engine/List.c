@@ -3,7 +3,7 @@
 #include "List.h"
 #include "MemoryManager.h"
 
-Term * IterateList(List * iterator) {
+Term * Iterate(List * iterator) {
 	Term * first;
 	Term * next;
 	if (0 == *iterator)
@@ -19,7 +19,7 @@ Term * IterateList(List * iterator) {
 	return first;
 }
 
-List AppendListUsingIterator(List list, Pair ** iterator, Term * term) {
+List AppendUsingIterator(List list, Pair ** iterator, Term * term) {
 	Pair * current = (*iterator);
 	Pair * next = AllocatePair();
 	next->first = term;
@@ -37,7 +37,7 @@ List AppendListUsingIterator(List list, Pair ** iterator, Term * term) {
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
 	Term * current;
 	int argLen = 0;
-	while (current = IterateList(&from)) {
+	while (current = Iterate(&from)) {
 		if (argLen == atMost) {
 			*error = InvalidArgumentCount();
 			return -1;
@@ -55,7 +55,7 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 	return argLen;
 }
 
-List AppendList(List list, Term * term) {
+List Append(List list, Term * term) {
 	// todo ??? maybe term->tag(error) cannot be added?
 	List result = list;
 	Pair * current, * last;
@@ -76,7 +76,7 @@ List AppendList(List list, Term * term) {
 	return result;
 }
 
-List PushList(List list, Term * term) {
+List Push(List list, Term * term) {
 	List result = AllocatePair();
 	Term * t = AllocateTerm(terPair);
 	t->pair = list;

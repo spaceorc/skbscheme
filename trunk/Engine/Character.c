@@ -21,7 +21,7 @@ Term * FunctionIsCharacter(List arguments) {
 Term * FunctionCharacterEq(List arguments) {
 	Term * current = 0, * first = 0;
 	int argLen = 0, allEquals = 1;
-	while (current = IterateList(&arguments))
+	while (current = Iterate(&arguments))
 	{
 		argLen++;
 		if (current->tag != terCharacter)

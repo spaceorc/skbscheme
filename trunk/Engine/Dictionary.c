@@ -10,7 +10,7 @@ Term * FindConstantStr(Dictionary dictionary, ConstantStr key) {
 
 Term * FindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
 	Term * keyValuePair = 0;
-	while(keyValuePair = IterateList(&dictionary)) {
+	while(keyValuePair = Iterate(&dictionary)) {
 		if (terPair != keyValuePair->tag)
 			return InvalidArgumentType();
 		if (terString != keyValuePair->pair->first->tag)
@@ -26,13 +26,13 @@ Term * Find(Dictionary dictionary, LimitedStr key) {
 }
 
 List Set(Dictionary dictionary, LimitedStr key, Term * value) {
-	return PushList(dictionary, Cons(String(key), value));
+	return Push(dictionary, Cons(String(key), value));
 }
 
 Dictionary SetConstantStr(Dictionary dictionary, ConstantStr key, Term * value) {
-	return PushList(dictionary, Cons(StringFromConstantStr(key), value));
+	return Push(dictionary, Cons(StringFromConstantStr(key), value));
 }
 
 Dictionary SetConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key, Term * value) {
-	return PushList(dictionary, Cons(StringFromConstantLimitedStr(key), value));
+	return Push(dictionary, Cons(StringFromConstantLimitedStr(key), value));
 }

@@ -25,14 +25,14 @@ Term * Parse(Token token, ParserContext ** context) {
 			assert(term->tag != terRedex);
 			if (0 == *context)
 				break;
-			(*context)->redex = AppendList((*context)->redex, term);
+			(*context)->redex = Append((*context)->redex, term);
 			term = 0;
 			break;
 		case tokQuotedString:
 			term = String(token.text);
 			if (0 == *context)
 				break;
-			(*context)->redex = AppendList((*context)->redex, term);
+			(*context)->redex = Append((*context)->redex, term);
 			term = 0;
 			break;
 		case tokOpeningBracket:
@@ -46,7 +46,7 @@ Term * Parse(Token token, ParserContext ** context) {
 			*context = (*context)->previous;
 			if (0 == *context)
 				break;
-			(*context)->redex = AppendList((*context)->redex, term);
+			(*context)->redex = Append((*context)->redex, term);
 			term = 0;
 			break;
 		case tokError:

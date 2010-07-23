@@ -29,8 +29,8 @@ TEST(EvalRecursiveRedex) {
 }
 
 static Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
-	AssertTag(terRedex, IterateList(&arguments));
-	AssertThat(0 == IterateList(&arguments));
+	AssertTag(terRedex, Iterate(&arguments));
+	AssertThat(0 == Iterate(&arguments));
 	return Number(5);
 }
 
@@ -45,8 +45,8 @@ struct MockLazyEvaluationContext {
 };
 
 static EvaluationContextBase * MockEvaluate1(MockLazyEvaluationContext * evaluationContext) {
-	AssertTag(terRedex, IterateList(&evaluationContext->arguments));
-	AssertThat(0 == IterateList(&evaluationContext->arguments));
+	AssertTag(terRedex, Iterate(&evaluationContext->arguments));
+	AssertThat(0 == Iterate(&evaluationContext->arguments));
 	THIS_CONTEXT->result = Number(5);
 	return THIS_CONTEXT;
 }

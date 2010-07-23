@@ -18,7 +18,7 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 	List result = 0;
 	Pair * current = 0;
 	Term * i = 0;
-	while(i = IterateList(arguments)) {
+	while(i = Iterate(arguments)) {
 		Pair * next = AllocatePair();
 		next->first = EvalRecursive(i, contextBindings);
 		if (terError == next->first->tag) {
@@ -41,7 +41,7 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 Term * EvalList(List list, ContextBindings * contextBindings) {
 	Term * result = 0;
 	Term * i = 0;
-	while(i = IterateList(&list))
+	while(i = Iterate(&list))
 		EvalTermAndCheckError(result, i, contextBindings);
 	if (!result)
 		return InvalidArgumentCount();
@@ -51,20 +51,20 @@ Term * EvalList(List list, ContextBindings * contextBindings) {
 static Term * EvalLambda(Lambda lambda, List arguments) {
 	Term * formalArgument = 0, * argument = 0;
 	ContextBindings * childContextBindings = AllocateContextBindings(lambda.context);
-	while(formalArgument = IterateList(&lambda.formalArguments)) {
-		argument = IterateList(&arguments);
+	while(formalArgument = Iterate(&lambda.formalArguments)) {
+		argument = Iterate(&arguments);
 		if (!argument)
 			return InvalidArgumentCount();
 		CheckTermType(formalArgument, terVariable);
 		childContextBindings->dictionary = Set(childContextBindings->dictionary, formalArgument->variable, argument);
 	}
-	if (IterateList(&arguments))
+	if (Iterate(&arguments))
 		return InvalidArgumentCount();
 	return EvalList(lambda.body, childContextBindings);
 }
 
 Term * InternalApply(List arguments, ContextBindings * contextBindings) {
-	Term * function = IterateList(&arguments), * error;
+	Term * function = Iterate(&arguments), * error;
 	if (0 == function)
 		return InvalidArgumentCount();
 	function = EvalRecursive(function, contextBindings);
