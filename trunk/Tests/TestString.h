@@ -54,3 +54,19 @@ TEST(Substring) {
 	AssertEq(StringFromConstantStr(STR("cdef")), Eval(ParseSingle("(substring \"abcdef\" 2)"), contextBindings));
 	AssertEq(StringFromConstantStr(STR("cde")), Eval(ParseSingle("(substring \"abcdef\" 2 4)"), contextBindings));
 }
+
+TEST(StringEq) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(True(), Eval(ParseSingle("(string=? \"lalala\" \"lalala\" \"lalala\")"), contextBindings));
+	AssertEq(False(), Eval(ParseSingle("(string=? \"lalala\" \"lalala\" \"bububu\")"), contextBindings));
+}
+
+TEST(StringEqWith1Argument) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentCount(), Eval(ParseSingle("(string=? \"lalala\")"), contextBindings));
+}
+
+TEST(StringEqWithNotAString) {
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(string=? \"lalala\" 1)"), contextBindings));
+}

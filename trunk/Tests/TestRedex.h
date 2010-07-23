@@ -15,27 +15,17 @@ TEST(GeneralEvalWith0Arguments) {
 }
 
 TEST(EvalScalar) {
-	AssertEq(Number(10), Eval(Number(10), 0));
+	AssertEq(Number(10), Eval(ParseSingle("10"), 0));
 }
 
 TEST(EvalRedex) {
-	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
-	AssertEq(Number(3), Eval(a, 0));
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(3), Eval(ParseSingle("(+ 1 2)"), contextBindings));
 }
 
 TEST(EvalRecursiveRedex) {
-	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, Function(OperatorPlus), Number(1), Number(2));
-	Term * b = AllocateTerm(terRedex);
-	b->redex = MakeList(3, Function(OperatorMinus), Number(1), a);
-	AssertEq(Number(-2), Eval(b, 0));
-}
-
-TEST(EvalRedexUnresolvedVariables) {
-	Term * a = AllocateTerm(terRedex);
-	a->redex = MakeList(3, VariableFromConstantStr(STR("+")), Number(1), Number(2));
-	AssertEq(Number(3), Eval(a, AcquireContextBindings()));
+	ContextBindings * contextBindings = AcquireContextBindings();
+	AssertEq(Number(-2), Eval(ParseSingle("(- 1 (+ 1 2))"), contextBindings));
 }
 
 static Term * MockLazyFunction(List arguments, ContextBindings * contextBindings) {
@@ -71,9 +61,7 @@ static EvaluationContextBase * MockAcquireLazyEvaluationContext(EvaluationContex
 TEST(EvalRedexStartingWithLazyFunction) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	contextBindings->dictionary = SetConstantStr(contextBindings->dictionary, STR("lalala"), LazyFunction(MockLazyFunction, MockAcquireLazyEvaluationContext));
-	Term * a = Redex(MakeList(3, Function(OperatorPlus), Number(1), Number(2)));
-	Term * b = Redex(MakeList(2, VariableFromConstantStr(STR("lalala")), a));
-	AssertEq(Number(5), Eval(b, contextBindings));
+	AssertEq(Number(5), Eval(ParseSingle("(lalala (+ 1 2))"), contextBindings));
 }
 
 TEST(EvalRedexStartingWithDefinedFunction) {

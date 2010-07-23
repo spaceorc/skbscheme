@@ -71,11 +71,6 @@ TEST(NumberEqWithNotANumber) {
 	AssertEq(InvalidArgumentType(), Eval(ParseSingle("(= 1 2 #\\c)"), contextBindings));
 }
 
-TEST(EvalOfOperatorNumberEq) {
-	ContextBindings * contextBindings = AcquireContextBindings();
-	AssertEq(False(), Eval(ParseSingle("(= 1 2)"), contextBindings));
-}
-
 TEST(IsNumber) {
 	ContextBindings * contextBindings = AcquireContextBindings();
 	AssertEq(True(), Eval(ParseSingle("(number? 1)"), contextBindings));

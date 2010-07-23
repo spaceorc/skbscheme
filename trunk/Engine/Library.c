@@ -17,8 +17,8 @@
 #include "IfEvaluation.h"
 #include "CondEvaluation.h"
 
-ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term", "number?", "char?", "char?=", "string?", "make-string", "string-length", "string-ref", "string-set!", "substring", "null?", "pair?"};
-FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm, FunctionIsNumber, FunctionIsCharacter, FunctionCharacterEq, FunctionIsString, FunctionMakeString, FunctionStringLength, FunctionStringRef, FunctionStringSet, FunctionSubstring, FunctionIsNull, FunctionIsPair};
+ConstantStr globalFunctionNames [] = {"+", "-", "=", "cons", "car", "cdr", "error", "posix-open", "posix-close", "posix-read", "posix-write-string", "posix-write-term", "number?", "char?", "char?=", "string?", "make-string", "string-length", "string-ref", "string-set!", "substring", "null?", "pair?", "string=?"};
+FunctionPtr globalFunctionPointers [] = {OperatorPlus, OperatorMinus, OperatorNumberEq, FunctionCons, FunctionCar, FunctionCdr, FunctionError, FunctionOpen, FunctionClose, FunctionRead, FunctionWrite, FunctionWriteTerm, FunctionIsNumber, FunctionIsCharacter, FunctionCharacterEq, FunctionIsString, FunctionMakeString, FunctionStringLength, FunctionStringRef, FunctionStringSet, FunctionSubstring, FunctionIsNull, FunctionIsPair, FunctionStringEq};
 ConstantStr globalLazyFunctionNames [] = {"let", "define", "lambda", "and", "or", "if", "cond"};
 LazyFunctionPtr globalLazyFunctionPointers [] = {LazyFunctionLet, LazyFunctionDefine, LazyFunctionLambda, LazyFunctionAnd, LazyFunctionOr, LazyFunctionIf, LazyFunctionCond};
 AcquireLazyEvaluationContextPtr globalAcquireLazyEvaluationContextPointers [] = {AcquireLetEvaluationContext, AcquireDefineEvaluationContext, AcquireDefineLambdaEvaluationContext, AcquireAndEvaluationContext, AcquireOrEvaluationContext, AcquireIfEvaluationContext, AcquireCondEvaluationContext};

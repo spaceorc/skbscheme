@@ -9,3 +9,4 @@ Term * FunctionStringLength(List arguments);
 Term * FunctionStringRef(List arguments);
 Term * FunctionStringSet(List arguments);
 Term * FunctionSubstring(List arguments);
+Term * FunctionStringEq(List arguments);
