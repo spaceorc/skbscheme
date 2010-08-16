@@ -1,4 +1,6 @@
 #include "Dictionary.h"
+#include "List.h"
+#include "Constructors.h"
 
 Dictionary CreateDictionary() {
 	return 0;

@@ -2,6 +2,8 @@
 
 #include "Definitions.h"
 #include "Dictionary.h"
+#include "List.h"
+#include "Constructors.h"
 #include "MemoryManager.h"
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {

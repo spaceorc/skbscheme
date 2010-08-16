@@ -2,6 +2,8 @@
 
 #include "Number.h"
 #include "Boolean.h"
+#include "List.h"
+#include "Constructors.h"
 
 Term * OperatorPlus(List arguments) {
 	Term * current = 0;

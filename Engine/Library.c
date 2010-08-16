@@ -4,6 +4,8 @@
 #include "Number.h"
 #include "Character.h"
 #include "Pair.h"
+#include "List.h"
+#include "Constructors.h"
 #include "Error.h"
 #include "FileDescriptor.h"
 #include "Definitions.h"

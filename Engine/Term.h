@@ -2,35 +2,19 @@
 
 #include "Str.h"
 
-#define terNumber 0
-#define terFunction 1
-#define terPair 2
-#define terError 3
-#define terNil 4
-#define terRedex 5
-#define terString 6
-#define terVariable 7
-#define terLazyFunction 8
-#define terLambda 9
-#define terVoid 10
-#define terBoolean 11
-#define terCharacter 12
-#define terFileDescriptor 13
-
 typedef struct structTerm Term;
-typedef struct structPair Pair, *List;
+typedef struct structPair Pair, * List;
 typedef struct structContextBindings ContextBindings;
 typedef struct structLambda Lambda;
 typedef struct structLazy Lazy;
-typedef struct structParserContext ParserContext;
 typedef struct structEvaluationContextBase EvaluationContextBase;
-typedef Term * (*FunctionPtr)(List arguments);
-typedef Term * (*LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
-typedef Term * (*CreateConstantPtr)();
+typedef Term * (* FunctionPtr)(List arguments);
+typedef Term * (* LazyFunctionPtr)(List arguments, ContextBindings * contextBindings);
+typedef Term * (* CreateConstantPtr)();
 
-typedef EvaluationContextBase * (*AcquireLazyEvaluationContextPtr)(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments);
-typedef EvaluationContextBase * (*ChildEvaluatedPtr)(EvaluationContextBase * evaluationContext, Term * childResult);
-typedef EvaluationContextBase * (*EvaluatePtr)(EvaluationContextBase * evaluationContext);
+typedef EvaluationContextBase * (* AcquireLazyEvaluationContextPtr)(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments);
+typedef EvaluationContextBase * (* ChildEvaluatedPtr)(EvaluationContextBase * evaluationContext, Term * childResult);
+typedef EvaluationContextBase * (* EvaluatePtr)(EvaluationContextBase * evaluationContext);
 
 struct structEvaluationContextBase {
 	EvaluationContextBase * parent;
@@ -38,11 +22,6 @@ struct structEvaluationContextBase {
 	ChildEvaluatedPtr childEvaluated;
 	EvaluatePtr evaluate;
 	ContextBindings * contextBindings;
-};
-
-struct structParserContext {
-	List redex;
-	ParserContext * previous;
 };
 
 struct structContextBindings {
@@ -79,18 +58,28 @@ struct structTerm {
 	};
 };
 
+/*! \enum Tag of term
+ * Each term has a tag specifying the way the content of term is to be treated.
+ */
+#define terNumber 0
+#define terFunction 1
+#define terPair 2
+#define terError 3
+#define terNil 4
+#define terRedex 5
+#define terString 6
+#define terVariable 7
+#define terLazyFunction 8
+#define terLambda 9
+#define terVoid 10
+#define terBoolean 11
+#define terCharacter 12
+#define terFileDescriptor 13
+
+/*! \struct Pair
+ * Pair contains of pointers to first and second Term. List is a pointer to pair.
+ */
 struct structPair {
 	Term * first;
 	Term * second;
 };
-
-#include "Constructors.h"
-#include "List.h"
-#include "Error.h"
-
-#define TakeSeveralArguments(from, to, error) TakeArguments(from, to, sizeof(to)/sizeof(to[0]), sizeof(to)/sizeof(to[0]), error)
-#define TakeSingleArgument(from, to, error) TakeArguments(from, to, 1, 1, error)
-
-#define CheckTermType(term, terTag) if (terTag != term->tag) return InvalidArgumentType()
-#define CheckErrorTerm(term) if (terError == term->tag) return term
-#define EvalTermAndCheckError(variable, expression, bindings) if (terError == (variable = EvalRecursive((expression), (bindings)))->tag) return variable

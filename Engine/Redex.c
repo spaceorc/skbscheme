@@ -1,6 +1,8 @@
 #include <assert.h>
 
 #include "Redex.h"
+#include "List.h"
+#include "Constructors.h"
 #include "MemoryManager.h"
 #include "Dictionary.h"
 

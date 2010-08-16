@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <assert.h>
 
+#include "List.h"
 #include "TermEvaluation.h"
 #include "TermListEvaluation.h"
 #include "RedexEvaluation.h"

@@ -1,6 +1,8 @@
 #include <assert.h>
 
 #include "StringBuilder.h"
+#include "List.h"
+#include "Constructors.h"
 
 StringBuilder AllocateStringBuilder() {
 	return 0;
