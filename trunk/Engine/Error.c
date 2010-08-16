@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 #include "Error.h"
+#include "List.h"
+#include "Constructors.h"
 
 Term * InvalidVariable(LimitedStr variable) {
 	return Error(ConcatenateConstantLimitedStr(LimitConstantStr("invalid variable "), ConstLimitedStr(variable)));

@@ -2,6 +2,7 @@
 #include <memory.h>
 #include <assert.h>
 
+#include "List.h"
 #include "TermListEvaluation.h"
 #include "TermEvaluation.h"
 

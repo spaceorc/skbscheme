@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <memory.h>
 
+#include "List.h"
 #include "IfEvaluation.h"
 #include "TermEvaluation.h"
 #include "Boolean.h"

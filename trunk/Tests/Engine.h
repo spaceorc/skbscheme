@@ -4,6 +4,7 @@
 extern "C" {
 #include "Str.h"
 #include "Term.h"
+#include "Constructors.h"
 #include "MemoryManager.h"
 #include "Tokenizer.h"
 #include "Number.h"

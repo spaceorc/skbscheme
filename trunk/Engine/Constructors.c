@@ -1,6 +1,7 @@
 #include <stdarg.h>
 
 #include "Constructors.h"
+#include "List.h"
 #include "MemoryManager.h"
 
 Term * Number(int number) {

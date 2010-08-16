@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include "List.h"
+#include "Constructors.h"
 #include "MemoryManager.h"
 
 Term * Iterate(List * iterator) {

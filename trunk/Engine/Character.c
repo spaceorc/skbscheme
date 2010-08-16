@@ -1,5 +1,7 @@
-#include "Boolean.h"
 #include "Character.h"
+#include "List.h"
+#include "Constructors.h"
+#include "Boolean.h"
 
 Term * ParseCharacter(LimitedStr variable) {
 	return Character(variable.str[2]);

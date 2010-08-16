@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Term.h"
+#include "Parser.h"
 
 Term * AllocateTerm(int tag);
 Pair * AllocatePair();

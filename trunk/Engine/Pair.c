@@ -1,7 +1,9 @@
 #include <assert.h>
 
-#include "Boolean.h"
 #include "Pair.h"
+#include "Boolean.h"
+#include "List.h"
+#include "Constructors.h"
 #include "MemoryManager.h"
 
 Term * FunctionCons(List arguments) {

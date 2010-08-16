@@ -2,6 +2,8 @@
 #include <memory.h>
 #include <assert.h>
 
+#include "List.h"
+#include "Constructors.h"
 #include "DefineEvaluation.h"
 #include "TermEvaluation.h"
 #include "Dictionary.h"

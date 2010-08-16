@@ -1,9 +1,12 @@
 #include <assert.h>
 
 #include "Parser.h"
+
 #include "Number.h"
 #include "Character.h"
 #include "Dictionary.h"
+#include "Constructors.h"
+#include "List.h"
 #include "MemoryManager.h"
 
 Term * ParseTerm(LimitedStr variable) {
