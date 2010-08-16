@@ -3,7 +3,13 @@
 #include "Number.h"
 #include "Boolean.h"
 #include "List.h"
-#include "Constructors.h"
+#include "MemoryManager.h"
+
+Term * Number(int number) {
+	Term * result = AllocateTerm(terNumber);
+	result->number = number;
+	return result;
+}
 
 Term * OperatorPlus(List arguments) {
 	Term * current = 0;

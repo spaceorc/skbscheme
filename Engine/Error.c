@@ -2,7 +2,12 @@
 
 #include "Error.h"
 #include "List.h"
-#include "Constructors.h"
+
+Term * Error(LimitedStr str) {
+	Term * result = AllocateTerm(terError);
+	result->message = str;
+	return result;
+}
 
 Term * InvalidVariable(LimitedStr variable) {
 	return Error(ConcatenateConstantLimitedStr(LimitConstantStr("invalid variable "), ConstLimitedStr(variable)));

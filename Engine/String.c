@@ -1,7 +1,23 @@
-#include "List.h"
-#include "Constructors.h"
-#include "Boolean.h"
 #include "String.h"
+#include "List.h"
+#include "Number.h"
+#include "Character.h"
+#include "Boolean.h"
+#include "Void.h"
+
+Term * StringFromConstantStr(ConstantStr str) {
+	return StringFromConstantLimitedStr(LimitConstantStr(str));
+}
+
+Term * StringFromConstantLimitedStr(ConstantLimitedStr str) {
+	return String(LimitedStrFromConstantLimitedStr(str));
+}
+
+Term * String(LimitedStr str) {
+	Term * result = AllocateTerm(terString);
+	result->string = str;
+	return result;
+}
 
 Term * FunctionIsString(List arguments) {
 	Term * arg, * error = 0;

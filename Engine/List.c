@@ -1,10 +1,32 @@
 #include <assert.h>
+#include <stdarg.h>
 
 #include "List.h"
-#include "Constructors.h"
 #include "MemoryManager.h"
 
-Term * Iterate(List * iterator) {
+Term * Nil() {
+	return AllocateTerm(terNil);
+}
+
+List MakeListFromArray(unsigned int count, Term * terms[]) {
+	List result = 0;
+	Pair * iterator = 0;
+	unsigned int i = 0;
+	while (i < count)
+		result = AppendUsingIterator(result, &iterator, terms[i++]);
+	return result;
+}
+
+List MakeList(unsigned int count, ...) {
+	List result = 0;
+	Pair * iterator = 0;
+	unsigned int i = 0;
+	va_list listPointer;
+	va_start(listPointer, count);
+	while(i++ < count)
+		result = AppendUsingIterator(result, &iterator, va_arg(listPointer, Term *));
+	return result;
+}Term * Iterate(List * iterator) {
 	Term * first;
 	Term * next;
 	if (0 == *iterator)

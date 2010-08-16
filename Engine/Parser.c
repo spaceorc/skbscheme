@@ -5,8 +5,9 @@
 #include "Number.h"
 #include "Character.h"
 #include "Dictionary.h"
-#include "Constructors.h"
 #include "List.h"
+#include "String.h"
+#include "Variable.h"
 #include "MemoryManager.h"
 
 Term * ParseTerm(LimitedStr variable) {

@@ -83,3 +83,7 @@ struct structPair {
 	Term * first;
 	Term * second;
 };
+
+Term * Function(FunctionPtr function);
+Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext);
+Term * MakeLambda(List formalArguments, List body, ContextBindings * context);

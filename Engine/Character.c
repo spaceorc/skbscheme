@@ -1,7 +1,12 @@
 #include "Character.h"
 #include "List.h"
-#include "Constructors.h"
 #include "Boolean.h"
+
+Term * Character(Chr character) {
+	Term * result = AllocateTerm(terCharacter);
+	result->character = character;
+	return result;
+}
 
 Term * ParseCharacter(LimitedStr variable) {
 	return Character(variable.str[2]);
