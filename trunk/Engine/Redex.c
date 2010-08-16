@@ -2,9 +2,14 @@
 
 #include "Redex.h"
 #include "List.h"
-#include "Constructors.h"
 #include "MemoryManager.h"
 #include "Dictionary.h"
+
+Term * Redex(List redex) {
+	Term * result = AllocateTerm(terRedex);
+	result->redex = redex;
+	return result;
+}
 
 Term * Resolve(ContextBindings * contextBindings, LimitedStr variable) {
 	Term * result = 0;

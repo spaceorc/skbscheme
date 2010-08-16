@@ -6,7 +6,9 @@
 
 #include "FileDescriptor.h"
 #include "List.h"
-#include "Constructors.h"
+#include "Number.h"
+#include "String.h"
+#include "Void.h"
 
 // todo functional tests required
 
@@ -15,6 +17,12 @@
 // warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
 // warning C4996: 'write': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
 #pragma warning(disable:4996)
+
+Term * FileDescriptor(int fildes) {
+	Term * result = AllocateTerm(terFileDescriptor);
+	result->fildes = fildes;
+	return result;
+}
 
 Term * FunctionOpen(List arguments) {
 	Term * args[] = {0, 0, 0}, * error = 0;

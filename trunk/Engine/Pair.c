@@ -3,8 +3,16 @@
 #include "Pair.h"
 #include "Boolean.h"
 #include "List.h"
-#include "Constructors.h"
 #include "MemoryManager.h"
+
+Term * Cons(Term * first, Term * second) {
+	Term * result = 0;
+	result = AllocateTerm(terPair);	
+	result->pair = AllocatePair();
+	result->pair->first = first;
+	result->pair->second = second;
+	return result;
+}
 
 Term * FunctionCons(List arguments) {
 	Term * args[] = {0, 0}, * error = 0;

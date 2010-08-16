@@ -1,6 +1,7 @@
 #include "Dictionary.h"
 #include "List.h"
-#include "Constructors.h"
+#include "Pair.h"
+#include "String.h"
 
 Dictionary CreateDictionary() {
 	return 0;

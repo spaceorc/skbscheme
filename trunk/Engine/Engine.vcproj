@@ -163,19 +163,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Constructors.c"
-				>
-			</File>
-			<File
 				RelativePath=".\Dictionary.c"
 				>
 			</File>
 			<File
 				RelativePath=".\Library.c"
-				>
-			</File>
-			<File
-				RelativePath=".\List.c"
 				>
 			</File>
 			<File
@@ -195,7 +187,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Term.c"
+				>
+			</File>
+			<File
 				RelativePath=".\Tokenizer.c"
+				>
+			</File>
+			<File
+				RelativePath=".\Variable.cpp"
 				>
 			</File>
 			<Filter
@@ -219,6 +219,10 @@
 				</File>
 				<File
 					RelativePath=".\FileDescriptor.c"
+					>
+				</File>
+				<File
+					RelativePath=".\List.c"
 					>
 				</File>
 				<File
@@ -301,10 +305,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\List.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MemoryManager.h"
 				>
 			</File>
@@ -340,10 +340,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Constructors.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Definitions.h"
 					>
 				</File>
@@ -353,6 +349,10 @@
 				</File>
 				<File
 					RelativePath=".\FileDescriptor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\List.h"
 					>
 				</File>
 				<File
@@ -369,6 +369,10 @@
 				</File>
 				<File
 					RelativePath=".\String.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Variable.h"
 					>
 				</File>
 				<File

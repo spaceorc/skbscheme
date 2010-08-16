@@ -2,6 +2,7 @@
 
 #include "Term.h"
 
+Term * Cons(Term * first, Term * second);
 Term * FunctionCons(List arguments);
 Term * FunctionCar(List arguments);
 Term * FunctionCdr(List arguments);

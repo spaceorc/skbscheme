@@ -1,7 +1,9 @@
 #include "Term.h"
 #include "Error.h"
 
-Term * Iterate(List * iterator);
+Term * Nil();
+List MakeListFromArray(unsigned int count, Term * terms[]);
+List MakeList(unsigned int count, ...);Term * Iterate(List * iterator);
 List AppendUsingIterator(List list, Pair ** iterator, Term * term);
 List Append(List list, Term * term);
 List Push(List list, Term * term);

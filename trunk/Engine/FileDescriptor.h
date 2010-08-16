@@ -1,5 +1,6 @@
 #include "Term.h"
 
+Term * FileDescriptor(int fildes);
 unsigned int DumpTerm(Chr * buffer, unsigned int size, Term * term);
 Term * FunctionOpen(List arguments);
 Term * FunctionClose(List arguments);

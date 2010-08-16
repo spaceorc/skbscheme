@@ -1,9 +1,12 @@
 #include "List.h"
-#include "Constructors.h"
 #include "Boolean.h"
 #include "Void.h"
 
-Term * FunctionIsVoid(List arguments) {
+Term * Void() {
+	return AllocateTerm(terVoid);
+}
+
+Term * FunctionIsid(List arguments) {
 	Term * arg, * error = 0;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
