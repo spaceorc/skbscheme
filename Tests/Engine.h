@@ -15,6 +15,7 @@ extern "C" {
 #include "Definitions.h"
 #include "Character.h"
 #include "Dictionary.h"
+#include "Variable.h"
 #include "String.h"
 #include "Boolean.h"
 #include "FileDescriptor.h"
