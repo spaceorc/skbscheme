@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Tests"
-	ProjectGUID="{897AD6BF-EF3C-4C2A-9ABF-79381A8AC740}"
-	RootNamespace="Tests"
+	Name="Scheme"
+	ProjectGUID="{7F9AAB77-C4E1-48BA-B0FB-2489FB7FF84D}"
+	RootNamespace="Scheme"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)Engine"
+				AdditionalIncludeDirectories="$(SolutionDir)SchemeEngine"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Engine.lib"
+				AdditionalDependencies="SchemeEngine.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)$(ConfigurationName)"
 				GenerateDebugInformation="true"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(SolutionDir)Engine"
+				AdditionalIncludeDirectories="$(SolutionDir)SchemeEngine"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -136,8 +136,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Engine.lib"
 				LinkIncremental="1"
+				AdditionalDependencies="SchemeEngine.lib"
 				AdditionalLibraryDirectories="$(SolutionDir)$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -177,7 +177,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\EntryPoint.cpp"
+				RelativePath=".\EntryPoint.c"
 				>
 			</File>
 		</Filter>
@@ -186,68 +186,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Engine.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Test.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Tests"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
-			<File
-				RelativePath=".\TestBoolean.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestCharacter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestDefinitions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestDictionary.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestEvaluation.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestNumber.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestPair.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestParser.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestRedex.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestStr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestString.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestTokenizer.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
