@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Engine"
+	Name="SchemeEngine"
 	ProjectGUID="{01C4D313-56CF-495A-BC5B-6E3725D0EFFE}"
-	RootNamespace="Engine"
+	RootNamespace="SchemeEngine"
 	Keyword="ManagedCProj"
 	TargetFrameworkVersion="196613"
 	>
