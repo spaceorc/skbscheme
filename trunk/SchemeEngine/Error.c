@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <string.h>
 
 #include "Error.h"
 #include "List.h"
@@ -42,11 +42,12 @@ Term * ContractError() {
 	return Error(LimitedStrFromConstantStr("Contract violation"));
 }
 
-// warning C4996: '__sys_errlist': This function or variable may be unsafe. Consider using strerror instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.	c:\Source\skbscheme\Engine\Error.c	35	Engine
+//  'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 #pragma warning(disable:4996)
 
 Term * PosixError(int errorNumber) {
-	return Error(LimitedStrFromConstantStr(_sys_errlist[errorNumber]));
+	return Error(LimitedStrFromConstantStr(strerror(errorNumber)));
+	return Error(LimitedStrFromConstantStr(strerror(errorNumber)));
 }
 
 #pragma warning(default:4996)

@@ -195,7 +195,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Variable.cpp"
+				RelativePath=".\Variable.c"
 				>
 			</File>
 			<Filter
