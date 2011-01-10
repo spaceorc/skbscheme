@@ -13,9 +13,9 @@
 // todo functional tests required
 
 // warning C4996: 'open': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
-// warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
-// warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
-// warning C4996: 'write': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _open. See online help for details.
+// warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _close. See online help for details.
+// warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _read. See online help for details.
+// warning C4996: 'write': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _write. See online help for details.
 #pragma warning(disable:4996)
 
 Term * FileDescriptor(int fildes) {
