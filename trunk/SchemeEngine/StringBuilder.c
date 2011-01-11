@@ -5,7 +5,7 @@
 #include "Character.h"
 
 StringBuilder AllocateStringBuilder() {
-	return 0;
+	return NULL;
 }
 
 StringBuilder AppendChr(StringBuilder stringBuilder, Chr chr) {
@@ -22,8 +22,8 @@ unsigned int CalculateStringLength(StringBuilder stringBuilder) {
 LimitedStr BuildString(StringBuilder stringBuilder) {
 	LimitedStr result = CreateLimitedStr(CalculateStringLength(stringBuilder) + 1);
 	Chr * current = result.str + result.size;
-	Term * character = 0;
-	*(--current) = 0;
+	Term * character = NULL;
+	*(--current) = '\0';
 	while (character = Iterate(&stringBuilder)) {
 		assert(terCharacter == character->tag);
 		*(--current) = character->character;

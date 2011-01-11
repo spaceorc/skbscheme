@@ -7,16 +7,16 @@
 #include "MemoryManager.h"
 
 Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
-	ContextBindings * childContextBindings = 0;
-	Term * lets = 0, * current = 0;
-	List letsList = 0;
+	ContextBindings * childContextBindings = NULL;
+	Term * lets = NULL, * current = NULL;
+	List letsList = NULL;
 	if (!(lets = Iterate(&arguments)))
 		return InvalidArgumentCount();
 	CheckTermType(lets, terRedex);
 	letsList = lets->redex;
 	childContextBindings = AllocateContextBindings(contextBindings);
 	while (current = Iterate(&letsList)) {
-		Term * value = 0, * let[] = {0, 0}, * error;
+		Term * value = NULL, * let[] = {NULL, NULL}, * error = NULL;
 		CheckTermType(current, terRedex);
 		if (TakeSeveralArguments(current->redex, let, &error) < 0)
 			return error;
@@ -29,7 +29,7 @@ Term * LazyFunctionLet(List arguments, ContextBindings * contextBindings) {
 
 static Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
 	Term * name = Iterate(&definition);
-	Term * second = 0;
+	Term * second = NULL;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terVariable);
@@ -38,7 +38,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 }
 
 Term * LazyFunctionDefine(List arguments, ContextBindings * contextBindings) {
-	Term * prototype = 0, * value = 0;
+	Term * prototype = NULL, * value = NULL;
 	if (!(prototype = Iterate(&arguments)))
 		return InvalidArgumentCount();
 	switch(prototype->tag) {

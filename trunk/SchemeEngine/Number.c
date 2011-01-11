@@ -12,7 +12,7 @@ Term * Number(int number) {
 }
 
 Term * OperatorPlus(List arguments) {
-	Term * current = 0;
+	Term * current = NULL;
 	int n = 0, argLen = 0;
 	while (current = Iterate(&arguments))
 	{
@@ -27,7 +27,7 @@ Term * OperatorPlus(List arguments) {
 }
 
 Term * OperatorMinus(List arguments) {
-	Term * current = 0;
+	Term * current = NULL;
 	int n = 0, argLen = 0;
 	while (current = Iterate(&arguments)) {
 		argLen++;
@@ -43,7 +43,7 @@ Term * OperatorMinus(List arguments) {
 }
 
 Term * OperatorNumberEq(List arguments) {
-	Term * current = 0, * first = 0;
+	Term * current = NULL, * first = NULL;
 	int argLen = 0, allEquals = 1;
 	while (current = Iterate(&arguments))
 	{
@@ -54,7 +54,6 @@ Term * OperatorNumberEq(List arguments) {
 			first = current;
 		else if (first->number != current->number)
 			allEquals = 0;
-
 	}
 	if (argLen < 2)
 		return InvalidArgumentCount();
@@ -62,7 +61,7 @@ Term * OperatorNumberEq(List arguments) {
 }
 
 Term * FunctionIsNumber(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terNumber == arg->tag)

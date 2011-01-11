@@ -6,7 +6,7 @@
 #include "MemoryManager.h"
 
 Term * Cons(Term * first, Term * second) {
-	Term * result = 0;
+	Term * result = NULL;
 	result = AllocateTerm(terPair);	
 	result->pair = AllocatePair();
 	result->pair->first = first;
@@ -15,14 +15,14 @@ Term * Cons(Term * first, Term * second) {
 }
 
 Term * FunctionCons(List arguments) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
 	return Cons(args[0], args[1]);
 }
 
 Term * FunctionCar(List arguments) {
-	Term * arg = 0, * result = 0, * error = 0;
+	Term * arg = NULL, * result = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (arg->tag != terPair)
@@ -31,7 +31,7 @@ Term * FunctionCar(List arguments) {
 }
 
 Term * FunctionCdr(List arguments) {
-	Term * arg = 0, * result = 0, * error = 0;
+	Term * arg = NULL, * result = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (arg->tag != terPair)
@@ -40,7 +40,7 @@ Term * FunctionCdr(List arguments) {
 }
 
 Term * FunctionIsNull(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terNil == arg->tag)
@@ -49,7 +49,7 @@ Term * FunctionIsNull(List arguments) {
 }
 
 Term * FunctionIsPair(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terPair == arg->tag)

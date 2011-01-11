@@ -20,7 +20,7 @@ EvaluationContextBase * MockChildEvaluated(EvaluationContextBase * evaluationCon
 static EvaluationContextBase * MockContext() {
 	expectedEvaluateCallCount = 0;
 	expectedEvaluateResult = 0;
-	EvaluationContextBase * result = AllocateEvaluationContext(sizeof(*result));
+	EvaluationContextBase * result = (EvaluationContextBase *)AllocateEvaluationContext(sizeof(*result));
 	result->evaluate = MockEvaluate;
 	result->childEvaluated = MockChildEvaluated;
 	return result;

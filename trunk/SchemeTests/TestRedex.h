@@ -1,6 +1,4 @@
 #include "Test.h"
-#include <memory.h>
-#include <malloc.h>
 
 TEST(GeneralEvalNotAFunction) {
 	Term * a = AllocateTerm(terRedex);
@@ -52,7 +50,7 @@ static EvaluationContextBase * MockEvaluate1(MockLazyEvaluationContext * evaluat
 }
 
 static EvaluationContextBase * MockAcquireLazyEvaluationContext(EvaluationContextBase * parent, ContextBindings * contextBindings, List arguments) {
-	MockLazyEvaluationContext * result = (MockLazyEvaluationContext *) malloc(sizeof(*result));
+	MockLazyEvaluationContext * result = (MockLazyEvaluationContext *)AllocateEvaluationContext(sizeof(*result));
 	FillEvaluationContextBase((EvaluationContextBase *) result, parent, contextBindings, MockChildEvaluated1, (EvaluatePtr) MockEvaluate1);
 	result->arguments = arguments;
 	return (EvaluationContextBase *) result;

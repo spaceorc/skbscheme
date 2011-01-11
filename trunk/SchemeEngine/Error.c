@@ -30,7 +30,7 @@ Term * BadSyntax() {
 }
 
 Term * FunctionError(List arguments) {
-	Term * message = 0, * error = 0;
+	Term * message = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &message, &error) < 0)
 		return error;
 	if (terString != message->tag)

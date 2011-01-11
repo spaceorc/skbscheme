@@ -4,7 +4,7 @@
 #include "String.h"
 
 Dictionary CreateDictionary() {
-	return 0;
+	return NULL;
 }
 
 Term * FindConstantStr(Dictionary dictionary, ConstantStr key) {
@@ -12,7 +12,7 @@ Term * FindConstantStr(Dictionary dictionary, ConstantStr key) {
 }
 
 Term * FindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
-	Term * keyValuePair = 0;
+	Term * keyValuePair = NULL;
 	while(keyValuePair = Iterate(&dictionary)) {
 		if (terPair != keyValuePair->tag)
 			return InvalidArgumentType();
@@ -21,7 +21,7 @@ Term * FindConstantLimitedStr(Dictionary dictionary, ConstantLimitedStr key) {
 		if (0 == CompareConstantLimitedStr(ConstLimitedStr(keyValuePair->pair->first->string), key))
 			return keyValuePair->pair->second;
 	}
-	return 0;
+	return NULL;
 }
 
 Term * Find(Dictionary dictionary, LimitedStr key) {

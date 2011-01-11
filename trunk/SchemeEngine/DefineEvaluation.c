@@ -1,5 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
 #include <assert.h>
 
 #include "List.h"
@@ -15,13 +13,13 @@ static EvaluationContextBase * DefineChildEvaluated(DefineEvaluationContext * ev
 }
 
 static EvaluationContextBase * DefineLambdaChildEvaluated(DefineLambdaEvaluationContext * evaluationContext, Term * childResult) {
-	assert(0);
-	return 0;
+	assert(!"todo Add failure description here");
+	return NULL;
 }
 
 static Term * InternalDefineFunction(List definition, List body, ContextBindings * contextBindings) {
 	Term * name = Iterate(&definition);
-	Term * second = 0;
+	Term * second = NULL;
 	if (!body)
 		return InvalidArgumentCount(); // todo ??? plt says this: "define: bad syntax (no expressions for procedure body)"
 	CheckTermType(name, terVariable);
@@ -30,7 +28,7 @@ static Term * InternalDefineFunction(List definition, List body, ContextBindings
 }
 
 static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContext * evaluationContext) {
-	Term * prototype = 0;
+	Term * prototype = NULL;
 	List arguments = evaluationContext->arguments;
 	if (!(prototype = Iterate(&arguments))) {
 		THIS_CONTEXT->result = InvalidArgumentCount();
@@ -49,7 +47,7 @@ static EvaluationContextBase * DefineLambdaEvaluate(DefineLambdaEvaluationContex
 }
 
 static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluationContext) {
-	Term * prototype = 0, * value = 0;
+	Term * prototype = NULL, * value = NULL;
 	List arguments = evaluationContext->arguments;
 	if (!(prototype = Iterate(&arguments))) {
 		THIS_CONTEXT->result = InvalidArgumentCount();
@@ -78,14 +76,12 @@ static EvaluationContextBase * DefineEvaluate(DefineEvaluationContext * evaluati
 }
 
 DefineEvaluationContext * AllocateDefineEvaluationContext() {
-	DefineEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	DefineEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 
 DefineLambdaEvaluationContext * AllocateDefineLambdaEvaluationContext() {
-	DefineLambdaEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	DefineLambdaEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 

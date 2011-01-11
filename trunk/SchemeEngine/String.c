@@ -20,7 +20,7 @@ Term * String(LimitedStr str) {
 }
 
 Term * FunctionIsString(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terString == arg->tag)
@@ -29,7 +29,7 @@ Term * FunctionIsString(List arguments) {
 }
 
 Term * FunctionMakeString(List arguments) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	LimitedStr result;
 	Chr * chr;
 	unsigned int size;
@@ -44,12 +44,12 @@ Term * FunctionMakeString(List arguments) {
 	chr = result.str;
 	while (size--)
 		*(chr++) = args[1]->character;
-	*chr = 0;
+	*chr = '\0';
 	return String(result);
 }
 
 Term * FunctionStringLength(List arguments) {
-	Term * arg = 0, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terString != arg->tag)
@@ -58,7 +58,7 @@ Term * FunctionStringLength(List arguments) {
 }
 
 Term * FunctionStringRef(List arguments) {
-	Term * args [] = {0, 0}, * error  = 0;
+	Term * args [] = {NULL, NULL}, * error  = NULL;
 	unsigned int pos = 0;
 	LimitedStr str;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
@@ -75,7 +75,7 @@ Term * FunctionStringRef(List arguments) {
 }
 
 Term * FunctionStringSet(List arguments) {
-	Term * args [] = {0, 0, 0}, * error  = 0;
+	Term * args [] = {NULL, NULL, NULL}, * error  = NULL;
 	unsigned int pos = 0;
 	LimitedStr str;
 	Chr chr;
@@ -97,7 +97,7 @@ Term * FunctionStringSet(List arguments) {
 }
 
 Term * FunctionSubstring(List arguments) {
-	Term * args [] = {0, 0, 0}, * error  = 0;
+	Term * args [] = {NULL, NULL, NULL}, * error  = NULL;
 	unsigned int from = 0, to = 0;
 	LimitedStr str;
 	if (TakeArguments(arguments, args, 2, 3, &error) < 0)
@@ -128,7 +128,7 @@ Term * FunctionSubstring(List arguments) {
 }
 
 Term * FunctionStringEq(List arguments) {
-	Term * current = 0, * first = 0;
+	Term * current = NULL, * first = NULL;
 	int argLen = 0, allEquals = 1;
 	while (current = Iterate(&arguments))
 	{

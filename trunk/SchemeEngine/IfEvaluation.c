@@ -1,13 +1,10 @@
-#include <malloc.h>
-#include <memory.h>
-
 #include "List.h"
 #include "IfEvaluation.h"
 #include "TermEvaluation.h"
 #include "Boolean.h"
 
 static EvaluationContextBase * DoChildEvaluated(IfEvaluationContext * evaluationContext, Term * childResult) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	if (TakeSeveralArguments(evaluationContext->arguments, args, &error) < 0) {
 		THIS_CONTEXT->result = error;	
 		return THIS_CONTEXT;
@@ -27,8 +24,7 @@ static EvaluationContextBase * DoEvaluate(IfEvaluationContext * evaluationContex
 }
 
 IfEvaluationContext * AllocateIfEvaluationContext() {
-	IfEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	IfEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 

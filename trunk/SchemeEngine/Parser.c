@@ -19,7 +19,7 @@ Term * ParseTerm(LimitedStr variable) {
 }
 
 Term * Parse(Token token, ParserContext ** context) {
-	Term * term = 0;
+	Term * term = NULL;
 	switch(token.tag) {
 		case tokVariable:
 			assert(token.text.size > 0);
@@ -27,31 +27,31 @@ Term * Parse(Token token, ParserContext ** context) {
 			if (term->tag == terError)
 				break;
 			assert(term->tag != terRedex);
-			if (0 == *context)
+			if (NULL == *context)
 				break;
 			(*context)->redex = Append((*context)->redex, term);
-			term = 0;
+			term = NULL;
 			break;
 		case tokQuotedString:
 			term = String(token.text);
-			if (0 == *context)
+			if (NULL == *context)
 				break;
 			(*context)->redex = Append((*context)->redex, term);
-			term = 0;
+			term = NULL;
 			break;
 		case tokOpeningBracket:
 			*context = AllocateParserContext(*context);
 			break;
 		case tokClosingBracket:
-			if (0 == *context)
+			if (NULL == *context)
 				return InvalidClosingBracket();
 			term = AllocateTerm(terRedex);
 			term->redex = (*context)->redex;
 			*context = (*context)->previous;
-			if (0 == *context)
+			if (NULL == *context)
 				break;
 			(*context)->redex = Append((*context)->redex, term);
-			term = 0;
+			term = NULL;
 			break;
 		case tokError:
 			term = AllocateTerm(terError);
@@ -64,9 +64,9 @@ Term * Parse(Token token, ParserContext ** context) {
 }
 
 ParserContext * AcquireParserContext() {
-	return 0;
+	return NULL;
 }
 
 int CanFinishParsing(ParserContext * context) {
-	return 0 == context;
+	return NULL == context;
 }

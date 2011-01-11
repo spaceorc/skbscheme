@@ -1,5 +1,3 @@
-#include <memory.h>
-#include <malloc.h>
 #include <assert.h>
 
 #include "List.h"
@@ -18,10 +16,10 @@ static EvaluationContextBase * DoChildEvaluated(ReductionContext * evaluationCon
 }
 
 static EvaluationContextBase * EvalLambda(ReductionContext * evaluationContext) {
-	Term * formalArgument = 0, * argument = 0;
+	Term * formalArgument = NULL, * argument = NULL;
 	Lambda lambda;
 	List arguments = evaluationContext->arguments;
-	ContextBindings * childContextBindings = 0;
+	ContextBindings * childContextBindings = NULL;
 	assert(terLambda == evaluationContext->function->tag);
 	lambda = evaluationContext->function->lambda;
 	childContextBindings = AllocateContextBindings(lambda.context);
@@ -45,7 +43,7 @@ static EvaluationContextBase * EvalLambda(ReductionContext * evaluationContext) 
 }
 
 static EvaluationContextBase * DoEvaluate(ReductionContext * evaluationContext) {
-	Term * function = evaluationContext->function, *term = 0;
+	Term * function = evaluationContext->function, * term = NULL;
 	if (!function) {
 		if (term = Iterate(&evaluationContext->redex))
 			return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
@@ -71,8 +69,7 @@ static EvaluationContextBase * DoEvaluate(ReductionContext * evaluationContext) 
 }
 
 ReductionContext * AllocateReductionContext() {
-	ReductionContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	ReductionContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 
@@ -80,7 +77,7 @@ EvaluationContextBase * AcquireReductionContext(EvaluationContextBase * parent, 
 	ReductionContext * result = AllocateReductionContext();
 	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DoChildEvaluated, (EvaluatePtr) DoEvaluate);	
 	result->redex = redex;
-	result->function = 0;
-	result->arguments = 0;
+	result->function = NULL;
+	result->arguments = NULL;
 	return (EvaluationContextBase *) result;
 }

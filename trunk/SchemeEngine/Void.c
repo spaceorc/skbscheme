@@ -7,7 +7,7 @@ Term * Void() {
 }
 
 Term * FunctionIsid(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terVoid == arg->tag)

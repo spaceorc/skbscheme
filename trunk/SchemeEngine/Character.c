@@ -13,11 +13,11 @@ Term * ParseCharacter(LimitedStr variable) {
 }
 
 int IsCharacter(LimitedStr variable) {
-	return variable.size >= 4 && '#' == variable.str[0] && '\\' == variable.str[1] && 0 != variable.str[2] && 0 == variable.str[3];
+	return variable.size >= 4 && '#' == variable.str[0] && '\\' == variable.str[1] && '\0' != variable.str[2] && '\0' == variable.str[3];
 }
 
 Term * FunctionIsCharacter(List arguments) {
-	Term * arg, * error = 0;
+	Term * arg = NULL, * error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terCharacter == arg->tag)
@@ -26,7 +26,7 @@ Term * FunctionIsCharacter(List arguments) {
 }
 
 Term * FunctionCharacterEq(List arguments) {
-	Term * current = 0, * first = 0;
+	Term * current = NULL, * first = NULL;
 	int argLen = 0, allEquals = 1;
 	while (current = Iterate(&arguments))
 	{
@@ -37,7 +37,6 @@ Term * FunctionCharacterEq(List arguments) {
 			first = current;
 		else if (first->character != current->character)
 			allEquals = 0;
-
 	}
 	if (argLen < 2)
 		return InvalidArgumentCount();

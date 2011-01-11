@@ -2,6 +2,7 @@
 
 #include "Str.h"
 
+typedef int boolean;
 typedef struct structTerm Term;
 typedef struct structPair Pair, * List;
 typedef struct structContextBindings ContextBindings;
@@ -52,7 +53,7 @@ struct structTerm {
 		LimitedStr variable;
 		Lazy lazy;
 		Lambda lambda;
-		int boolean;
+		boolean boolean;
 		Chr character;
 		int fildes;
 	};
@@ -87,3 +88,7 @@ struct structPair {
 Term * Function(FunctionPtr function);
 Term * LazyFunction(LazyFunctionPtr lazyFunction, AcquireLazyEvaluationContextPtr acquireLazyEvaluationContext);
 Term * MakeLambda(List formalArguments, List body, ContextBindings * context);
+
+#define NULL 0
+#define TRUE 1
+#define FALSE 0

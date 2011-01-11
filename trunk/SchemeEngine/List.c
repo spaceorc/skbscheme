@@ -9,8 +9,8 @@ Term * Nil() {
 }
 
 List MakeListFromArray(unsigned int count, Term * terms[]) {
-	List result = 0;
-	Pair * iterator = 0;
+	List result = NULL;
+	Pair * iterator = NULL;
 	unsigned int i = 0;
 	while (i < count)
 		result = AppendUsingIterator(result, &iterator, terms[i++]);
@@ -18,23 +18,25 @@ List MakeListFromArray(unsigned int count, Term * terms[]) {
 }
 
 List MakeList(unsigned int count, ...) {
-	List result = 0;
-	Pair * iterator = 0;
+	List result = NULL;
+	Pair * iterator = NULL;
 	unsigned int i = 0;
 	va_list listPointer;
 	va_start(listPointer, count);
 	while(i++ < count)
 		result = AppendUsingIterator(result, &iterator, va_arg(listPointer, Term *));
 	return result;
-}Term * Iterate(List * iterator) {
+}
+
+Term * Iterate(List * iterator) {
 	Term * first;
 	Term * next;
-	if (0 == *iterator)
-		return 0;
+	if (NULL == *iterator)
+		return NULL;
 	first = (*iterator)->first;
 	next = (*iterator)->second;
 	if(terNil == next->tag)
-		*iterator = 0;
+		*iterator = NULL;
 	else {
 		assert(next->tag == terPair);
 		*iterator = next->pair;
@@ -47,18 +49,18 @@ List AppendUsingIterator(List list, Pair ** iterator, Term * term) {
 	Pair * next = AllocatePair();
 	next->first = term;
 	next->second = Nil();
-	if (0 != current) {
+	if (NULL != current) {
 		current->second = AllocateTerm(terPair);
 		current->second->pair = next;
 	}
 	*iterator = next;
-	if (0 == list)
+	if (NULL == list)
 		return next;
 	return list;
 }
 
 int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error) {
-	Term * current;
+	Term * current = NULL;
 	int argLen = 0;
 	while (current = Iterate(&from)) {
 		if (argLen == atMost) {
@@ -81,8 +83,8 @@ int TakeArguments(List from, Term * to[], int atLeast, int atMost, Term ** error
 List Append(List list, Term * term) {
 	// todo ??? maybe term->tag(error) cannot be added?
 	List result = list;
-	Pair * current, * last;
-	if (0 == result)
+	Pair * current = NULL, * last = NULL;
+	if (NULL == result)
 		current = result = AllocatePair();
 	else {
 		last = list;

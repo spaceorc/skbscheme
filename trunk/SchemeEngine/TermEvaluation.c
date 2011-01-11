@@ -1,5 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
 #include <assert.h>
 
 #include "TermEvaluation.h"
@@ -7,8 +5,8 @@
 #include "Redex.h"
 
 static EvaluationContextBase * DoChildEvaluated(TermEvaluationContext * evaluationContext, Term * childResult) {
-	assert(0);
-	return 0;
+	assert(!"todo Add failure description here");
+	return NULL;
 }
 
 static EvaluationContextBase * DoEvaluate(TermEvaluationContext * evaluationContext) {
@@ -25,8 +23,7 @@ static EvaluationContextBase * DoEvaluate(TermEvaluationContext * evaluationCont
 }
 
 TermEvaluationContext * AllocateTermEvaluationContext() {
-	TermEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	TermEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 

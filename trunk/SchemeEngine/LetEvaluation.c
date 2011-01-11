@@ -1,5 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
 #include <assert.h>
 
 #include "List.h"
@@ -14,7 +12,7 @@ static EvaluationContextBase * DoChildEvaluated(LetEvaluationContext * evaluatio
 }
 
 static EvaluationContextBase * DoEvaluate(LetEvaluationContext * evaluationContext) {
-	Term * lets = 0, * current = 0, * let[] = {0, 0}, * error;
+	Term * lets = NULL, * current = NULL, * let[] = {NULL, NULL}, * error = NULL;
 	if (!evaluationContext->childContextBindings) {
 		if (!(lets = Iterate(&evaluationContext->arguments))) {
 			THIS_CONTEXT->result = InvalidArgumentCount();
@@ -48,8 +46,7 @@ static EvaluationContextBase * DoEvaluate(LetEvaluationContext * evaluationConte
 }
 
 LetEvaluationContext * AllocateLetEvaluationContext() {
-	LetEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	LetEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 
@@ -57,6 +54,6 @@ EvaluationContextBase * AcquireLetEvaluationContext(EvaluationContextBase * pare
 	LetEvaluationContext * result = AllocateLetEvaluationContext();
 	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DoChildEvaluated, (EvaluatePtr) DoEvaluate);	
 	result->arguments = arguments;
-	result->childContextBindings = 0;
+	result->childContextBindings = NULL;
 	return (EvaluationContextBase *) result;
 }
