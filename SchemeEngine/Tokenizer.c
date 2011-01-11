@@ -1,23 +1,18 @@
-#include <assert.h>
-
 #include "StringBuilder.h"
 #include "Tokenizer.h"
 
 typedef void * (*TokenizerState)(Chr chr, StringBuilder * stringBuilder, int * tag);
 
 void * FinishState(Chr chr, StringBuilder * stringBuilder, int * tag) {
-	assert(0);
-	return 0;
+	return NULL;
 }
 
 void * FinishAndUnwindState(Chr chr, StringBuilder * stringBuilder, int * tag) {
-	assert(0);
-	return 0;
+	return NULL;
 }
 
 void * ErrorState(Chr chr, StringBuilder * stringBuilder, int * tag) {
-	assert(0);
-	return 0;
+	return NULL;
 }
 
 void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag);
@@ -45,7 +40,7 @@ void * VariableState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 
 void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
-		case 0:
+		case '\0':
 			return ErrorState;
 		case '\\':
 			return QuoteState;
@@ -59,7 +54,7 @@ void * StringState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 
 void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 	switch(chr) {
-		case 0:
+		case '\0':
 			return FinishState;
 		case '(':
 			*stringBuilder = AppendChr(*stringBuilder, chr);
@@ -79,7 +74,7 @@ void * BeginState(Chr chr, StringBuilder * stringBuilder, int * tag) {
 			*tag = tokVariable;
 			return VariableState;
 	}
-	return 0;
+	return NULL;
 }
 
 Token GetToken(LimitedStr * input) {

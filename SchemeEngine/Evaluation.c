@@ -24,5 +24,5 @@ Term * Evaluate(EvaluationContextBase * evaluationContext) {
 }
 
 Term * EvalIterative(Term * term, ContextBindings * contextBindings) {
-	return Evaluate(AcquireTermEvaluationContext(0, contextBindings, term));
+	return Evaluate(AcquireTermEvaluationContext(NULL, contextBindings, term));
 }

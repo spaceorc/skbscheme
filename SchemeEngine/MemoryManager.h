@@ -8,4 +8,4 @@ Pair * AllocatePair();
 ContextBindings * AllocateContextBindings(ContextBindings * previous);
 Chr * AllocateString(unsigned int size);
 ParserContext * AllocateParserContext(ParserContext * previous);
-EvaluationContextBase * AllocateEvaluationContext(unsigned int size);
+void * AllocateEvaluationContext(unsigned int size);

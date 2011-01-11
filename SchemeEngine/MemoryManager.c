@@ -27,7 +27,7 @@ ContextBindings * AllocateContextBindings(ContextBindings * previous) {
 Chr * AllocateString(unsigned int size) {
 	Chr * result = malloc(size);
 	assert(size > 0);
-	result[0] = 0;
+	result[0] = '\0';
 	return result;
 }
 
@@ -38,7 +38,7 @@ ParserContext * AllocateParserContext(ParserContext * previous) {
 	return result;
 }
 
-EvaluationContextBase * AllocateEvaluationContext(unsigned int size) {
+void * AllocateEvaluationContext(unsigned int size) {
 	void * result = malloc(size);
 	memset(result, 0, size);
 	return result;

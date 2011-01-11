@@ -6,7 +6,7 @@
 int CompareConstantLimitedStr(ConstantLimitedStr first, ConstantLimitedStr second) {
 	Chr a, b;
 	while (a = IterateChrConstantLimitedStr(&first)) {
-		if (0 == (b = IterateChrConstantLimitedStr(&second)))
+		if ('\0' == (b = IterateChrConstantLimitedStr(&second)))
 			return a;
 		if (a != b)
 			return a - b;
@@ -29,14 +29,14 @@ LimitedStr ConcatenateConstantLimitedStr(ConstantLimitedStr first, ConstantLimit
 		*(to++) = from;
 	while(from = IterateChrConstantLimitedStr(&second))
 		*(to++) = from;
-	*to = 0;
+	*to = '\0';
 	return result;
 }
 
 ConstantLimitedStr LimitConstantStr(ConstantStr str) {
 	ConstantLimitedStr result;
 	result.str = str;
-	for(result.size = 0;0 != *str; str++, result.size++);
+	for(result.size = 0;'\0' != *str; str++, result.size++);
 	return result;
 }
 
@@ -48,8 +48,8 @@ ConstantLimitedStr ConstLimitedStr(LimitedStr str) {
 }
 
 Chr IterateChrConstantStr(ConstantStr * str, unsigned int * size) {
-	Chr result = 0;
-	if (((*size) > 0) && (0 != **str)){
+	Chr result = '\0';
+	if (((*size) > 0) && ('\0' != **str)){
 		result = **str;
 		(*str)++;
 		(*size)--;
@@ -86,7 +86,7 @@ LimitedStr LimitedStrFromConstantLimitedStr(ConstantLimitedStr str) {
 	char from, *to = result.str;
 	while (from = IterateChrConstantLimitedStr(&str))
 		*(to++) = from;
-	*to = 0;
+	*to = '\0';
 	return result;
 }
 

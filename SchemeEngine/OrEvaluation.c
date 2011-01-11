@@ -1,6 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
-
 #include "List.h"
 #include "OrEvaluation.h"
 #include "TermEvaluation.h"
@@ -13,7 +10,7 @@ static EvaluationContextBase * DoChildEvaluated(OrEvaluationContext * evaluation
 }
 
 static EvaluationContextBase * DoEvaluate(OrEvaluationContext * evaluationContext) {
-	Term * arg = 0;	
+	Term * arg = NULL;	
 	arg = Iterate(&evaluationContext->arguments);
 	if (!arg) {
 		THIS_CONTEXT->result = False();
@@ -23,8 +20,7 @@ static EvaluationContextBase * DoEvaluate(OrEvaluationContext * evaluationContex
 }
 
 OrEvaluationContext * AllocateOrEvaluationContext() {
-	OrEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	OrEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 

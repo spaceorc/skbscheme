@@ -1,6 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
-
 #include "List.h"
 #include "Void.h"
 #include "CondEvaluation.h"
@@ -19,8 +16,8 @@ static EvaluationContextBase * DoChildEvaluated(CondEvaluationContext * evaluati
 }
 
 static EvaluationContextBase * DoEvaluate(CondEvaluationContext * evaluationContext) {
-	Term * condItem = 0, * condition = 0;
-	List condItemArguments = 0;
+	Term * condItem = NULL, * condition = NULL;
+	List condItemArguments = NULL;
 	condItem = Iterate(&evaluationContext->arguments);
 	if (!condItem) {
 		THIS_CONTEXT->result = Void();
@@ -41,8 +38,7 @@ static EvaluationContextBase * DoEvaluate(CondEvaluationContext * evaluationCont
 }
 
 CondEvaluationContext * AllocateCondEvaluationContext() {
-	CondEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	CondEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 

@@ -12,19 +12,19 @@ Term * Redex(List redex) {
 }
 
 Term * Resolve(ContextBindings * contextBindings, LimitedStr variable) {
-	Term * result = 0;
-	if (0 == contextBindings)
+	Term * result = NULL;
+	if (NULL == contextBindings)
 		return InvalidVariable(variable);
 	result = Find(contextBindings->dictionary, variable);
-	if (0 == result)
+	if (NULL == result)
 		return Resolve(contextBindings->previous, variable);
 	return result;
 }
 
 int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** error) {
-	List result = 0;
-	Pair * current = 0;
-	Term * i = 0;
+	List result = NULL;
+	Pair * current = NULL;
+	Term * i = NULL;
 	while(i = Iterate(arguments)) {
 		Pair * next = AllocatePair();
 		next->first = EvalRecursive(i, contextBindings);
@@ -33,12 +33,12 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 			return 0;
 		}
 		next->second = Nil();
-		if (0 != current) {
+		if (NULL != current) {
 			current->second = AllocateTerm(terPair);
 			current->second->pair = next;
 		}
 		current = next;
-		if (0 == result)
+		if (NULL == result)
 			result = current;
 	}
 	*arguments = result;
@@ -46,8 +46,8 @@ int EvalArguments(List * arguments, ContextBindings * contextBindings, Term ** e
 }
 
 Term * EvalList(List list, ContextBindings * contextBindings) {
-	Term * result = 0;
-	Term * i = 0;
+	Term * result = NULL;
+	Term * i = NULL;
 	while(i = Iterate(&list))
 		EvalTermAndCheckError(result, i, contextBindings);
 	if (!result)
@@ -56,7 +56,7 @@ Term * EvalList(List list, ContextBindings * contextBindings) {
 }
 
 static Term * EvalLambda(Lambda lambda, List arguments) {
-	Term * formalArgument = 0, * argument = 0;
+	Term * formalArgument = NULL, * argument = NULL;
 	ContextBindings * childContextBindings = AllocateContextBindings(lambda.context);
 	while(formalArgument = Iterate(&lambda.formalArguments)) {
 		argument = Iterate(&arguments);
@@ -71,8 +71,8 @@ static Term * EvalLambda(Lambda lambda, List arguments) {
 }
 
 Term * InternalApply(List arguments, ContextBindings * contextBindings) {
-	Term * function = Iterate(&arguments), * error;
-	if (0 == function)
+	Term * function = Iterate(&arguments), * error = NULL;
+	if (NULL == function)
 		return InvalidArgumentCount();
 	function = EvalRecursive(function, contextBindings);
 	switch(function->tag) {

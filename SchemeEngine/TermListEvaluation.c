@@ -1,5 +1,3 @@
-#include <malloc.h>
-#include <memory.h>
 #include <assert.h>
 
 #include "List.h"
@@ -12,7 +10,7 @@ static EvaluationContextBase * DoChildEvaluated(TermListEvaluationContext * eval
 }
 
 static EvaluationContextBase * DoEvaluate(TermListEvaluationContext * evaluationContext) {
-	Term * term = 0;
+	Term * term = NULL;
 	if (term = Iterate(&evaluationContext->input))
 		return AcquireTermEvaluationContext(THIS_CONTEXT, THIS_CONTEXT->contextBindings, term);
 	if (evaluationContext->currentResult)
@@ -23,8 +21,7 @@ static EvaluationContextBase * DoEvaluate(TermListEvaluationContext * evaluation
 }
 
 TermListEvaluationContext * AllocateTermListEvaluationContext() {
-	TermListEvaluationContext * result = malloc(sizeof(*result));
-	memset(result, 0, sizeof(*result));
+	TermListEvaluationContext * result = AllocateEvaluationContext(sizeof(*result));
 	return result;
 }
 
@@ -32,6 +29,6 @@ EvaluationContextBase * AcquireTermListEvaluationContext(EvaluationContextBase *
 	TermListEvaluationContext * result = AllocateTermListEvaluationContext();
 	FillEvaluationContextBase(&result->base, parent, contextBindings, (ChildEvaluatedPtr) DoChildEvaluated, (EvaluatePtr) DoEvaluate);	
 	result->input = input;
-	result->currentResult = 0;
+	result->currentResult = NULL;
 	return (EvaluationContextBase *) result;
 }

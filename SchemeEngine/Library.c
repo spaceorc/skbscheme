@@ -27,7 +27,7 @@ ConstantStr globalConstantNames [] = {"#t", "#f", "null", "else", "posix-stdin",
 CreateConstantPtr globalConstantFunctionPointers [] = {True, False, Nil, True, StdIn, StdOut, StdErr};
 
 ContextBindings * AcquireContextBindings() {
-	ContextBindings * result = AllocateContextBindings(0);
+	ContextBindings * result = AllocateContextBindings(NULL);
 	int lenFunctions = sizeof(globalFunctionNames)/sizeof(globalFunctionNames[0]);
 	int lenLazyFunctions = sizeof(globalLazyFunctionNames)/sizeof(globalLazyFunctionNames[0]);
 	int lenConstants = sizeof(globalConstantNames)/sizeof(globalConstantNames[0]);

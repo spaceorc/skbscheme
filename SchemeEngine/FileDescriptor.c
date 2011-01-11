@@ -25,7 +25,7 @@ Term * FileDescriptor(int fildes) {
 }
 
 Term * FunctionOpen(List arguments) {
-	Term * args[] = {0, 0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL, NULL}, * error = NULL;
 	LimitedStr filename;
 	int fd;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
@@ -44,7 +44,7 @@ Term * FunctionOpen(List arguments) {
 }
 
 Term * FunctionClose(List arguments) {
-	Term * arg = 0, *error = 0;
+	Term * arg = NULL, *error = NULL;
 	if (TakeSingleArgument(arguments, &arg, &error) < 0)
 		return error;
 	if (terFileDescriptor != arg->tag)
@@ -55,7 +55,7 @@ Term * FunctionClose(List arguments) {
 }
 
 Term * FunctionRead(List arguments) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	int size;
 	LimitedStr str;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
@@ -95,11 +95,11 @@ unsigned int DumpPair(Chr * buffer, unsigned int size, Pair * pair) {
 				pair = pair->second->pair;
 				break;
 			case terNil:
-				pair = 0;
+				pair = NULL;
 				break;
 			default:
 				offset += DumpTerm(buffer + offset, size - offset, pair->second);
-				pair = 0;
+				pair = NULL;
 				break;
 		}	}
 	return offset + sprintf_s(buffer + offset, size - offset, ")\n");
@@ -137,15 +137,14 @@ unsigned int DumpTerm(Chr * buffer, unsigned int size, Term * term) {
 		case terPair:
 			return DumpPair(buffer, size, term->pair);
 		default:
-			assert(0);
+			assert(!"Unknown term");
 			return 0;
 	}
 }
 
-
 Term * InternalWriteTerm(int fildes, Term * term) {
 	Chr buffer[1024] = "";
-	Term * result = 0;
+	Term * result = NULL;
 
 	term = InternalWriteConstantStr(fildes, buffer);
 	if (terError == term->tag)
@@ -154,7 +153,7 @@ Term * InternalWriteTerm(int fildes, Term * term) {
 }
 
 Term * FunctionWrite(List arguments) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
 	if (terFileDescriptor != args[0]->tag)
@@ -165,7 +164,7 @@ Term * FunctionWrite(List arguments) {
 }
 
 Term * FunctionWriteTerm(List arguments) {
-	Term * args[] = {0, 0}, * error = 0;
+	Term * args[] = {NULL, NULL}, * error = NULL;
 	if (TakeSeveralArguments(arguments, args, &error) < 0)
 		return error;
 	if (terFileDescriptor != args[0]->tag)
