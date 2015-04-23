@@ -1,0 +1,1 @@
+Academic curriculum and a workbook for computer architecture course at Ural State University
